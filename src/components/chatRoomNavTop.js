@@ -1,13 +1,16 @@
+import {
+	AppBar,
+	createStyles,
+	IconButton,
+	makeStyles,
+	Menu,
+	MenuItem,
+	Toolbar,
+	Typography,
+	Zoom,
+} from '@mui/material';
 import React, { useState } from 'react';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { Zoom } from '@material-ui/core';
-import Router from 'next/router';
+import { Navigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -103,7 +106,7 @@ export default function ChatRoomNavTop({ myChats, chatIndex, uidToName, myAccoun
 							<Zoom in={true}>
 								<IconButton
 									color='primary'
-									onClick={() => Router.push('/chats')}
+									onClick={() => Navigate('/chats')}
 									className={classes.nextIconBtn}>
 									<Typography className={classes.nextIconText}>
 										채팅목록

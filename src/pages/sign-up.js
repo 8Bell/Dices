@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { authService, dbService, Timestamp } from '../../fbase';
+import { authService, dbService, Timestamp } from '../fbase';
 
 function Copyright() {
 	return (

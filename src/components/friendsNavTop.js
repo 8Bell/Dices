@@ -1,18 +1,19 @@
+import { AddRounded, ArrowForwardIosRounded } from '@mui/icons-material';
+import {
+	AppBar,
+	createStyles,
+	IconButton,
+	makeStyles,
+	Menu,
+	MenuItem,
+	Toolbar,
+	Typography,
+	Zoom,
+} from '@mui/material';
 import React, { useState } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AddRoundedIcon from '@material-ui/icons/AddRounded';
-import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
-import { Zoom } from '@material-ui/core';
-// import { useRouter } from 'next/router';
+import { Link, Navigate } from 'react-router-dom';
+
 import { dbService } from '../fbase';
-import Router from 'next/router';
-import Link from './Link';
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -112,7 +113,7 @@ export default function FriendsNavTop({
 
 			setCheckedState(new Array(users.length).fill(false));
 
-			await Router.push('/chats');
+			await Navigate('/chats');
 		} else {
 			alert('채팅할 친구를 선택해주세요');
 		}
@@ -139,7 +140,7 @@ export default function FriendsNavTop({
 									onClick={handleMenu}
 									color='inherit'
 									className={classes.plusIconBtn}>
-									<AddRoundedIcon style={{ fontSize: 30 }} />
+									<AddRounded style={{ fontSize: 30 }} />
 								</IconButton>
 							</Zoom>
 							<Zoom in={chatMakingState}>
@@ -150,7 +151,7 @@ export default function FriendsNavTop({
 									<Typography className={classes.nextIconText}>
 										채팅
 									</Typography>
-									<ArrowForwardIosRoundedIcon />
+									<ArrowForwardIosRounded />
 									<Link href='/chats' />
 								</IconButton>
 							</Zoom>

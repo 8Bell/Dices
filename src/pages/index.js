@@ -6,7 +6,6 @@ import {
 	FormControlLabel,
 	Grid,
 	InputBase,
-	makeStyles,
 	Switch,
 	Typography,
 	withStyles,
@@ -34,49 +33,47 @@ function Copyright() {
 	);
 }
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
-		marginTop: theme.spacing(2),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		minHeight: 400,
-		minWidth: 300,
-		position: 'absolute',
-		left: '50%',
-		transform: 'translateX(-51%)',
-	},
-	icon: {
-		width: 200,
-		height: 200,
-	},
+// const useStyles = makeStyles((theme) => ({
+// 	paper: {
+// 		marginTop: theme.spacing(2),
+// 		display: 'flex',
+// 		flexDirection: 'column',
+// 		alignItems: 'center',
+// 		minHeight: 400,
+// 		minWidth: 300,
+// 		position: 'absolute',
+// 		left: '50%',
+// 		transform: 'translateX(-51%)',
+// 	},
+// 	icon: {
+// 		width: 200,
+// 		height: 200,
+// 	},
 
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		margin: theme.spacing(2, 0, 0, 0),
-	},
-	textField: {
-		margin: theme.spacing(0.7),
-		borderRadius: '30px',
-		color: '#888',
-		border: 'solid 1px #aaa',
-		height: 50,
-		paddingLeft: 20,
-		paddingTop: 1,
-	},
-	submit: {
-		margin: theme.spacing(8, 0, 3, 0.6),
-		height: 50,
-		borderRadius: '30px',
-	},
-	checkBox: {
-		marginLeft: 0,
-	},
-}));
+// 	form: {
+// 		width: '100%', // Fix IE 11 issue.
+// 		margin: theme.spacing(2, 0, 0, 0),
+// 	},
+// 	textField: {
+// 		margin: theme.spacing(0.7),
+// 		borderRadius: '30px',
+// 		color: '#888',
+// 		border: 'solid 1px #aaa',
+// 		height: 50,
+// 		paddingLeft: 20,
+// 		paddingTop: 1,
+// 	},
+// 	submit: {
+// 		margin: theme.spacing(8, 0, 3, 0.6),
+// 		height: 50,
+// 		borderRadius: '30px',
+// 	},
+// 	checkBox: {
+// 		marginLeft: 0,
+// 	},
+// }));
 
 export default function SignIn() {
-	const classes = useStyles();
-
 	const [init, setInit] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -181,7 +178,7 @@ export default function SignIn() {
 	}))(({ classes, ...props }) => {
 		return (
 			<Switch
-				focusVisibleClassName={classes.focusVisible}
+				//focusVisibleClassName={classes.focusVisible}
 				disableRipple
 				classes={{
 					root: classes.root,
@@ -215,16 +212,22 @@ export default function SignIn() {
 		<React.Fragment>
 			<Container component='main' maxWidth='xs'>
 				<CssBaseline />
-				<div className={classes.paper}>
+
+				<div
+				// className={classes.paper}
+				>
 					<img
 						src='/images/whale plastic 2@0.5x.png'
 						alt='whale icon'
-						className={classes.icon}
+						//	className={classes.icon}
 						height='200'
 						width='200'
 					/>
 
-					<form className={classes.form} noValidate onSubmit={onSubmit}>
+					<form
+						//className={classes.form}
+						noValidate
+						onSubmit={onSubmit}>
 						<InputBase
 							fullWidth
 							id='email'
@@ -232,7 +235,7 @@ export default function SignIn() {
 							name='email'
 							autoComplete='email'
 							autoFocus
-							className={classes.textField}
+							//	className={classes.textField}
 							value={email}
 							onChange={onChange}
 						/>
@@ -244,7 +247,7 @@ export default function SignIn() {
 							type='password'
 							id='password'
 							autoComplete='current-password'
-							className={classes.textField}
+							//	className={classes.textField}
 							value={password}
 							onChange={onChange}
 						/>
@@ -272,7 +275,7 @@ export default function SignIn() {
 										name='togglecheck'
 									/>
 								}
-								className={classes.checkBox}
+								// className={classes.checkBox}
 								label={''}
 							/>
 						</div>
@@ -281,7 +284,8 @@ export default function SignIn() {
 							fullWidth
 							variant='contained'
 							color='primary'
-							className={classes.submit}>
+							// className={classes.submit}
+						>
 							로그인
 						</Button>
 						<Grid container justifyContent='flex-end'>

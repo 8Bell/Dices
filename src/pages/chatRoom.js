@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-
 import { authService, dbService } from '../fbase';
-import { useRouter } from 'next/router';
-import { Avatar, Grid, Typography } from '@material-ui/core';
+
 import ChatRoomInputBar from '../components/chatRoomInputBar';
 import ChatRoomNavTop from '../components/chatRoomNavTop';
-import Head from 'next/head';
+import { Avatar, Grid, makeStyles, Typography } from '@mui/material';
+import { Navigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	background: {
@@ -173,10 +171,10 @@ const useStyles = makeStyles((theme) => ({
 // eslint-disable-next-line no-empty-pattern
 export default function ChatRoom({}) {
 	const classes = useStyles();
-	const router = useRouter();
 
-	const chatIndex = Number(router.query.chatIndex);
-	const roomId = router.query.roomId;
+	//프롭스 전달 받기 필요
+	const chatIndex = 0;
+	const roomId = 0;
 
 	const [chats, setChats] = useState([]);
 	const [myChatsUid, setMyChatsUid] = useState([]);
@@ -404,7 +402,7 @@ export default function ChatRoom({}) {
 				setIsLoggedIn(true);
 			} else {
 				setIsLoggedIn(false);
-				router.push('/');
+				Navigate('/');
 			}
 			setInit(true);
 		});
@@ -432,9 +430,6 @@ export default function ChatRoom({}) {
 
 	return (
 		<React.Fragment>
-			<Head>
-				<meta name='theme-color' content='rgba(241,241,241,0.3)' />
-			</Head>
 			<div>
 				<ChatRoomNavTop
 					chatIndex={chatIndex}

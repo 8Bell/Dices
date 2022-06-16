@@ -1,8 +1,7 @@
+import { Button, Grid, InputBase, makeStyles } from '@mui/material';
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { dbService, Timestamp } from '../fbase';
-import { Button, Grid, InputBase } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	form: {

@@ -1,12 +1,9 @@
+import { ChatRounded, LockRounded, PeopleAltRounded } from '@mui/icons-material';
+import { BottomNavigation, BottomNavigationAction, makeStyles } from '@mui/material';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
-import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
-import LockRoundedIcon from '@material-ui/icons/LockRounded';
+import { Navigate } from 'react-router-dom';
+
 import { authService } from '../fbase';
-import { useRouter } from 'next/router';
 
 const useStyles = makeStyles({
 	root: {
@@ -23,7 +20,6 @@ const useStyles = makeStyles({
 });
 
 export default function ChatsNavBottom() {
-	const router = useRouter();
 	const classes = useStyles();
 	const [value, setValue] = React.useState('chats');
 
@@ -46,25 +42,25 @@ export default function ChatsNavBottom() {
 			<BottomNavigation value={value} onChange={handleChange} className={classes.root}>
 				<BottomNavigationAction
 					onClick={() => {
-						router.push('/friends');
+						Navigate('/friends');
 					}}
 					label='친구'
 					value='friends'
 					style={{ transform: 'translateY(4px)' }}
-					icon={<PeopleAltRoundedIcon />}></BottomNavigationAction>
+					icon={<PeopleAltRounded />}></BottomNavigationAction>
 
 				<BottomNavigationAction
 					label='채팅'
 					value='chats'
 					style={{ transform: 'translateY(4px)' }}
-					icon={<ChatRoundedIcon />}></BottomNavigationAction>
+					icon={<ChatRounded />}></BottomNavigationAction>
 
 				<BottomNavigationAction
 					onClick={onClick}
 					label='로그아웃'
 					value='signOut'
 					style={{ transform: 'translateY(4px)' }}
-					icon={<LockRoundedIcon />}
+					icon={<LockRounded />}
 				/>
 			</BottomNavigation>
 		</div>

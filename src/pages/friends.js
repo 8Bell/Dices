@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 import { authService, dbService } from '../fbase';
-import router from 'next/router';
 
 import FormDialog from '../components/addfriends';
 
 import FriendsNavBottom from '../components/friendsNavBottom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Head from 'next/head';
+
 import FriendsNavTop from '../components/friendsNavTop';
 import {
 	Avatar,
@@ -20,6 +19,7 @@ import {
 	Typography,
 	Zoom,
 } from '@mui/material';
+import { Navigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	background: {
@@ -151,7 +151,7 @@ export default function Friends() {
 				setIsLoggedIn(true);
 			} else {
 				setIsLoggedIn(false);
-				router.push('/');
+				Navigate('/');
 			}
 			setInit(true);
 		});
@@ -231,9 +231,6 @@ export default function Friends() {
 
 	return (
 		<React.Fragment>
-			<Head>
-				<meta name='theme-color' content='rgba(241,241,241,0.3)' />
-			</Head>
 			<Grid className={classes.paper}>
 				<FriendsNavTop
 					chatMakingState={chatMakingState}
