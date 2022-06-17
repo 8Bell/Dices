@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { authService } from './fbase';
-import SignIn from './pages';
-import ChatRoom from './pages/chatRoom';
-import Chats from './pages/chats';
-import Friends from './pages/friends';
-import SignUp from './pages/sign-up';
+import Home from './pages/Home';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn }) => {
 	return (
@@ -38,51 +34,7 @@ const App = () => {
 				<Route
 					index
 					element={
-						<SignIn
-							isLoggedIn={isLoggedIn}
-							setIsLoggedIn={setIsLoggedIn}
-							isDeleteMod={isDeleteMod}
-							setIsDeleteMod={setIsDeleteMod}
-						/>
-					}
-				/>
-				<Route
-					path='/signup'
-					element={
-						<SignUp
-							isLoggedIn={isLoggedIn}
-							setIsLoggedIn={setIsLoggedIn}
-							isDeleteMod={isDeleteMod}
-							setIsDeleteMod={setIsDeleteMod}
-						/>
-					}
-				/>
-				<Route
-					path='/chats'
-					element={
-						<Chats
-							isLoggedIn={isLoggedIn}
-							setIsLoggedIn={setIsLoggedIn}
-							isDeleteMod={isDeleteMod}
-							setIsDeleteMod={setIsDeleteMod}
-						/>
-					}
-				/>
-				<Route
-					path='/friends'
-					element={
-						<Friends
-							isLoggedIn={isLoggedIn}
-							setIsLoggedIn={setIsLoggedIn}
-							isDeleteMod={isDeleteMod}
-							setIsDeleteMod={setIsDeleteMod}
-						/>
-					}
-				/>
-				<Route
-					path='/chatroom'
-					element={
-						<ChatRoom
+						<Home
 							isLoggedIn={isLoggedIn}
 							setIsLoggedIn={setIsLoggedIn}
 							isDeleteMod={isDeleteMod}
