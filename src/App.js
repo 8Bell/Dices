@@ -39,6 +39,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 									default: '#eee',
 									paper: '#eee',
 								},
+								divider: '#aaa',
 								text: {
 									primary: grey[900],
 									secondary: grey[800],
@@ -67,6 +68,13 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 		[mode]
 	);
 
+	const appleThemeColor = document.getElementById('theme-color');
+	useEffect(() => {
+		mode === 'dark'
+			? appleThemeColor.setAttribute('content', '#111')
+			: appleThemeColor.setAttribute('content', '#eee');
+	}, [appleThemeColor, mode]);
+
 	return (
 		<div>
 			<CssBaseline />
@@ -84,6 +92,7 @@ const App = () => {
 
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
 	const [drawerWidth, setDrawerWidth] = useState(340);
 	const ColorModeContext = createContext({ toggleColorMode: () => {} });
@@ -135,6 +144,7 @@ const App = () => {
 							ColorModeContext={ColorModeContext}
 							drawerWidth={drawerWidth}
 							isMobile={isMobile}
+							isTablet={isTablet}
 						/>
 					}
 				/>

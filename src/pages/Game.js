@@ -5,8 +5,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Rooms from '../components/Rooms';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
+import { Grid } from '@mui/material';
+import Score from '../components/Score';
+import SideScore from '../components/SideScore';
 
-export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
+export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext }) {
 	const Main = styled('main', {
 		shouldForwardProp: (prop) => prop !== 'open',
 	})(({ theme, open }) => ({
@@ -16,14 +19,14 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 			easing: theme.transitions.easing.easeInOut,
 			duration: theme.transitions.duration.leavingScreen,
 		}),
-		marginLeft: isMobile ? '-100%' : -drawerWidth,
+		marginLeft: isMobile ? '-200%' : -drawerWidth * 2,
 
 		...(open && {
 			transition: theme.transitions.create('margin', {
 				easing: theme.transitions.easing.easeInOut,
 				duration: theme.transitions.duration.enteringScreen,
 			}),
-			marginLeft: 0,
+			marginLeft: isMobile ? '-300%' : -drawerWidth * 2,
 		}),
 	}));
 
@@ -36,21 +39,45 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 		justifyContent: 'flex-end',
 	}));
 
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
+	const [sideScoreOpen, setSideScoreOpen] = useState(false);
 
 	return (
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
-			<Navbar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
+			<Navbar
+				open={open}
+				setOpen={setOpen}
+				sideScoreOpen={sideScoreOpen}
+				setSideScoreOpen={setSideScoreOpen}
+				drawerWidth={drawerWidth}
+				isTablet={isTablet}
+			/>
 			<SideMenu
 				open={open}
 				setOpen={setOpen}
 				drawerWidth={drawerWidth}
 				ColorModeContext={ColorModeContext}
 			/>
+			<SideScore
+				sideScoreOpen={sideScoreOpen}
+				setSideScoreOpen={setSideScoreOpen}
+				drawerWidth={drawerWidth}
+				isMobile={isMobile}
+			/>
 			<Main open={open}>
 				<DrawerHeader />
-				<Rooms />
+
+				<Grid container>
+					{!isTablet && (
+						<Grid xs={4}>
+							<Score isMobile={isMobile} />
+						</Grid>
+					)}
+					<Grid xs>
+						<Rooms />
+					</Grid>
+				</Grid>
 			</Main>
 		</Box>
 	);

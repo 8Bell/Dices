@@ -4,9 +4,10 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-import { Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Rooms() {
+	const navigate = useNavigate();
 	const Item = styled(Paper)(({ theme }) => ({
 		...theme.typography.body2,
 		textAlign: 'center',
@@ -42,7 +43,7 @@ export default function Rooms() {
 						<Item
 							key={elevation}
 							elevation='6'
-							onClick={() => Navigate('/game')}
+							onClick={() => navigate('/game')}
 							sx={{
 								'&:hover': {
 									filter: 'brightness(1.05)',
