@@ -1,25 +1,17 @@
-import {
-	Box,
-	createTheme,
-	CssBaseline,
-	styled,
-	ThemeProvider,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import { createTheme, CssBaseline, ThemeProvider, useMediaQuery, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
-import TopAppBar from './components/Appbar';
-import LeftDrawer from './components/Drawer';
+
 import { authService } from './fbase';
-import PersistentDrawerLeft from './pages/example';
+import Game from './pages/Game';
+
 import Home from './pages/Home';
 
-const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
-	const ColorModeContext = createContext({ toggleColorMode: () => {} });
+const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
+	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+	const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
 
-	const [mode, setMode] = useState('light');
 	const colorMode = useMemo(
 		() => ({
 			toggleColorMode: () => {
@@ -38,11 +30,14 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
 						? {
 								// palette values for light mode
 								primary: {
-									main: grey[800],
+									main: '#eee',
+								},
+								secondary: {
+									main: '#ddd',
 								},
 								background: {
-									default: '#fbfbfb',
-									paper: '#eeeeee',
+									default: '#eee',
+									paper: '#eee',
 								},
 								text: {
 									primary: grey[900],
@@ -53,15 +48,18 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
 								// palette values for dark mode
 
 								primary: {
-									main: grey[800],
+									main: '#111',
+								},
+								secondary: {
+									main: '#222',
 								},
 								background: {
-									default: '#121212',
+									default: '#111',
 									paper: '#111',
 								},
 								text: {
 									primary: '#fff',
-									secondary: grey[500],
+									secondary: grey[400],
 								},
 						  }),
 				},
@@ -69,62 +67,29 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
 		[mode]
 	);
 
-	const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-		({ theme, open, drawerWidth }) => ({
-			flexGrow: 1,
-			padding: theme.spacing(3),
-			transition: theme.transitions.create('margin', {
-				easing: theme.transitions.easing.sharp,
-				duration: theme.transitions.duration.leavingScreen,
-			}),
-			marginLeft: 0,
-			marginTop: 50,
-			...(open && {
-				transition: theme.transitions.create('margin', {
-					easing: theme.transitions.easing.easeOut,
-					duration: theme.transitions.duration.enteringScreen,
-				}),
-				marginLeft: drawerWidth,
-			}),
-		})
-	);
-
 	return (
-		<Box sx={{ display: 'flex' }}>
+		<div>
 			<CssBaseline />
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={theme}>
-					<Main open={open} drawerWidth={drawerWidth}>
-						<TopAppBar
-							open={open}
-							setOpen={setOpen}
-							ColorModeContext={ColorModeContext}
-						/>
-
-						<Outlet />
-						<LeftDrawer
-							drawerWidth={drawerWidth}
-							open={open}
-							setOpen={setOpen}
-						/>
-					</Main>
+					<Outlet />
 				</ThemeProvider>
 			</ColorModeContext.Provider>
-		</Box>
+		</div>
 	);
 };
 
 const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
-	const [open, setOpen] = useState(true);
 
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 	const [drawerWidth, setDrawerWidth] = useState(340);
+	const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 	useEffect(() => {
-		isMobile ? setDrawerWidth('100vw') : setDrawerWidth(340);
+		isMobile ? setDrawerWidth('100%') : setDrawerWidth(340);
 	}, [isMobile]);
 
 	useEffect(() => {
@@ -146,9 +111,7 @@ const App = () => {
 					<Layout
 						isLoggedIn={isLoggedIn}
 						setIsLoggedIn={setIsLoggedIn}
-						open={open}
-						setOpen={setOpen}
-						drawerWidth={drawerWidth}
+						ColorModeContext={ColorModeContext}
 					/>
 				}>
 				<Route
@@ -157,21 +120,21 @@ const App = () => {
 						<Home
 							isLoggedIn={isLoggedIn}
 							setIsLoggedIn={setIsLoggedIn}
-							open={open}
-							setOpen={setOpen}
+							ColorModeContext={ColorModeContext}
 							drawerWidth={drawerWidth}
+							isMobile={isMobile}
 						/>
 					}
 				/>
 				<Route
-					path='/example'
+					path='/game'
 					element={
-						<PersistentDrawerLeft
+						<Game
 							isLoggedIn={isLoggedIn}
 							setIsLoggedIn={setIsLoggedIn}
-							open={open}
-							setOpen={setOpen}
+							ColorModeContext={ColorModeContext}
 							drawerWidth={drawerWidth}
+							isMobile={isMobile}
 						/>
 					}
 				/>

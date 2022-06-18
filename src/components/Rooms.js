@@ -2,8 +2,9 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import { Navigate } from 'react-router-dom';
 
 export default function Rooms() {
 	const Item = styled(Paper)(({ theme }) => ({
@@ -14,13 +15,15 @@ export default function Rooms() {
 		lineHeight: '60px',
 	}));
 
-	const darkTheme = createTheme({ palette: { mode: 'dark' } });
-	const lightTheme = createTheme({ palette: { mode: 'light' } });
-
 	return (
 		<Grid container spacing={2}>
 			<Grid item xs={12}>
-				<Typography>Gmae Rooms</Typography>
+				<Typography
+					sx={{
+						ml: 1,
+					}}>
+					Gmae Rooms
+				</Typography>
 				<Box
 					sx={{
 						height: 300,
@@ -35,17 +38,18 @@ export default function Rooms() {
 						},
 						gap: 2,
 					}}>
-					{[12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12].map((elevation) => (
+					{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((elevation) => (
 						<Item
 							key={elevation}
-							elevation={elevation}
+							elevation='6'
+							onClick={() => Navigate('/game')}
 							sx={{
 								'&:hover': {
-									filter: 'brightness(1.1)',
+									filter: 'brightness(1.05)',
 								},
 								borderRadius: 5,
 							}}>
-							{`elevation=${elevation}`}
+							{`Room ${elevation}`}
 						</Item>
 					))}
 				</Box>
