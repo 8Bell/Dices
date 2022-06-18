@@ -17,8 +17,7 @@ import {
 	ChevronLeft,
 	ChevronRight,
 } from '@mui/icons-material';
-import { Box, Grid } from '@mui/material';
-import { height } from '@mui/system';
+import { Box } from '@mui/material';
 
 export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext }) {
 	const theme = useTheme();

@@ -2,10 +2,10 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import { FormatListBulletedRounded, GroupRounded, ViewListRounded } from '@mui/icons-material';
+import { FormatListBulletedRounded, GroupRounded } from '@mui/icons-material';
 import Divider from '@mui/material/Divider';
+import { useTheme } from '@emotion/react';
 
 export default function Navbar({
 	open,
@@ -14,8 +14,10 @@ export default function Navbar({
 	setSideScoreOpen,
 	drawerWidth,
 	ColorModeContext,
+	isMobile,
 	isTablet,
 }) {
+	const theme = useTheme();
 	const AppBar = styled(MuiAppBar, {
 		shouldForwardProp: (prop) => prop !== 'open',
 	})(({ theme, open }) => ({
@@ -47,8 +49,15 @@ export default function Navbar({
 				open={open}
 				sx={{
 					backgroundImage: 'none',
+					backgroundColor:
+						theme.palette.mode === 'dark'
+							? 'rgba(17,17,17,0.3)'
+							: 'rgba(227, 227, 228,0.3)',
+					backdropFilter: 'blur(5px)',
+					WebkitBackdropFilter: 'blur(5px)',
 					boxShadow: 'none',
-					borderBottom: 'solid 1px theme.palette.divider',
+					transform: 'translateY(-50px)',
+					pt: isMobile ? '35px' : '50px',
 				}}>
 				<Toolbar>
 					<IconButton

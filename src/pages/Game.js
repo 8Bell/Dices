@@ -60,6 +60,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 				sideScoreOpen={sideScoreOpen}
 				setSideScoreOpen={setSideScoreOpen}
 				drawerWidth={drawerWidth}
+				isMobile={isMobile}
 				isTablet={isTablet}
 			/>
 			<SideMenu

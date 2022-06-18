@@ -1,29 +1,13 @@
-import React, { useContext } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import React from 'react';
+import { styled } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import {
-	Brightness4,
-	Brightness7,
-	Casino,
-	CasinoOutlined,
-	ChevronLeft,
-	ChevronRight,
-} from '@mui/icons-material';
-import { Box, Grid } from '@mui/material';
-import { height } from '@mui/system';
+import { ChevronRight } from '@mui/icons-material';
 import Score from './Score';
 
 export default function SideScore({ sideScoreOpen, setSideScoreOpen, drawerWidth, isMobile }) {
-	const theme = useTheme();
-
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
 		alignItems: 'center',

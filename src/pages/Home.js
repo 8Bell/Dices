@@ -50,7 +50,12 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 				}
 			/>
 			<CssBaseline />
-			<Navbar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
+			<Navbar
+				open={open}
+				setOpen={setOpen}
+				drawerWidth={drawerWidth}
+				isMobile={isMobile}
+			/>
 			<SideMenu
 				open={open}
 				setOpen={setOpen}

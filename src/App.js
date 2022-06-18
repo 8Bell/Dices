@@ -85,7 +85,6 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	return (
 		<div>
 			<CssBaseline />
-
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={theme}>
 					<Outlet />

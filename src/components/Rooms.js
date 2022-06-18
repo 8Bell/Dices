@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 
 export default function Rooms() {
