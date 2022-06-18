@@ -1,6 +1,3 @@
-* {
-	background-color: aqua;
-}
 .App {
 	text-align: center;
 }
@@ -37,5 +34,84 @@
 	}
 	to {
 		transform: rotate(360deg);
+	}
+}
+
+.page-preloader-light {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	/* padding: 20%; */
+	width: 100%;
+	height: 100%;
+	z-index: 100000;
+	background: #e3e3e4 url('./img/loading-light.gif') no-repeat;
+	background-position: center 47%;
+	animation-name: preloader-fade;
+	animation-delay: 2.5s;
+	animation-duration: 0.5s;
+	animation-fill-mode: both;
+	background-size: 100%;
+}
+@media (max-width: 1700px) {
+	.page-preloader-light {
+		background-size: 30%;
+	}
+}
+@media (max-width: 1200px) {
+	.page-preloader-light {
+		background-size: 40%;
+	}
+}
+@media (max-width: 600px) {
+	.page-preloader-light {
+		background-size: 60%;
+	}
+}
+
+.page-preloader-dark {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	/* padding: 20%; */
+	width: 100%;
+	height: 100%;
+	z-index: 100000;
+	background: #111 url('./img/loading-dark.gif') no-repeat;
+	background-position: center 47%;
+
+	animation-name: preloader-fade;
+	animation-delay: 3.5s;
+	animation-duration: 1s;
+	animation-fill-mode: both;
+	background-size: 100%;
+}
+@media (max-width: 1700px) {
+	.page-preloader-dark {
+		background-size: 30%;
+	}
+}
+@media (max-width: 1200px) {
+	.page-preloader-dark {
+		background-size: 40%;
+	}
+}
+@media (max-width: 600px) {
+	.page-preloader-dark {
+		background-size: 60%;
+	}
+}
+
+.preloader-complete {
+	animation-delay: 0.1s;
+}
+@keyframes preloader-fade {
+	0% {
+		opacity: 1;
+		visibility: visible;
+	}
+	100% {
+		opacity: 0;
+		visibility: hidden;
 	}
 }

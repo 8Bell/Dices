@@ -8,8 +8,10 @@ import SideMenu from '../components/SideMenu';
 import { Grid } from '@mui/material';
 import Score from '../components/Score';
 import SideScore from '../components/SideScore';
+import { useTheme } from '@emotion/react';
 
 export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext }) {
+	const theme = useTheme();
 	const Main = styled('main', {
 		shouldForwardProp: (prop) => prop !== 'open',
 	})(({ theme, open }) => ({
@@ -44,6 +46,13 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 	return (
 		<Box sx={{ display: 'flex' }}>
+			<div
+				class={
+					theme.palette.mode === 'dark'
+						? 'page-preloader-dark'
+						: 'page-preloader-light'
+				}
+			/>
 			<CssBaseline />
 			<Navbar
 				open={open}

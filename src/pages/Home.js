@@ -5,8 +5,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Rooms from '../components/Rooms';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
+import { useTheme } from '@emotion/react';
 
 export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
+	const theme = useTheme();
 	const Main = styled('main', {
 		shouldForwardProp: (prop) => prop !== 'open',
 	})(({ theme, open }) => ({
@@ -40,6 +42,13 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 
 	return (
 		<Box sx={{ display: 'flex' }}>
+			<div
+				class={
+					theme.palette.mode === 'dark'
+						? 'page-preloader-dark'
+						: 'page-preloader-light'
+				}
+			/>
 			<CssBaseline />
 			<Navbar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
 			<SideMenu

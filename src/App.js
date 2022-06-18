@@ -2,15 +2,15 @@ import { createTheme, CssBaseline, ThemeProvider, useMediaQuery, useTheme } from
 import { grey } from '@mui/material/colors';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
-
 import { authService } from './fbase';
 import Game from './pages/Game';
-
 import Home from './pages/Home';
+import './App.css';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
-	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-	const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
+	//const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+	//	const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
+	const [mode, setMode] = useState('light');
 
 	const colorMode = useMemo(
 		() => ({
@@ -30,14 +30,14 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 						? {
 								// palette values for light mode
 								primary: {
-									main: '#eee',
+									main: '#e3e3e4',
 								},
 								secondary: {
 									main: '#ddd',
 								},
 								background: {
-									default: '#eee',
-									paper: '#eee',
+									default: '#e3e3e4',
+									paper: '#e3e3e4',
 								},
 								divider: '#aaa',
 								text: {
@@ -72,12 +72,13 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	useEffect(() => {
 		mode === 'dark'
 			? appleThemeColor.setAttribute('content', '#111')
-			: appleThemeColor.setAttribute('content', '#eee');
+			: appleThemeColor.setAttribute('content', '#e3e3e4');
 	}, [appleThemeColor, mode]);
 
 	return (
 		<div>
 			<CssBaseline />
+
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={theme}>
 					<Outlet />
