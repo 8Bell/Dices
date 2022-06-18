@@ -18,26 +18,27 @@ export default function Rooms() {
 
 	return (
 		<Grid container spacing={2}>
-			{[lightTheme, darkTheme].map((theme, index) => (
-				<Grid item xs={6} key={index}>
-					<ThemeProvider theme={theme}>
-						<Box
-							sx={{
-								p: 2,
-								bgcolor: 'background.default',
-								display: 'grid',
-								gridTemplateColumns: { md: '1fr 1fr' },
-								gap: 2,
-							}}>
-							{[0, 1, 2, 3, 4, 6, 8, 12, 16, 24].map((elevation) => (
-								<Item key={elevation} elevation={elevation}>
-									{`elevation=${elevation}`}
-								</Item>
-							))}
-						</Box>
-					</ThemeProvider>
-				</Grid>
-			))}
+			<Grid item xs={12}>
+				<Box
+					sx={{
+						p: 1,
+						bgcolor: 'background.default',
+						display: 'grid',
+						gridTemplateColumns: {
+							sm: '1fr',
+							md: '1fr 1fr',
+							lg: '1fr 1fr 1fr',
+							xl: ' 1fr 1fr 1fr 1fr',
+						},
+						gap: 3,
+					}}>
+					{[12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12].map((elevation) => (
+						<Item key={elevation} elevation={elevation}>
+							{`elevation=${elevation}`}
+						</Item>
+					))}
+				</Box>
+			</Grid>
 		</Grid>
 	);
 }

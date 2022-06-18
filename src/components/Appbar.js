@@ -1,9 +1,28 @@
 import { Brightness4, Brightness7, GroupRounded, Menu } from '@mui/icons-material';
-import { AppBar, createTheme, IconButton, Toolbar, Typography, useTheme } from '@mui/material';
+import { createTheme, IconButton, styled, Toolbar, Typography, useTheme } from '@mui/material';
 import { createContext, useContext } from 'react';
+import MuiAppBar from '@mui/material/AppBar';
 
-export default function TopAppBar({ open, setOpen, ColorModeContext }) {
+export default function TopAppBar({ open, setOpen, ColorModeContext, drawerWidth }) {
 	const theme = useTheme();
+
+	const AppBar = styled(MuiAppBar, {
+		shouldForwardProp: (prop) => prop !== 'open',
+	})(({ theme, open }) => ({
+		transition: theme.transitions.create(['margin', 'width'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen,
+		}),
+		...(open && {
+			width: `calc(100% - ${drawerWidth}px)`,
+
+			marginLeft: `${drawerWidth}px`,
+			transition: theme.transitions.create(['margin', 'width'], {
+				easing: theme.transitions.easing.easeOut,
+				duration: theme.transitions.duration.enteringScreen,
+			}),
+		}),
+	}));
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -29,9 +48,9 @@ export default function TopAppBar({ open, setOpen, ColorModeContext }) {
 					sx={{
 						position: 'relative',
 						marginLeft: open ? '340px' : '10px',
-						transitionDuration: '0.2s',
+						transitionDuration: '1s',
 					}}>
-					Game Rooms
+					YACHU
 				</Typography>
 
 				<IconButton
