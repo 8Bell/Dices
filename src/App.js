@@ -8,9 +8,15 @@ import Home from './pages/Home';
 import './App.css';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
-	//const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-	//	const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
-	const [mode, setMode] = useState('light');
+	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+	const [mode, setMode] = useState(
+		localStorage.getItem('mode')
+			? localStorage.getItem('mode')
+			: prefersDarkMode
+			? 'dark'
+			: 'light'
+	);
+	// const [mode, setMode] = useState('light');
 
 	const colorMode = useMemo(
 		() => ({
@@ -73,6 +79,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 		mode === 'dark'
 			? appleThemeColor.setAttribute('content', '#111')
 			: appleThemeColor.setAttribute('content', '#e3e3e4');
+		localStorage.setItem('mode', mode);
 	}, [appleThemeColor, mode]);
 
 	return (
