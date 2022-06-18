@@ -1,10 +1,19 @@
-import { createTheme, CssBaseline, styled, ThemeProvider } from '@mui/material';
-import { amber, deepOrange, grey } from '@mui/material/colors';
+import {
+	Box,
+	createTheme,
+	CssBaseline,
+	styled,
+	ThemeProvider,
+	useMediaQuery,
+	useTheme,
+} from '@mui/material';
+import { grey } from '@mui/material/colors';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import TopAppBar from './components/Appbar';
 import LeftDrawer from './components/Drawer';
 import { authService } from './fbase';
+import PersistentDrawerLeft from './pages/example';
 import Home from './pages/Home';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
@@ -69,7 +78,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
 				duration: theme.transitions.duration.leavingScreen,
 			}),
 			marginLeft: 0,
-			marginTop: 100,
+			marginTop: 50,
 			...(open && {
 				transition: theme.transitions.create('margin', {
 					easing: theme.transitions.easing.easeOut,
@@ -81,7 +90,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
 	);
 
 	return (
-		<div>
+		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={theme}>
@@ -101,7 +110,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, open, setOpen, drawerWidth }) => {
 					</Main>
 				</ThemeProvider>
 			</ColorModeContext.Provider>
-		</div>
+		</Box>
 	);
 };
 
@@ -109,7 +118,14 @@ const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
 	const [open, setOpen] = useState(true);
 
-	const drawerWidth = 340;
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+	const [drawerWidth, setDrawerWidth] = useState(340);
+
+	useEffect(() => {
+		isMobile ? setDrawerWidth('100vw') : setDrawerWidth(340);
+	}, [isMobile]);
 
 	useEffect(() => {
 		authService.onAuthStateChanged((user) => {
@@ -139,6 +155,18 @@ const App = () => {
 					index
 					element={
 						<Home
+							isLoggedIn={isLoggedIn}
+							setIsLoggedIn={setIsLoggedIn}
+							open={open}
+							setOpen={setOpen}
+							drawerWidth={drawerWidth}
+						/>
+					}
+				/>
+				<Route
+					path='/example'
+					element={
+						<PersistentDrawerLeft
 							isLoggedIn={isLoggedIn}
 							setIsLoggedIn={setIsLoggedIn}
 							open={open}

@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { ChevronLeft, ChevronRight, Inbox, Mail } from '@mui/icons-material';
+import { Casino, CasinoOutlined, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import {
 	Divider,
 	Drawer,
@@ -55,7 +55,7 @@ export default function LeftDrawer({ drawerWidth, open, setOpen }) {
 							position: 'absolute',
 							left: 20,
 						}}>
-						Users
+						Current Users
 					</Typography>
 					<IconButton onClick={handleDrawerClose}>
 						{theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
@@ -63,13 +63,17 @@ export default function LeftDrawer({ drawerWidth, open, setOpen }) {
 				</DrawerHeader>
 				<Divider />
 				<List>
-					{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+					{['Mori', 'Dog', 'Cat', 'Rabbit'].map((text, index) => (
 						<ListItem key={text} disablePadding>
 							<ListItemButton>
-								<ListItemIcon>
-									{index % 2 === 0 ? <Inbox /> : <Mail />}
-								</ListItemIcon>
 								<ListItemText primary={text} />
+								<ListItemIcon>
+									{index % 2 === 0 ? (
+										<Casino />
+									) : (
+										<CasinoOutlined />
+									)}
+								</ListItemIcon>
 							</ListItemButton>
 						</ListItem>
 					))}

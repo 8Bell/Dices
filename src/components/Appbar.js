@@ -15,7 +15,6 @@ export default function TopAppBar({ open, setOpen, ColorModeContext, drawerWidth
 		}),
 		...(open && {
 			width: `calc(100% - ${drawerWidth}px)`,
-
 			marginLeft: `${drawerWidth}px`,
 			transition: theme.transitions.create(['margin', 'width'], {
 				easing: theme.transitions.easing.easeOut,
