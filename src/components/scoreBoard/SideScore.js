@@ -12,11 +12,7 @@ export default function SideScore({
 	setSideScoreOpen,
 	drawerWidth,
 	isMobile,
-	dices,
-	setDices,
-	setIsHold,
 	isFilled,
-	setIsFilled,
 	handleFill,
 	ace,
 	duce,
@@ -80,11 +76,7 @@ export default function SideScore({
 
 			<Score
 				isMobile={isMobile}
-				dices={dices}
-				setDices={setDices}
-				setIsHold={setDices}
 				isFilled={isFilled}
-				setIsFilled={setIsFilled}
 				handleFill={handleFill}
 				ace={ace}
 				duce={duce}

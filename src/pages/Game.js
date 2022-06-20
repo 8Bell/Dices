@@ -86,11 +86,11 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	}, [isFilled]);
 
 	const handleFill = (idx) => {
+		const newFilled = isFilled.map((filled, index) => (idx === index ? !filled : filled));
+		setIsFilled(newFilled);
 		sessionStorage.removeItem('dices', 'isHold');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
-		const newFilled = isFilled.map((filled, index) => (idx === index ? !filled : filled));
-		setIsFilled(newFilled);
 	};
 
 	//----------Rules------------//
@@ -101,7 +101,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	const [fours, setFours] = useState(0); //isFilled 3
 	const [fives, setFives] = useState(0); //isFilled 4
 	const [sixes, setSixes] = useState(0); //isFilled 5
-	const [subTotal, setSubTotal] = useState(ace + duce + fours + fives + sixes);
+	const [subTotal, setSubTotal] = useState(0);
 	const [bonus, setBonus] = useState(0);
 	const [choice, setChoice] = useState(0); //isFilled 6
 	const [fourOfKind, setFourOfKind] = useState(0); //isFilled 7
@@ -306,11 +306,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 				setSideScoreOpen={setSideScoreOpen}
 				drawerWidth={drawerWidth}
 				isMobile={isMobile}
-				dices={dices}
-				setDices={setDices}
-				setIsHold={setDices}
 				isFilled={isFilled}
-				setIsFilled={setIsFilled}
 				handleFill={handleFill}
 				ace={ace}
 				duce={duce}
@@ -336,11 +332,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 						<Grid xs={4}>
 							<Score
 								isMobile={isMobile}
-								dices={dices}
-								setDices={setDices}
-								setIsHold={setDices}
 								isFilled={isFilled}
-								setIsFilled={setIsFilled}
 								handleFill={handleFill}
 								ace={ace}
 								duce={duce}

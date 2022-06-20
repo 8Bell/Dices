@@ -14,15 +14,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: theme.palette.action.disabledBackground,
 		color: theme.palette.text,
-		fontSize: 20,
+		fontSize: 18,
 		borderBottom: '1px solid',
 		borderBottomColor: theme.palette.divider,
 	},
 	[`&.${tableCellClasses.body}`]: {
-		fontSize: 20,
 		borderBottom: '1px solid',
 		borderBottomColor: theme.palette.divider,
-		height: '10px',
+		fontSize: 18,
 	},
 }));
 
@@ -45,11 +44,7 @@ function createData(Categories, cat, dog) {
 
 export default function Score({
 	isMobile,
-	dices,
-	setDices,
-	setIsHold,
 	isFilled,
-	setIsFilled,
 	handleFill,
 	ace,
 	duce,
@@ -113,21 +108,21 @@ export default function Score({
 	};
 
 	const rows = [
-		createData('Ace', ace, 6.0),
-		createData('Duces', duce, 9.0),
-		createData('Threes', threes, 16.0),
-		createData('Fours', fours, 3.7),
-		createData('Fives', fives, 16.0),
-		createData('Sixes', sixes, 16.0),
-		createData('SubTotal', subTotal, 16.0),
-		createData('+ 35 Bonus', bonus, 16.0),
-		createData('Choice ', choice, 16.0),
-		createData('4 of a Kind', fourOfKind, 16.0),
-		createData('Full House', fullHouse, 16.0),
-		createData('S. Straight', sStraght, 16.0),
-		createData('L. Straight', lStraght, 16.0),
-		createData('YACHU', yachu, 16.0),
-		createData('Total', total, 16.0),
+		createData('Ace', ace, ''),
+		createData('Duces', duce, ''),
+		createData('Threes', threes, ''),
+		createData('Fours', fours, ''),
+		createData('Fives', fives, ''),
+		createData('Sixes', sixes, ''),
+		createData('SubTotal', subTotal, '0'),
+		createData('+ 35 Bonus', bonus, '0'),
+		createData('Choice ', choice, ''),
+		createData('4 of a Kind', fourOfKind, ''),
+		createData('Full House', fullHouse, ''),
+		createData('S. Straight', sStraght, ''),
+		createData('L. Straight', lStraght, ''),
+		createData('YACHU', yachu, ''),
+		createData('Total', total, '0'),
 	];
 
 	return (
@@ -158,15 +153,16 @@ export default function Score({
 												theme.palette.mode ===
 												'dark'
 													? 'brightness(1.5)'
-													: 'brightness(1.5)',
+													: 'brightness(1.05)',
 										},
 										backdropFilter:
 											theme.palette.mode === 'dark'
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										color: isFilled[idx]
-											? 'orange'
-											: theme.palette.text.secondary,
+											? theme.palette.text.secondary
+											: theme.palette.action.active,
+										fontWeight: isFilled[idx] ? 700 : 400,
 									}}>
 									{row.cat}
 								</StyledTableCell>
@@ -188,15 +184,16 @@ export default function Score({
 												theme.palette.mode ===
 												'dark'
 													? 'brightness(1.5)'
-													: 'brightness(1.5)',
+													: 'brightness(1.05)',
 										},
 										backdropFilter:
 											theme.palette.mode === 'dark'
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										color: isFilled[idx]
-											? 'orange'
-											: theme.palette.text.secondary,
+											? theme.palette.text.secondary
+											: theme.palette.action.active,
+										fontWeight: isFilled[idx] ? 700 : 400,
 									}}>
 									{row.cat}
 								</StyledTableCell>
@@ -216,6 +213,7 @@ export default function Score({
 											theme.palette.mode === 'dark'
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
+										fontWeight: 500,
 									}}>
 									{row.cat}
 								</StyledTableCell>

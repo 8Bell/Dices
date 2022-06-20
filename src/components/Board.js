@@ -1,9 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable array-callback-return */
 import { Button, Paper, Stack, styled } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React from 'react';
-
 export default function Board({ isTablet, dices, setDices, isHold, setIsHold, setIsFilled }) {
 	const theme = useTheme();
 
@@ -51,9 +48,6 @@ export default function Board({ isTablet, dices, setDices, isHold, setIsHold, se
 		setIsHold(newHold);
 	};
 
-	console.log('dices=', dices);
-	console.log('isHold=', isHold);
-
 	return (
 		<Paper
 			elevation={0}
@@ -86,17 +80,17 @@ export default function Board({ isTablet, dices, setDices, isHold, setIsHold, se
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Button
-					variant='contained'
+					variant='outlined'
 					color='inherit'
 					onClick={handleChangeDice}
-					sx={{ height: 40, width: 100, mt: 5 }}>
+					sx={{ height: 40, width: 300, mt: 3 }}>
 					Shake
 				</Button>
 				<Button
-					variant='contained'
+					variant='outlined'
 					color='inherit'
 					onClick={handleNewGame}
-					sx={{ height: 40, width: 100, mt: 2, mb: 3 }}>
+					sx={{ height: 40, width: 300, mt: 3 }}>
 					New Game
 				</Button>
 			</Stack>
