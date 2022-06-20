@@ -50,6 +50,11 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 									primary: grey[900],
 									secondary: grey[800],
 								},
+								action: {
+									active: grey[400],
+									hover: grey[200],
+									selected: grey[300],
+								},
 						  }
 						: {
 								// palette values for dark mode
@@ -67,6 +72,11 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 								text: {
 									primary: '#fff',
 									secondary: grey[400],
+								},
+								action: {
+									active: grey[100],
+									hover: grey[300],
+									selected: grey[200],
 								},
 						  }),
 				},

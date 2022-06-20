@@ -5,13 +5,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Rooms from '../components/Rooms';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
-import { Grid } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import Score from '../components/Score';
 import SideScore from '../components/SideScore';
 import { useTheme } from '@emotion/react';
+import Board from '../components/Board';
 
 export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext }) {
 	const theme = useTheme();
+
 	const Main = styled('main', {
 		shouldForwardProp: (prop) => prop !== 'open',
 	})(({ theme, open }) => ({
@@ -45,7 +47,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
 
 	return (
-		<Box sx={{ display: 'flex' }}>
+		<Box sx={{ display: 'flex', overflowX: 'hidden' }}>
 			<div
 				class={
 					theme.palette.mode === 'dark'
@@ -84,8 +86,14 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 							<Score isMobile={isMobile} />
 						</Grid>
 					)}
-					<Grid xs>
-						<Rooms />
+					<Grid
+						xs
+						sx={{
+							ml: isTablet ? 0 : 2,
+							mr: isTablet ? 0 : 1,
+							mt: isTablet ? -1 : 1,
+						}}>
+						<Board isTablet={isTablet} />
 					</Grid>
 				</Grid>
 			</Main>

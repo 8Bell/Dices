@@ -44,14 +44,15 @@ export default function Rooms() {
 					{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((elevation) => (
 						<Item
 							key={elevation}
-							elevation='0'
+							elevation='1'
 							onClick={() => navigate('/game')}
 							sx={{
 								'&:hover': {
 									filter: 'brightness(1.05)',
 								},
-								borderRadius: 0,
-								borderBottom: '1px solid',
+								borderRadius: 5,
+								border: 'none',
+								//	borderbottom: '1px solid',
 								borderColor: theme.palette.divider,
 							}}>
 							{`Room ${elevation}`}
