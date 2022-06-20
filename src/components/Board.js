@@ -20,6 +20,15 @@ export default function Board({ isTablet }) {
 		color: theme.palette.text,
 	}));
 
+	//----------New Game----------//
+
+	const handleNewGame = () => {
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
+		setIsFilled(new Array(12).fill(false));
+	};
+
 	//----------DICES------------//
 
 	const diceArr = [
@@ -72,35 +81,9 @@ export default function Board({ isTablet }) {
 	}, [isFilled]);
 
 	const handleFill = (idx) => {
-		// const arr = [
-		// 	ace,
-		// 	duce,
-		// 	threes,
-		// 	fours,
-		// 	fives,
-		// 	sixes,
-		// 	choice,
-		// 	fourOfKind,
-		// 	fullHouse,
-		// 	sStraght,
-		// 	lStraght,
-		// 	yachu,
-		// ];
-		// const setArr = [
-		// 	setAce,
-		// 	setDuce,
-		// 	setThrees,
-		// 	setFours,
-		// 	setFives,
-		// 	setSixes,
-		// 	setChoice,
-		// 	setFourOfKind,
-		// 	setFullHouse,
-		// 	setSStraght,
-		// 	setLStraght,
-		// 	setYachu,
-		// ];
-		// setArr[idx](arr[idx]);
+		sessionStorage.removeItem('dices', 'isHold');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
 		const newFilled = isFilled.map((filled, index) => (idx === index ? !filled : filled));
 		setIsFilled(newFilled);
 	};
@@ -229,7 +212,8 @@ export default function Board({ isTablet }) {
 				dices.includes(num) && (j = j + idx);
 			});
 
-			(i === 4 && j === (6 || 10 || 14)) || (i === 5 && j === (10 || 11 || 14 || 15))
+			(i === 4 && (j === 6 || j === 10 || j === 14)) ||
+			(i === 5 && (j === 10 || j === 11 || j === 14 || j === 15))
 				? setSStraght(15)
 				: setSStraght(0);
 		}
@@ -245,7 +229,7 @@ export default function Board({ isTablet }) {
 				dices.includes(num) && i++;
 				dices.includes(num) && (j = j + idx);
 			});
-			i === 5 && j === (10 || 15) ? setLStraght(30) : setLStraght(0);
+			i === 5 && (j === 10 || j === 15) ? setLStraght(30) : setLStraght(0);
 		}
 	}, [dices, isFilled]);
 
@@ -319,8 +303,15 @@ export default function Board({ isTablet }) {
 					variant='contained'
 					color='inherit'
 					onClick={handleChangeDice}
-					sx={{ height: 40, width: 100, mt: 5, mb: 3 }}>
+					sx={{ height: 40, width: 100, mt: 5 }}>
 					Shake
+				</Button>
+				<Button
+					variant='contained'
+					color='inherit'
+					onClick={handleNewGame}
+					sx={{ height: 40, width: 100, mt: 2, mb: 3 }}>
+					New Game
 				</Button>
 				<Typography
 					onClick={() => handleFill(0)}
