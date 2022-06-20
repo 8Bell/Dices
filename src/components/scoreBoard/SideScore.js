@@ -7,7 +7,33 @@ import IconButton from '@mui/material/IconButton';
 import { ChevronRight } from '@mui/icons-material';
 import Score from './Score';
 
-export default function SideScore({ sideScoreOpen, setSideScoreOpen, drawerWidth, isMobile }) {
+export default function SideScore({
+	sideScoreOpen,
+	setSideScoreOpen,
+	drawerWidth,
+	isMobile,
+	dices,
+	setDices,
+	setIsHold,
+	isFilled,
+	setIsFilled,
+	handleFill,
+	ace,
+	duce,
+	threes,
+	fours,
+	fives,
+	sixes,
+	subTotal,
+	bonus,
+	choice,
+	fourOfKind,
+	fullHouse,
+	sStraght,
+	lStraght,
+	yachu,
+	total,
+}) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
 		alignItems: 'center',
@@ -52,7 +78,30 @@ export default function SideScore({ sideScoreOpen, setSideScoreOpen, drawerWidth
 			</DrawerHeader>
 			<Divider />
 
-			<Score isMobile={isMobile} />
+			<Score
+				isMobile={isMobile}
+				dices={dices}
+				setDices={setDices}
+				setIsHold={setDices}
+				isFilled={isFilled}
+				setIsFilled={setIsFilled}
+				handleFill={handleFill}
+				ace={ace}
+				duce={duce}
+				threes={threes}
+				fours={fours}
+				fives={fives}
+				sixes={sixes}
+				subTotal={subTotal}
+				bonus={bonus}
+				choice={choice}
+				fourOfKind={fourOfKind}
+				fullHouse={fullHouse}
+				sStraght={sStraght}
+				lStraght={lStraght}
+				yachu={yachu}
+				total={total}
+			/>
 			<Divider />
 		</Drawer>
 	);
