@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable array-callback-return */
 import { Button, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
@@ -58,6 +60,51 @@ export default function Board({ isTablet }) {
 		setIsHold(newHold);
 	};
 
+	//----------Fill-------------//
+	const savedFilledArr = sessionStorage.getItem('isFilled')
+		? JSON.parse(sessionStorage.getItem('isFilled'))
+		: new Array(12).fill(false);
+
+	const [isFilled, setIsFilled] = useState(savedFilledArr);
+
+	useEffect(() => {
+		sessionStorage.setItem('isFilled', JSON.stringify(isFilled));
+	}, [isFilled]);
+
+	const handleFill = (idx) => {
+		// const arr = [
+		// 	ace,
+		// 	duce,
+		// 	threes,
+		// 	fours,
+		// 	fives,
+		// 	sixes,
+		// 	choice,
+		// 	fourOfKind,
+		// 	fullHouse,
+		// 	sStraght,
+		// 	lStraght,
+		// 	yachu,
+		// ];
+		// const setArr = [
+		// 	setAce,
+		// 	setDuce,
+		// 	setThrees,
+		// 	setFours,
+		// 	setFives,
+		// 	setSixes,
+		// 	setChoice,
+		// 	setFourOfKind,
+		// 	setFullHouse,
+		// 	setSStraght,
+		// 	setLStraght,
+		// 	setYachu,
+		// ];
+		// setArr[idx](arr[idx]);
+		const newFilled = isFilled.map((filled, index) => (idx === index ? !filled : filled));
+		setIsFilled(newFilled);
+	};
+
 	//----------Rules------------//
 
 	const [ace, setAce] = useState(0); //isFilled 0
@@ -74,150 +121,168 @@ export default function Board({ isTablet }) {
 	const [sStraght, setSStraght] = useState(0); //isFilled 9
 	const [lStraght, setLStraght] = useState(0); //isFilled 10
 	const [yachu, setYachu] = useState(0); //isFilled 11
-	const [total, setTotal] = useState(
-		subtotal + bonus + choice + fourOfKind + fullHouse + sStraght + lStraght + yachu
-	);
-
-	const [isFilled, setIsFilled] = useState(new Array(12).fill(false));
+	const [total, setTotal] = useState(0);
 
 	//ACE //isFilled 0
 	useEffect(() => {
 		let i = 0;
 		!isFilled[0] && dices.map((dice) => dice === 1 && ++i);
-		setAce(i * 1);
+		!isFilled[0] && setAce(i * 1);
 	}, [dices, isFilled]);
 
 	//DUCES //isFilled 1
 	useEffect(() => {
 		let i = 0;
 		!isFilled[1] && dices.map((dice) => dice === 2 && ++i);
-		setDuce(i * 2);
+		!isFilled[1] && setDuce(i * 2);
 	}, [dices, isFilled]);
 
 	//THREES //isFilled 2
 	useEffect(() => {
 		let i = 0;
 		!isFilled[2] && dices.map((dice) => dice === 3 && ++i);
-		setThrees(i * 3);
+		!isFilled[2] && setThrees(i * 3);
 	}, [dices, isFilled]);
 
 	//FOURS //isFilled 3
 	useEffect(() => {
 		let i = 0;
 		!isFilled[3] && dices.map((dice) => dice === 4 && ++i);
-		setFours(i * 4);
+		!isFilled[3] && setFours(i * 4);
 	}, [dices, isFilled]);
 
 	//FIVES //isFilled 4
 	useEffect(() => {
 		let i = 0;
 		!isFilled[4] && dices.map((dice) => dice === 5 && ++i);
-		setFives(i * 5);
+		!isFilled[4] && setFives(i * 5);
 	}, [dices, isFilled]);
 
 	//SIXES //isFilled 5
 	useEffect(() => {
 		let i = 0;
 		!isFilled[5] && dices.map((dice) => dice === 6 && ++i);
-		setSixes(i * 6);
+		!isFilled[5] && setSixes(i * 6);
 	}, [dices, isFilled]);
 
 	//SUBTOTAL
 	let sum = 0;
 	const arr = [ace, duce, threes, fours, fives, sixes];
 	useEffect(() => {
-		isFilled.slice(0, 5).map((filled, idx) => filled && (sum = sum + arr[idx]));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		isFilled.slice(0, 6).map((filled, idx) => filled && (sum = sum + arr[idx]));
 		setSubtotal(sum);
-	}, []);
+	}, [isFilled]);
 
 	//+35 BONUS
 	useEffect(() => {
-		isFilled[0] &&
-			isFilled[1] &&
-			isFilled[2] &&
-			isFilled[3] &&
-			isFilled[4] &&
-			isFilled[5] &&
-			subtotal >= 63 &&
-			setBonus(35);
+		subtotal >= 63 ? setBonus(35) : setBonus(0);
 	}, [isFilled, subtotal]);
 
 	//CHOICE //isFilled 6
 	useEffect(() => {
 		let sum = 0;
 		!isFilled[6] && dices.map((dice) => (sum = sum + dice));
-		setChoice(sum);
+		!isFilled[6] && setChoice(sum);
 	}, [dices, isFilled]);
 
 	//4 OF KIND //isFilled 7
 
 	useEffect(() => {
-		let i = 0;
-		let j = 0;
-
-		!isFilled[7] &&
-			[1, 2, 3, 4, 5, 6].map((num, idx) => {
+		if (!isFilled[7]) {
+			let i = 0;
+			let j = 0;
+			[1, 2, 3, 4, 5, 6].map((num) => {
 				dices.includes(num) && i++;
 				dices.indexOf(num) !== dices.lastIndexOf(num) && j++;
 			});
-		i === 2 && j !== 2 ? setFourOfKind(15) : setFourOfKind(0);
-	}, [dices, fullHouse, isFilled]);
+			i <= 2 && j !== 2
+				? setFourOfKind(dices.reduce((dice, cv) => dice + cv))
+				: setFourOfKind(0);
+		}
+	}, [dices, isFilled]);
 
 	//FULL HOUSE //isFilled 8
 
 	useEffect(() => {
-		let i = 0;
-		let j = 0;
-
-		!isFilled[8] &&
-			[1, 2, 3, 4, 5, 6].map((num, idx) => {
+		if (!isFilled[8]) {
+			let i = 0;
+			let j = 0;
+			[1, 2, 3, 4, 5, 6].map((num) => {
 				dices.includes(num) && i++;
 				dices.indexOf(num) !== dices.lastIndexOf(num) && j++;
 			});
-		i === 2 && j === 2 ? setFullHouse(15) : setFullHouse(0);
-
-		console.log('i=', i);
+			i === 1 || (i === 2 && j === 2)
+				? setFullHouse(dices.reduce((dice, cv) => dice + cv))
+				: setFullHouse(0);
+		}
 	}, [dices, isFilled]);
 
 	//S. STRAGHT //isFilled 9
 	useEffect(() => {
-		let i = 0;
-		let j = 0;
+		if (!isFilled[9]) {
+			let i = 0;
+			let j = 0;
 
-		!isFilled[9] &&
 			[1, 2, 3, 4, 5, 6].map((num, idx) => {
 				dices.includes(num) && i++;
 				dices.includes(num) && (j = j + idx);
 			});
-		(i === 4 && j === (6 || 10 || 14)) || (i === 5 && j === (10 || 11 || 14 || 15))
-			? setSStraght(15)
-			: setSStraght(0);
+
+			(i === 4 && j === (6 || 10 || 14)) || (i === 5 && j === (10 || 11 || 14 || 15))
+				? setSStraght(15)
+				: setSStraght(0);
+		}
 	}, [dices, isFilled]);
 
 	//L. STRAGHT //isFilled 10
 	useEffect(() => {
-		let i = 0;
-		let j = 0;
+		if (!isFilled[10]) {
+			let i = 0;
+			let j = 0;
 
-		!isFilled[10] &&
 			[1, 2, 3, 4, 5, 6].map((num, idx) => {
 				dices.includes(num) && i++;
 				dices.includes(num) && (j = j + idx);
 			});
-		i === 5 && j === (10 || 15) ? setLStraght(30) : setLStraght(0);
+			i === 5 && j === (10 || 15) ? setLStraght(30) : setLStraght(0);
+		}
 	}, [dices, isFilled]);
 
 	//YACHU //isFilled 11
 	useEffect(() => {
-		!isFilled[11] &&
+		if (!isFilled[11]) {
 			dices[0] === dices[1] &&
 			dices[1] === dices[2] &&
 			dices[2] === dices[3] &&
-			dices[3] === dices[4] &&
-			setYachu(50);
+			dices[3] === dices[4]
+				? setYachu(50)
+				: setYachu(0);
+		}
 	}, [dices, isFilled]);
 
 	//TOTAL
+	useEffect(() => {
+		let sum = 0;
+		const arr = [
+			ace,
+			duce,
+			threes,
+			fours,
+			fives,
+			sixes,
+			choice,
+			fourOfKind,
+			fullHouse,
+			sStraght,
+			lStraght,
+			yachu,
+		];
+		isFilled.map((filled, idx) => {
+			filled && (sum = sum + arr[idx]);
+		});
+		setTotal(sum + bonus);
+	}, [isFilled]);
 
 	return (
 		<Paper
@@ -257,18 +322,34 @@ export default function Board({ isTablet }) {
 					sx={{ height: 40, width: 100, mt: 5, mb: 3 }}>
 					Shake
 				</Button>
-				<Typography sx={{ color: 'green', fontSize: 17 }}>ace : {ace}</Typography>
-				<Typography sx={{ color: 'green', fontSize: 17 }}>duce : {duce}</Typography>
-				<Typography sx={{ color: 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(0)}
+					sx={{ color: isFilled[0] ? 'orange' : 'green', fontSize: 17 }}>
+					ace : {ace}
+				</Typography>
+				<Typography
+					onClick={() => handleFill(1)}
+					sx={{ color: isFilled[1] ? 'orange' : 'green', fontSize: 17 }}>
+					duce : {duce}
+				</Typography>
+				<Typography
+					onClick={() => handleFill(2)}
+					sx={{ color: isFilled[2] ? 'orange' : 'green', fontSize: 17 }}>
 					threes : {threes}
 				</Typography>
-				<Typography sx={{ color: 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(3)}
+					sx={{ color: isFilled[3] ? 'orange' : 'green', fontSize: 17 }}>
 					fours : {fours}
 				</Typography>
-				<Typography sx={{ color: 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(4)}
+					sx={{ color: isFilled[4] ? 'orange' : 'green', fontSize: 17 }}>
 					fives : {fives}
 				</Typography>
-				<Typography sx={{ color: 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(5)}
+					sx={{ color: isFilled[5] ? 'orange' : 'green', fontSize: 17 }}>
 					sixes : {sixes}
 				</Typography>
 				<Typography sx={{ color: subtotal >= 63 ? 'red' : 'green', fontSize: 17 }}>
@@ -277,22 +358,53 @@ export default function Board({ isTablet }) {
 				<Typography sx={{ color: bonus > 0 ? 'red' : 'green', fontSize: 17 }}>
 					bonus : {bonus}
 				</Typography>
-				<Typography sx={{ color: 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(6)}
+					sx={{ color: isFilled[6] ? 'orange' : 'green', fontSize: 17 }}>
 					choice : {choice}
 				</Typography>
-				<Typography sx={{ color: fourOfKind > 0 ? 'red' : 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(7)}
+					sx={{
+						color: isFilled[7]
+							? 'orange'
+							: fourOfKind > 0
+							? 'red'
+							: 'green',
+						fontSize: 17,
+					}}>
 					4 of Kind : {fourOfKind}
 				</Typography>
-				<Typography sx={{ color: fullHouse > 0 ? 'red' : 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(8)}
+					sx={{
+						color: isFilled[8] ? 'orange' : fullHouse > 0 ? 'red' : 'green',
+						fontSize: 17,
+					}}>
 					fullHouse : {fullHouse}
 				</Typography>
-				<Typography sx={{ color: sStraght > 0 ? 'red' : 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(9)}
+					sx={{
+						color: isFilled[9] ? 'orange' : sStraght > 0 ? 'red' : 'green',
+						fontSize: 17,
+					}}>
 					S. Straght : {sStraght}
 				</Typography>
-				<Typography sx={{ color: lStraght > 0 ? 'red' : 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(10)}
+					sx={{
+						color: isFilled[10] ? 'orange' : lStraght > 0 ? 'red' : 'green',
+						fontSize: 17,
+					}}>
 					L. Straght : {lStraght}
 				</Typography>
-				<Typography sx={{ color: yachu > 0 ? 'red' : 'green', fontSize: 17 }}>
+				<Typography
+					onClick={() => handleFill(11)}
+					sx={{
+						color: isFilled[11] ? 'orange' : yachu > 0 ? 'red' : 'green',
+						fontSize: 17,
+					}}>
 					yachu : {yachu}
 				</Typography>
 				<Typography sx={{ color: 'green', fontSize: 17 }}>
