@@ -24,6 +24,7 @@ export default function Rooms() {
 				<Typography
 					sx={{
 						ml: 1,
+						mb: 1,
 					}}>
 					Gmae Rooms
 				</Typography>
@@ -31,6 +32,7 @@ export default function Rooms() {
 					sx={{
 						height: 100,
 						p: 0,
+
 						bgcolor: 'background.default',
 						display: 'grid',
 						gridTemplateColumns: {
@@ -41,21 +43,24 @@ export default function Rooms() {
 						},
 						gap: 2,
 					}}>
-					{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((elevation) => (
+					{[1].map((elevation) => (
 						<Item
 							key={elevation}
 							elevation='1'
 							onClick={() => navigate('/game')}
 							sx={{
 								'&:hover': {
-									filter: 'brightness(1.05)',
+									filter:
+										theme.palette.mode === 'dark'
+											? 'brightness(1.1)'
+											: 'brightness(0.95)',
 								},
 								borderRadius: 5,
 								border: 'none',
 								//	borderbottom: '1px solid',
 								borderColor: theme.palette.divider,
 							}}>
-							{`Room ${elevation}`}
+							{`Game Room ${elevation}`}
 						</Item>
 					))}
 				</Box>

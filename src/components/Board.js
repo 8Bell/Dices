@@ -1,6 +1,7 @@
 import { Button, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 export default function Board({
 	isTablet,
 	dices,
@@ -12,6 +13,7 @@ export default function Board({
 	setLeft,
 }) {
 	const theme = useTheme();
+	const navigate = useNavigate();
 
 	const Item = styled(Paper)(({ theme }) => ({
 		backgroundColor: theme.palette.background,
@@ -27,22 +29,34 @@ export default function Board({
 	}));
 
 	const diceArr = [
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
+		// Math.floor(Math.random() * 6) + 1,
+		// Math.floor(Math.random() * 6) + 1,
+		// Math.floor(Math.random() * 6) + 1,
+		// Math.floor(Math.random() * 6) + 1,
+		// Math.floor(Math.random() * 6) + 1,
+		// ' ',
+		// ' ',
+		// ' ',
+		// ' ',
+		// ' ',
+		'🎲',
+		'🎲',
+		'🎲',
+		'🎲',
+		'🎲',
 	];
 
-	//----------New Game----------//
+	//----------Quit Game----------//
 
 	const handleNewGame = () => {
 		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(13).fill(false));
-		setLeft(2);
-		window.location.replace('/game');
+		setLeft(3);
+		setTimeout(() => {
+			navigate('/');
+		}, 200);
 	};
 
 	//----------HOLD----------//
@@ -80,7 +94,7 @@ export default function Board({
 				}}>
 				{dices.map((dice, idx) => (
 					<Item
-						onClick={() => handleHoldDice(idx)}
+						onClick={() => left !== 3 && handleHoldDice(idx)}
 						key={idx}
 						value={dice}
 						sx={{
@@ -106,7 +120,7 @@ export default function Board({
 					color='inherit'
 					onClick={handleNewGame}
 					sx={{ height: 40, width: 300, mt: 3 }}>
-					New Game
+					Quit Game
 				</Button>
 			</Stack>
 		</Paper>

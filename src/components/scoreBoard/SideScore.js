@@ -29,6 +29,7 @@ export default function SideScore({
 	lStraght,
 	yachu,
 	total,
+	left,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -93,6 +94,7 @@ export default function SideScore({
 				lStraght={lStraght}
 				yachu={yachu}
 				total={total}
+				left={left}
 			/>
 			<Divider />
 		</Drawer>

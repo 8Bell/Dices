@@ -46,13 +46,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 	//----------DICES------------//
 
-	const diceArr = [
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
-		Math.floor(Math.random() * 6) + 1,
-	];
+	const diceArr = ['🎲', '🎲', '🎲', '🎲', '🎲'];
 	const savedDiceArr = sessionStorage.getItem('dices')
 		? JSON.parse(sessionStorage.getItem('dices'))
 		: diceArr;
@@ -86,25 +80,32 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	}, [isFilled]);
 
 	const handleFill = (idx) => {
-		const newFilled = isFilled.map((filled, index) => (idx === index ? !filled : filled));
+		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
 		setIsFilled(newFilled);
 		sessionStorage.removeItem('dices', 'isHold', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
-		setLeft(2);
+		setLeft(3);
+
+		setTimeout(() => {
+			setSideScoreOpen(false);
+		}, 1000);
 	};
 
 	//----------LEFT----------//
 
 	const savedLeft = sessionStorage.getItem('left')
 		? JSON.parse(sessionStorage.getItem('left'))
-		: 2;
+		: 3;
 
 	const [left, setLeft] = useState(savedLeft);
 
 	useEffect(() => {
 		sessionStorage.setItem('left', JSON.stringify(left));
-		left === 0 && setSideScoreOpen(true);
+		left === 0 &&
+			setTimeout(() => {
+				setSideScoreOpen(true);
+			}, 1000);
 	}, [left]);
 
 	//----------Rules------------//
@@ -117,12 +118,12 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	const [sixes, setSixes] = useState(0); //isFilled 5
 	const [subTotal, setSubTotal] = useState(0);
 	const [bonus, setBonus] = useState(0);
-	const [choice, setChoice] = useState(0); //isFilled 6
+	const [choice, setChoice] = useState(0); //isFilled 8
 	const [fourOfKind, setFourOfKind] = useState(0); //isFilled 9
-	const [fullHouse, setFullHouse] = useState(0); //isFilled 8
-	const [sStraght, setSStraght] = useState(0); //isFilled 9
-	const [lStraght, setLStraght] = useState(0); //isFilled 10
-	const [yachu, setYachu] = useState(0); //isFilled 11
+	const [fullHouse, setFullHouse] = useState(0); //isFilled 10
+	const [sStraght, setSStraght] = useState(0); //isFilled 11
+	const [lStraght, setLStraght] = useState(0); //isFilled 12
+	const [yachu, setYachu] = useState(0); //isFilled 13
 	const [total, setTotal] = useState(0);
 
 	//ACE //isFilled 0
@@ -183,9 +184,11 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 	//CHOICE //isFilled 8
 	useEffect(() => {
-		let sum = 0;
-		!isFilled[8] && dices.map((dice) => (sum = sum + dice));
-		!isFilled[8] && setChoice(sum);
+		if (!isFilled[8]) {
+			let sum = 0;
+			dices.map((dice) => (sum = sum + dice));
+			!isNaN(sum) ? setChoice(sum) : setChoice(0);
+		}
 	}, [dices, isFilled]);
 
 	//4 OF KIND //isFilled 9
@@ -198,7 +201,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 				dices.includes(num) && i++;
 				dices.indexOf(num) !== dices.lastIndexOf(num) && j++;
 			});
-			i <= 2 && j !== 2
+			0 < i && i <= 2 && j !== 2
 				? setFourOfKind(dices.reduce((dice, cv) => dice + cv))
 				: setFourOfKind(0);
 		}
@@ -255,12 +258,12 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	//YACHU //isFilled 13
 	useEffect(() => {
 		if (!isFilled[13]) {
-			dices[0] === dices[1] &&
-			dices[1] === dices[2] &&
-			dices[2] === dices[3] &&
-			dices[3] === dices[4]
-				? setYachu(50)
-				: setYachu(0);
+			let i = 0;
+
+			[1, 2, 3, 4, 5, 6].map((num) => {
+				dices.includes(num) && i++;
+			});
+			i === 1 ? setYachu(50) : setYachu(0);
 		}
 	}, [dices, isFilled]);
 
@@ -327,7 +330,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 				threes={threes}
 				fours={fours}
 				fives={fives}
-				sixes={fours}
+				sixes={sixes}
 				choice={choice}
 				fourOfKind={fourOfKind}
 				fullHouse={fullHouse}
@@ -337,6 +340,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 				subTotal={subTotal}
 				bonus={bonus}
 				total={total}
+				left={left}
 			/>
 			<Main open={open}>
 				<DrawerHeader />
@@ -353,7 +357,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 								threes={threes}
 								fours={fours}
 								fives={fives}
-								sixes={fours}
+								sixes={sixes}
 								choice={choice}
 								fourOfKind={fourOfKind}
 								fullHouse={fullHouse}
@@ -363,6 +367,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 								subTotal={subTotal}
 								bonus={bonus}
 								total={total}
+								left={left}
 							/>
 						</Grid>
 					)}

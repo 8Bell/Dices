@@ -61,6 +61,7 @@ export default function Score({
 	lStraght,
 	yachu,
 	total,
+	left,
 }) {
 	const theme = useTheme();
 
@@ -145,7 +146,7 @@ export default function Score({
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
-									onClick={() => onClick(idx)}
+									onClick={() => !isFilled[idx] && onClick(idx)}
 									align='center'
 									sx={{
 										'&:hover': {
@@ -176,7 +177,7 @@ export default function Score({
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
-									onClick={() => onClick(idx)}
+									onClick={() => !isFilled[idx] && onClick(idx)}
 									align='center'
 									sx={{
 										'&:hover': {
