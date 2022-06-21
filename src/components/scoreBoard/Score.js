@@ -146,7 +146,11 @@ export default function Score({
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
-									onClick={() => !isFilled[idx] && onClick(idx)}
+									onClick={() =>
+										!isFilled[idx] &&
+										left !== 3 &&
+										onClick(idx)
+									}
 									align='center'
 									sx={{
 										'&:hover': {
@@ -177,7 +181,11 @@ export default function Score({
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
-									onClick={() => !isFilled[idx] && onClick(idx)}
+									onClick={() =>
+										!isFilled[idx] &&
+										left !== 3 &&
+										onClick(idx)
+									}
 									align='center'
 									sx={{
 										'&:hover': {

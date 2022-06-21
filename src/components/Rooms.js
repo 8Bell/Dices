@@ -24,7 +24,7 @@ export default function Rooms() {
 				<Typography
 					sx={{
 						ml: 1,
-						mb: 1,
+						mb: 2,
 					}}>
 					Gmae Rooms
 				</Typography>

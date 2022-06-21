@@ -28,23 +28,7 @@ export default function Board({
 		color: theme.palette.text,
 	}));
 
-	const diceArr = [
-		// Math.floor(Math.random() * 6) + 1,
-		// Math.floor(Math.random() * 6) + 1,
-		// Math.floor(Math.random() * 6) + 1,
-		// Math.floor(Math.random() * 6) + 1,
-		// Math.floor(Math.random() * 6) + 1,
-		// ' ',
-		// ' ',
-		// ' ',
-		// ' ',
-		// ' ',
-		'🎲',
-		'🎲',
-		'🎲',
-		'🎲',
-		'🎲',
-	];
+	const diceArr = ['🎲', '🎲', '🎲', '🎲', '🎲'];
 
 	//----------Quit Game----------//
 
