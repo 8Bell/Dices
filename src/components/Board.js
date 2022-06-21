@@ -108,8 +108,15 @@ export default function Board({
 					sx={{ height: 40, width: 300, mt: 3 }}>
 					Quit Game
 				</Button>
-				<Typography sx={{ position: 'fixed', bottom: 10, fontSize: 15 }}>
-					BestScore : {bestScore}
+				<Typography
+					sx={{
+						position: 'fixed',
+						top: 2.5,
+						fontSize: 15,
+						zIndex: 9999,
+						color: theme.palette.action.active,
+					}}>
+					Best Score : {bestScore}
 				</Typography>
 			</Stack>
 		</Paper>
