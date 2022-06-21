@@ -130,7 +130,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 			isTablet &&
 			setTimeout(() => {
 				setSideScoreOpen(true);
-			}, 1500);
+			}, 1000);
 	}, [left]);
 
 	//----------FINE----------//

@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 export default function Board({
 	isMobile,
@@ -79,9 +80,9 @@ export default function Board({
 	};
 
 	//----------FINE----------//
-	// useEffect(() => {
-	// 	isFine && setDices(['🌳', '🌿', '🌴', '🌵', '🍀']);
-	// }, []);
+	useEffect(() => {
+		isFine && setDices(['🌳', '🌿', '🌴', '🌵', '🍀']);
+	}, [isFine]);
 
 	return (
 		<Paper
