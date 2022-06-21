@@ -74,9 +74,9 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 									secondary: grey[400],
 								},
 								action: {
-									active: grey[100],
-									hover: grey[300],
-									selected: grey[200],
+									active: grey[800],
+									hover: grey[600],
+									selected: grey[700],
 								},
 						  }),
 				},

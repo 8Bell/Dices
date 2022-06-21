@@ -1,7 +1,16 @@
-import { Button, Paper, Stack, styled } from '@mui/material';
+import { Button, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React from 'react';
-export default function Board({ isTablet, dices, setDices, isHold, setIsHold, setIsFilled }) {
+export default function Board({
+	isTablet,
+	dices,
+	setDices,
+	isHold,
+	setIsHold,
+	setIsFilled,
+	left,
+	setLeft,
+}) {
 	const theme = useTheme();
 
 	const Item = styled(Paper)(({ theme }) => ({
@@ -28,10 +37,18 @@ export default function Board({ isTablet, dices, setDices, isHold, setIsHold, se
 	//----------New Game----------//
 
 	const handleNewGame = () => {
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled');
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(13).fill(false));
+		setLeft(2);
+		window.location.replace('/game');
+	};
+
+	//----------HOLD----------//
+	const handleHoldDice = (idx) => {
+		const newHold = isHold.map((hold, index) => (index === idx ? !hold : hold));
+		setIsHold(newHold);
 	};
 
 	//----------SHAKE----------//
@@ -40,12 +57,7 @@ export default function Board({ isTablet, dices, setDices, isHold, setIsHold, se
 			isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
 		);
 		setDices(newDice);
-	};
-
-	//----------HOLD----------//
-	const handleHoldDice = (idx) => {
-		const newHold = isHold.map((hold, index) => (index === idx ? !hold : hold));
-		setIsHold(newHold);
+		setLeft(left - 1);
 	};
 
 	return (
@@ -72,19 +84,22 @@ export default function Board({ isTablet, dices, setDices, isHold, setIsHold, se
 						key={idx}
 						value={dice}
 						sx={{
-							bgcolor: isHold[idx] ? 'orange' : 'default',
+							bgcolor: isHold[idx]
+								? theme.palette.action.active
+								: 'default',
 						}}>
 						{dice}
 					</Item>
 				))}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
+				<Typography sx={{ fontSize: 20, mt: 3 }}>{left} Left</Typography>
 				<Button
-					variant='outlined'
+					variant={left === 0 ? 'text' : 'outlined'}
 					color='inherit'
-					onClick={handleChangeDice}
+					onClick={left !== 0 && handleChangeDice}
 					sx={{ height: 40, width: 300, mt: 3 }}>
-					Shake
+					{left === 0 ? '0 Shake Left' : 'Shake'}
 				</Button>
 				<Button
 					variant='outlined'
