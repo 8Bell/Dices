@@ -14,12 +14,10 @@ import {
 	Brightness7,
 	Casino,
 	CasinoOutlined,
-	ChevronLeft,
 	ChevronLeftRounded,
-	ChevronRight,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import { blueGrey, indigo } from '@mui/material/colors';
+import { blueGrey } from '@mui/material/colors';
 
 export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext }) {
 	const theme = useTheme();

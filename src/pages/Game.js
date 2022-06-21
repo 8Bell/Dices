@@ -52,7 +52,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 	//----------DICES------------//
 
-	const diceArr = ['🎲', '🎲', '🎲', '🎲', '🎲'];
+	const diceArr = [0, 0, 0, 0, 0];
 	const savedDiceArr = sessionStorage.getItem('dices')
 		? JSON.parse(sessionStorage.getItem('dices'))
 		: diceArr;
@@ -145,7 +145,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 		});
 		i === 12 && setSnackBarOpen(true);
 		i === 12 && setIsFine(true);
-		i === 12 && setDices(['🐋', '🦕', '🐬', '🦋', '🐟']);
+		i === 12 && setDices([0, 0, 0, 0, 0]);
 	}, [isFilled]);
 
 	useEffect(() => {

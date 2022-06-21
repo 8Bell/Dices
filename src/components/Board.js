@@ -2,8 +2,9 @@
 import { Button, Paper, Stack, styled, Typography } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { useTheme } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 export default function Board({
 	isMobile,
 	isTablet,
@@ -21,24 +22,21 @@ export default function Board({
 	const navigate = useNavigate();
 
 	const Item = styled(Paper)(({ theme }) => ({
-		backgroundColor: theme.palette.background,
-		border: 'solid 1px',
+		//	backgroundColor: theme.palette.background,
+		// border: 'solid 1px',
 		borderColor: theme.palette.divider,
 		borderRadius: '10%',
 		boxShadow: 'none',
 		width: '20%',
-		paddingTop: 'calc(9% - 17px)',
-		paddingBottom: 'calc(9% - 17px)',
 		textAlign: 'center',
 		color: theme.palette.text,
-		fontSize: 25,
 	}));
 
 	const bestScore = localStorage.getItem('BestScore')
 		? JSON.parse(localStorage.getItem('BestScore'))
 		: 0;
 
-	const diceArr = ['🎲', '🎲', '🎲', '🎲', '🎲'];
+	const diceArr = [0, 0, 0, 0, 0];
 
 	//----------Quit Game----------//
 
@@ -99,6 +97,7 @@ export default function Board({
 					borderColor: theme.palette.divider,
 					p: isTablet ? 1 : 2,
 					borderRadius: isTablet ? 3 : 5,
+					bgcolor: theme.palette.text.secondary,
 				}}>
 				{dices.map((dice, idx) => (
 					<Item
@@ -106,19 +105,46 @@ export default function Board({
 						key={idx}
 						value={dice}
 						sx={{
-							bgcolor: isHold[idx]
-								? theme.palette.mode === 'dark'
-									? blueGrey[900]
-									: blueGrey[100]
-								: 'default',
+							// bgcolor: isHold[idx]
+							// 	? theme.palette.mode === 'dark'
+							// 		? blueGrey[900]
+							// 		: blueGrey[100]
+							// 	: 'default',
+							bgcolor: theme.palette.text.secondary,
+							backgroundImage: 'none',
+							height: 'auto',
 						}}>
-						{dice}
+						<img
+							src={
+								theme.palette.mode === 'dark'
+									? !isHold[idx]
+										? `./images/dl${idx}.gif`
+										: `./images/d${dice}.png`
+									: !isHold[idx]
+									? `./images/ll.gif`
+									: `./images/l${dice}.png`
+							}
+							alt={dice}
+							style={{
+								width: !isHold[idx] ? '145%' : '100%',
+								marginBottom: !isHold[idx]
+									? isMobile
+										? '-55%'
+										: '-50%'
+									: isMobile
+									? '-10%'
+									: '-5%',
+								transform: !isHold[idx]
+									? 'translate(-15%, -15%)'
+									: 'none',
+								// boxShadow: `0 0 10px rgba(1,1,1,0.1)`,
+							}}
+						/>
 					</Item>
 				))}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Typography sx={{ fontSize: 20, mt: 3 }}>
-					{' '}
 					{!isFine && left + 'Left'}
 				</Typography>
 				<Button
