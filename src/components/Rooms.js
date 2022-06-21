@@ -15,7 +15,7 @@ export default function Rooms() {
 		textAlign: 'center',
 		color: theme.palette.text.secondary,
 		height: 100,
-		lineHeight: '60px',
+		lineHeight: '98px',
 	}));
 
 	return (
@@ -26,7 +26,7 @@ export default function Rooms() {
 						ml: 1,
 						mb: 2,
 					}}>
-					Gmae Rooms
+					Game Rooms
 				</Typography>
 				<Box
 					sx={{
@@ -55,12 +55,12 @@ export default function Rooms() {
 											? 'brightness(1.1)'
 											: 'brightness(0.95)',
 								},
+
 								borderRadius: 5,
-								border: 'none',
-								//	borderbottom: '1px solid',
+								border: '2px solid',
 								borderColor: theme.palette.divider,
 							}}>
-							{`Game Room ${elevation}`}
+							{` User's Game Room ${elevation}`}
 						</Item>
 					))}
 				</Box>

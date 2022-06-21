@@ -61,8 +61,9 @@ export default function Board({
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
+
 		setTimeout(() => {
-			navigate('/games');
+			navigate('/game');
 		}, 200);
 	};
 

@@ -473,7 +473,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 							bottom: '5%',
 							mr: 10,
 						}}>
-						Your Score is {total} !s
+						Great! Your Score is {total}
 					</Alert>
 				</Snackbar>
 			</Main>
