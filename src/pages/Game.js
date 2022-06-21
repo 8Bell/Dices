@@ -461,7 +461,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 					onClose={handleSnackBarClose}>
 					<Alert
 						onClose={handleSnackBarClose}
-						severity={newBestScore ? 'info' : 'success'}
+						severity={newBestScore ? 'success' : 'info'}
 						sx={{ width: 230, position: 'fixed', bottom: 20, mr: 10 }}>
 						Your Score is {total} !
 					</Alert>

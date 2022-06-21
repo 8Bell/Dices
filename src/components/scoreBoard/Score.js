@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { blueGrey, lightBlue } from '@mui/material/colors';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -108,6 +109,24 @@ export default function Score({
 		}
 	};
 
+	const scoreArr = [
+		ace,
+		duce,
+		threes,
+		fours,
+		fives,
+		sixes,
+		subTotal,
+		bonus,
+		choice,
+		fourOfKind,
+		fullHouse,
+		sStraght,
+		lStraght,
+		yachu,
+		total,
+	];
+
 	const rows = [
 		createData('Ace', ace, ''),
 		createData('Duces', duce, ''),
@@ -115,7 +134,7 @@ export default function Score({
 		createData('Fours', fours, ''),
 		createData('Fives', fives, ''),
 		createData('Sixes', sixes, ''),
-		createData('SubTotal', subTotal, '0'),
+		createData('SubTotal', `${subTotal} / 63`, '0 / 63'),
 		createData('+ 35 Bonus', bonus, '0'),
 		createData('Choice ', choice, ''),
 		createData('4 of a Kind', fourOfKind, ''),
@@ -201,8 +220,40 @@ export default function Score({
 												: 'brightness(0.97)',
 										color: isFilled[idx]
 											? theme.palette.text.secondary
+											: scoreArr[idx] > 0
+											? blueGrey[100]
 											: theme.palette.action.active,
 										fontWeight: isFilled[idx] ? 700 : 400,
+										backgroundColor: isFilled[idx]
+											? theme.palette.background
+											: scoreArr[idx] > 0
+											? blueGrey[300]
+											: theme.palette.background,
+									}}>
+									{row.Me}
+								</StyledTableCell>
+								<StyledTableCell align='center'>
+									{row.User}
+								</StyledTableCell>
+							</StyledTableRow>
+						) : idx === 14 ? (
+							<StyledTableRow key={row.Categories}>
+								<StyledTableCell component='th' scope='row'>
+									{row.Categories}
+								</StyledTableCell>
+								<StyledTableCell
+									align='center'
+									sx={{
+										backdropFilter:
+											theme.palette.mode === 'dark'
+												? 'brightness(1.3)'
+												: 'brightness(0.97)',
+										fontWeight:
+											scoreArr[idx] > 200 ? 700 : 500,
+										color:
+											scoreArr[idx] > 150
+												? lightBlue[700]
+												: 'default',
 									}}>
 									{row.Me}
 								</StyledTableCell>
@@ -223,6 +274,10 @@ export default function Score({
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										fontWeight: 500,
+										color:
+											scoreArr[idx] > 0
+												? lightBlue[700]
+												: 'default',
 									}}>
 									{row.Me}
 								</StyledTableCell>

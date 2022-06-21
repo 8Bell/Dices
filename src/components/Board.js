@@ -123,7 +123,7 @@ export default function Board({
 				</Typography>
 				<Button
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
-					color={isFine ? 'success' : 'inherit'}
+					color={isFine ? 'info' : 'inherit'}
 					onClick={left !== 0 && handleChangeDice}
 					sx={{ height: 40, width: 300, mt: 3 }}>
 					{isFine
@@ -134,7 +134,7 @@ export default function Board({
 				</Button>
 				<Button
 					variant={isFine ? 'contained' : 'outlined'}
-					color={isFine ? 'success' : 'inherit'}
+					color={isFine ? 'info' : 'inherit'}
 					onClick={isFine ? handleNewGame : handleQuitGame}
 					sx={{ height: 40, width: 300, mt: 3 }}>
 					{isFine ? 'New Game' : 'Quit Game'}
