@@ -184,11 +184,20 @@ export default function Score({
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										fontWeight: isFilled[idx] ? 800 : 200,
+
 										color: isFilled[idx]
 											? blueGrey[400]
 											: scoreArr[idx] >= (idx + 1) * 4
-											? lightBlue[300]
+											? blueGrey[50]
 											: theme.palette.action.active,
+
+										backgroundColor: isFilled[idx]
+											? theme.palette.background
+											: scoreArr[idx] >= (idx + 1) * 4
+											? theme.palette.mode === 'dark'
+												? blueGrey[800]
+												: blueGrey[200]
+											: theme.palette.background,
 									}}>
 									{row.Me}
 								</StyledTableCell>
@@ -223,9 +232,17 @@ export default function Score({
 										fontWeight: isFilled[idx] ? 800 : 200,
 										color: isFilled[idx]
 											? blueGrey[400]
-											: scoreArr[idx] > 25
-											? lightBlue[300]
+											: scoreArr[idx] >= 25
+											? blueGrey[50]
 											: theme.palette.action.active,
+
+										backgroundColor: isFilled[idx]
+											? theme.palette.background
+											: scoreArr[idx] >= 25
+											? theme.palette.mode === 'dark'
+												? blueGrey[800]
+												: blueGrey[200]
+											: theme.palette.background,
 
 										fontWeight: isFilled[idx] ? 800 : 200,
 									}}>
@@ -268,7 +285,9 @@ export default function Score({
 										backgroundColor: isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] > 0
-											? blueGrey[200]
+											? theme.palette.mode === 'dark'
+												? blueGrey[800]
+												: blueGrey[200]
 											: theme.palette.background,
 									}}>
 									{row.Me}
