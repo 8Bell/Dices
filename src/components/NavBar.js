@@ -57,7 +57,7 @@ export default function Navbar({
 					WebkitBackdropFilter: 'blur(5px)',
 					boxShadow: 'none',
 					transform: 'translateY(-50px)',
-					pt: isMobile ? '35px' : '50px',
+					pt: '50px',
 				}}>
 				<Toolbar>
 					<IconButton

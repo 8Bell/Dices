@@ -26,6 +26,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 			duration: theme.transitions.duration.leavingScreen,
 		}),
 		marginLeft: isMobile ? '-200%' : -drawerWidth * 2,
+		marginTop: isTablet ? '5%' : '0',
 
 		...(open && {
 			transition: theme.transitions.create('margin', {

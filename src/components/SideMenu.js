@@ -15,9 +15,11 @@ import {
 	Casino,
 	CasinoOutlined,
 	ChevronLeft,
+	ChevronLeftRounded,
 	ChevronRight,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import { blueGrey, indigo } from '@mui/material/colors';
 
 export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext }) {
 	const theme = useTheme();
@@ -62,7 +64,7 @@ export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext 
 					Current User
 				</Typography>
 				<IconButton onClick={handleDrawerClose}>
-					{theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
+					<ChevronLeftRounded fontSize='large' sx={{ color: blueGrey[400] }} />
 				</IconButton>
 			</DrawerHeader>
 			<Divider />

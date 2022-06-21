@@ -1,11 +1,12 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { ChevronRight } from '@mui/icons-material';
+import { ChevronRight, ChevronRightRounded } from '@mui/icons-material';
 import Score from './Score';
+import { blueGrey, indigo } from '@mui/material/colors';
 
 export default function SideScore({
 	sideScoreOpen,
@@ -31,6 +32,7 @@ export default function SideScore({
 	total,
 	left,
 }) {
+	const theme = useTheme();
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
 		alignItems: 'center',
@@ -70,7 +72,7 @@ export default function SideScore({
 					Score
 				</Typography>
 				<IconButton onClick={handleDrawerClose}>
-					<ChevronRight />
+					<ChevronRightRounded fontSize='large' sx={{ color: blueGrey[400] }} />
 				</IconButton>
 			</DrawerHeader>
 			<Divider />

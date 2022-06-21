@@ -142,7 +142,7 @@ export default function Board({
 				<Typography
 					sx={{
 						position: 'fixed',
-						top: isMobile ? 2.5 : 22,
+						top: isMobile ? 17 : 22,
 						fontSize: 15,
 						zIndex: 1199,
 						color: theme.palette.action.active,
