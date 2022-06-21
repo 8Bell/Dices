@@ -136,6 +136,9 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	}, [left]);
 
 	//----------FINE----------//
+	// eslint-disable-next-line no-unused-vars
+	const [isFine, setIsFine] = useState(false);
+
 	useEffect(() => {
 		let i = 0;
 		isFilled.map((filled) => {
@@ -143,9 +146,13 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 		});
 		i === 12 && setSnackBarOpen(true);
 
-		localStorage.getItem('BestScore') &&
-			localStorage.getItem('BestScore') < total &&
-			localStorage.setItem('BestScore', total);
+		// if (i === 12) {
+		// 	setIsFine(true);
+		// 	localStorage.getItem('BestScore') &&
+		// 		JSON.parse(localStorage.getItem('BestScore')) < total &&
+		// 		localStorage.setItem('BestScore', JSON.stringify(total)) &&
+		// 		setNewBestScore(true);
+		// }
 	}, [isFilled]);
 
 	//----------Rules------------//
@@ -338,6 +345,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
 
 	const [snackBarOpen, setSnackBarOpen] = useState(false);
+	// const [newBestScore, setNewBestScore] = useState(false);
 
 	const handleSnackBarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -345,6 +353,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 		}
 
 		setSnackBarOpen(false);
+		// setNewBestScore(false);
 	};
 
 	return (
@@ -433,6 +442,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 							mt: isTablet ? -1 : 1,
 						}}>
 						<Board
+							isMobile={isMobile}
 							isTablet={isTablet}
 							dices={dices}
 							setDices={setDices}
@@ -441,6 +451,8 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 							setIsFilled={setIsFilled}
 							left={left}
 							setLeft={setLeft}
+							isFine={isFine}
+							total={total}
 						/>
 					</Grid>
 				</Grid>

@@ -3,6 +3,7 @@ import { useTheme } from '@mui/system';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 export default function Board({
+	isMobile,
 	isTablet,
 	dices,
 	setDices,
@@ -11,6 +12,8 @@ export default function Board({
 	setIsFilled,
 	left,
 	setLeft,
+	isFine,
+	total,
 }) {
 	const theme = useTheme();
 	const navigate = useNavigate();
@@ -28,13 +31,15 @@ export default function Board({
 		color: theme.palette.text,
 	}));
 
-	const bestScore = localStorage.getItem('BestScore') ? localStorage.getItem('BestScore') : 0;
+	const bestScore = localStorage.getItem('BestScore')
+		? JSON.parse(localStorage.getItem('BestScore'))
+		: 0;
 
 	const diceArr = ['🎲', '🎲', '🎲', '🎲', '🎲'];
 
 	//----------Quit Game----------//
 
-	const handleNewGame = () => {
+	const handleQuitGame = () => {
 		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
@@ -43,6 +48,16 @@ export default function Board({
 		setTimeout(() => {
 			navigate('/');
 		}, 200);
+	};
+
+	//----------New Game----------//
+
+	const handleNewGame = () => {
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
+		setIsFilled(new Array(15).fill(false));
+		setLeft(3);
 	};
 
 	//----------HOLD----------//
@@ -59,6 +74,11 @@ export default function Board({
 		setDices(newDice);
 		setLeft(left - 1);
 	};
+
+	//----------FINE----------//
+	// useEffect(() => {
+	// 	isFine && setDices(['🌳', '🌿', '🌴', '🌵', '🍀']);
+	// }, []);
 
 	return (
 		<Paper
@@ -93,25 +113,32 @@ export default function Board({
 				))}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
-				<Typography sx={{ fontSize: 20, mt: 3 }}>{left} Left</Typography>
+				<Typography sx={{ fontSize: 20, mt: 3 }}>
+					{' '}
+					{!isFine && left + 'Left'}
+				</Typography>
 				<Button
-					variant={left === 0 ? 'text' : 'outlined'}
-					color='inherit'
+					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
+					color={isFine ? 'success' : 'inherit'}
 					onClick={left !== 0 && handleChangeDice}
 					sx={{ height: 40, width: 300, mt: 3 }}>
-					{left === 0 ? '0 Shake Left' : 'Shake'}
+					{isFine
+						? `Your score : ${total}`
+						: left === 0
+						? '0 Shake Left'
+						: 'Shake'}
 				</Button>
 				<Button
-					variant='outlined'
-					color='inherit'
-					onClick={handleNewGame}
+					variant={isFine ? 'contained' : 'outlined'}
+					color={isFine ? 'success' : 'inherit'}
+					onClick={isFine ? handleNewGame : handleQuitGame}
 					sx={{ height: 40, width: 300, mt: 3 }}>
-					Quit Game
+					{isFine ? 'New Game' : 'Quit Game'}
 				</Button>
 				<Typography
 					sx={{
 						position: 'fixed',
-						top: 2.5,
+						top: isMobile ? 2.5 : 22,
 						fontSize: 15,
 						zIndex: 1199,
 						color: theme.palette.action.active,
