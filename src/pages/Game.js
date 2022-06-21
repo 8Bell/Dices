@@ -144,15 +144,20 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 		});
 		i === 12 && setSnackBarOpen(true);
 		i === 12 && setIsFine(true);
-
-		if (i === 12) {
-			// 	setIsFine(true);
-			localStorage.getItem('BestScore') &&
-				JSON.parse(localStorage.getItem('BestScore')) < total &&
-				localStorage.setItem('BestScore', JSON.stringify(total)) &&
-				setNewBestScore(true);
-		}
+		i === 12 && setDices(['🐋', '🦕', '🐬', '🦋', '🐟']);
 	}, [isFilled]);
+
+	useEffect(() => {
+		if (isFine) {
+			localStorage.getItem('BestScore')
+				? JSON.parse(localStorage.getItem('BestScore')) < total
+					? localStorage.setItem('BestScore', JSON.stringify(total)) &&
+					  setNewBestScore(true)
+					: setNewBestScore(false)
+				: localStorage.setItem('BestScore', JSON.stringify(total)) &&
+				  setNewBestScore(true);
+		}
+	}, [isFine]);
 
 	//----------Rules------------//
 
@@ -462,8 +467,13 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 					<Alert
 						onClose={handleSnackBarClose}
 						severity={newBestScore ? 'success' : 'info'}
-						sx={{ width: 230, position: 'fixed', bottom: 20, mr: 10 }}>
-						Your Score is {total} !
+						sx={{
+							width: isTablet ? '95vw' : '97vw',
+							position: 'fixed',
+							bottom: '5%',
+							mr: 10,
+						}}>
+						Your Score is {total} !s
 					</Alert>
 				</Snackbar>
 			</Main>

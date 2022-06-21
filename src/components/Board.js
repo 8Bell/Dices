@@ -81,11 +81,6 @@ export default function Board({
 		setLeft(left - 1);
 	};
 
-	//----------FINE----------//
-	useEffect(() => {
-		isFine && setDices(['🌳', '🌿', '🌴', '🌵', '🍀']);
-	}, [isFine]);
-
 	return (
 		<Paper
 			elevation={0}
