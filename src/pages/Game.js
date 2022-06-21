@@ -85,37 +85,35 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	}, [isFilled]);
 
 	const handleFill = (idx) => {
-		const arr = [
-			'Ace',
-			'Duce',
-			'Threes',
-			'Fours',
-			'Fives',
-			'Sixes',
-			'SubTotal',
-			'Bonus',
-			'Choice',
-			'4 of Kind',
-			'Full House',
-			'S. Straght',
-			'L. Straght',
-			'YACHU',
-			'Total',
-		];
-		if (window.confirm(`Fill in item ${arr[idx]} ?`)) {
-			const newFilled = isFilled.map((filled, index) =>
-				idx === index ? true : filled
-			);
-			setIsFilled(newFilled);
-			sessionStorage.removeItem('dices', 'isHold', 'left');
-			setDices(diceArr);
-			setIsHold(new Array(5).fill(false));
-			setLeft(3);
+		// const arr = [
+		// 	'Ace',
+		// 	'Duce',
+		// 	'Threes',
+		// 	'Fours',
+		// 	'Fives',
+		// 	'Sixes',
+		// 	'SubTotal',
+		// 	'Bonus',
+		// 	'Choice',
+		// 	'4 of Kind',
+		// 	'Full House',
+		// 	'S. Straght',
+		// 	'L. Straght',
+		// 	'YACHU',
+		// 	'Total',
+		// ];
+		// if (window.confirm(`Fill in item ${arr[idx]} ?`)) {
+		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
+		setIsFilled(newFilled);
+		sessionStorage.removeItem('dices', 'isHold', 'left');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
+		setLeft(3);
 
-			setTimeout(() => {
-				setSideScoreOpen(false);
-			}, 500);
-		}
+		setTimeout(() => {
+			setSideScoreOpen(false);
+		}, 500);
+		// }
 	};
 
 	//----------LEFT----------//
@@ -145,14 +143,15 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 			filled && i++;
 		});
 		i === 12 && setSnackBarOpen(true);
+		i === 12 && setIsFine(true);
 
-		// if (i === 12) {
-		// 	setIsFine(true);
-		// 	localStorage.getItem('BestScore') &&
-		// 		JSON.parse(localStorage.getItem('BestScore')) < total &&
-		// 		localStorage.setItem('BestScore', JSON.stringify(total)) &&
-		// 		setNewBestScore(true);
-		// }
+		if (i === 12) {
+			// 	setIsFine(true);
+			localStorage.getItem('BestScore') &&
+				JSON.parse(localStorage.getItem('BestScore')) < total &&
+				localStorage.setItem('BestScore', JSON.stringify(total)) &&
+				setNewBestScore(true);
+		}
 	}, [isFilled]);
 
 	//----------Rules------------//
@@ -345,7 +344,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
 
 	const [snackBarOpen, setSnackBarOpen] = useState(false);
-	// const [newBestScore, setNewBestScore] = useState(false);
+	const [newBestScore, setNewBestScore] = useState(false);
 
 	const handleSnackBarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -353,7 +352,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 		}
 
 		setSnackBarOpen(false);
-		// setNewBestScore(false);
+		setNewBestScore(false);
 	};
 
 	return (
@@ -462,7 +461,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 					onClose={handleSnackBarClose}>
 					<Alert
 						onClose={handleSnackBarClose}
-						severity='success'
+						severity={newBestScore ? 'info' : 'success'}
 						sx={{ width: 230, position: 'fixed', bottom: 20, mr: 10 }}>
 						Your Score is {total} !
 					</Alert>
