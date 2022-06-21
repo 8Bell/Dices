@@ -2,7 +2,7 @@
 import { Button, Paper, Stack, styled, Typography } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { useTheme } from '@mui/system';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 export default function Board({
 	isMobile,
