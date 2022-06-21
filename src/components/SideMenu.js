@@ -68,7 +68,7 @@ export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext 
 			<Divider />
 			<ListItem disablePadding>
 				<ListItemButton>
-					<ListItemText primary='Mori' />
+					<ListItemText primary='Me' />
 					<ListItemIcon>
 						<Casino />
 					</ListItemIcon>
@@ -77,7 +77,7 @@ export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext 
 			<Divider />
 
 			<List>
-				{['Mori', 'Dog', 'Cat', 'Rabbit'].map((text, index) => (
+				{['User 1', 'User 2', 'User 3', 'User 4'].map((text, index) => (
 					<ListItem key={text} disablePadding>
 						<ListItemButton>
 							<ListItemText primary={text} />

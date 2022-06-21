@@ -113,7 +113,7 @@ export default function Board({
 						position: 'fixed',
 						top: 2.5,
 						fontSize: 15,
-						zIndex: 9999,
+						zIndex: 1199,
 						color: theme.palette.action.active,
 					}}>
 					Best Score : {bestScore}

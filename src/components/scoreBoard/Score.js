@@ -38,8 +38,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	},
 }));
 
-function createData(Categories, cat, dog) {
-	return { Categories, cat, dog };
+function createData(Categories, Me, User) {
+	return { Categories, Me, User };
 }
 
 export default function Score({
@@ -134,8 +134,8 @@ export default function Score({
 				<TableHead>
 					<TableRow>
 						<StyledTableCell>Categories</StyledTableCell>
-						<StyledTableCell align='center'>Cat</StyledTableCell>
-						<StyledTableCell align='center'>Dog</StyledTableCell>
+						<StyledTableCell align='center'>Me</StyledTableCell>
+						<StyledTableCell align='center'>User</StyledTableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -169,10 +169,10 @@ export default function Score({
 											: theme.palette.action.active,
 										fontWeight: isFilled[idx] ? 700 : 400,
 									}}>
-									{row.cat}
+									{row.Me}
 								</StyledTableCell>
 								<StyledTableCell align='center'>
-									{row.dog}
+									{row.User}
 								</StyledTableCell>
 							</StyledTableRow>
 						) : 8 <= idx && idx < 14 ? (
@@ -204,10 +204,10 @@ export default function Score({
 											: theme.palette.action.active,
 										fontWeight: isFilled[idx] ? 700 : 400,
 									}}>
-									{row.cat}
+									{row.Me}
 								</StyledTableCell>
 								<StyledTableCell align='center'>
-									{row.dog}
+									{row.User}
 								</StyledTableCell>
 							</StyledTableRow>
 						) : (
@@ -224,10 +224,10 @@ export default function Score({
 												: 'brightness(0.97)',
 										fontWeight: 500,
 									}}>
-									{row.cat}
+									{row.Me}
 								</StyledTableCell>
 								<StyledTableCell align='center'>
-									{row.dog}
+									{row.User}
 								</StyledTableCell>
 							</StyledTableRow>
 						)
