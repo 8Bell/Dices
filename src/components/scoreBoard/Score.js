@@ -183,6 +183,7 @@ export default function Score({
 											theme.palette.mode === 'dark'
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
+										fontWeight: isFilled[idx] ? 800 : 200,
 										color: isFilled[idx]
 											? blueGrey[400]
 											: scoreArr[idx] >= (idx + 1) * 4
@@ -219,13 +220,14 @@ export default function Score({
 											theme.palette.mode === 'dark'
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
+										fontWeight: isFilled[idx] ? 800 : 200,
 										color: isFilled[idx]
 											? blueGrey[400]
 											: scoreArr[idx] > 25
 											? lightBlue[300]
 											: theme.palette.action.active,
 
-										fontWeight: isFilled[idx] ? 700 : 400,
+										fontWeight: isFilled[idx] ? 800 : 200,
 									}}>
 									{row.Me}
 								</StyledTableCell>
@@ -262,7 +264,7 @@ export default function Score({
 											: scoreArr[idx] > 0
 											? blueGrey[50]
 											: theme.palette.action.active,
-										fontWeight: isFilled[idx] ? 700 : 400,
+										fontWeight: isFilled[idx] ? 800 : 200,
 										backgroundColor: isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] > 0

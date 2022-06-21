@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Paper, Stack, styled, Typography } from '@mui/material';
+import { blueGrey } from '@mui/material/colors';
 import { useTheme } from '@mui/system';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -26,10 +27,11 @@ export default function Board({
 		borderRadius: '10%',
 		boxShadow: 'none',
 		width: '20%',
-		paddingTop: 'calc(9% - 13px)',
-		paddingBottom: 'calc(9% - 12px)',
+		paddingTop: 'calc(9% - 17px)',
+		paddingBottom: 'calc(9% - 17px)',
 		textAlign: 'center',
 		color: theme.palette.text,
+		fontSize: 25,
 	}));
 
 	const bestScore = localStorage.getItem('BestScore')
@@ -109,7 +111,9 @@ export default function Board({
 						value={dice}
 						sx={{
 							bgcolor: isHold[idx]
-								? theme.palette.action.active
+								? theme.palette.mode === 'dark'
+									? blueGrey[900]
+									: blueGrey[100]
 								: 'default',
 						}}>
 						{dice}
