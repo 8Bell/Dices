@@ -13,7 +13,7 @@
 	background: #e3e3e4 url('./img/loading-light.gif') no-repeat;
 	background-position: center 48%;
 	animation-name: preloader-fade;
-	animation-delay: 2.5s;
+	animation-delay: 1.5s;
 	animation-duration: 0.5s;
 	animation-fill-mode: both;
 	background-size: 100%;

@@ -28,6 +28,8 @@ export default function Board({
 		color: theme.palette.text,
 	}));
 
+	const bestScore = localStorage.getItem('BestScore') ? localStorage.getItem('BestScore') : 0;
+
 	const diceArr = ['🎲', '🎲', '🎲', '🎲', '🎲'];
 
 	//----------Quit Game----------//
@@ -36,7 +38,7 @@ export default function Board({
 		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
-		setIsFilled(new Array(13).fill(false));
+		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
 		setTimeout(() => {
 			navigate('/');
@@ -106,6 +108,9 @@ export default function Board({
 					sx={{ height: 40, width: 300, mt: 3 }}>
 					Quit Game
 				</Button>
+				<Typography sx={{ position: 'fixed', bottom: 10, fontSize: 15 }}>
+					BestScore : {bestScore}
+				</Typography>
 			</Stack>
 		</Paper>
 	);

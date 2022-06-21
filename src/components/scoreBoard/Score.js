@@ -175,7 +175,7 @@ export default function Score({
 									{row.dog}
 								</StyledTableCell>
 							</StyledTableRow>
-						) : 8 <= idx && idx <= 13 ? (
+						) : 8 <= idx && idx < 14 ? (
 							<StyledTableRow key={row.Categories}>
 								<StyledTableCell component='th' scope='row'>
 									{row.Categories}

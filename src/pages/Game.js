@@ -6,11 +6,12 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
-import { Grid } from '@mui/material';
+import { Grid, Snackbar } from '@mui/material';
 import Score from '../components/scoreBoard/Score';
 import SideScore from '../components/scoreBoard/SideScore';
 import { useTheme } from '@emotion/react';
 import Board from '../components/Board';
+import MuiAlert from '@mui/material/Alert';
 
 export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext }) {
 	const theme = useTheme();
@@ -44,6 +45,10 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 		justifyContent: 'flex-end',
 	}));
 
+	const Alert = React.forwardRef(function Alert(props, ref) {
+		return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+	});
+
 	//----------DICES------------//
 
 	const diceArr = ['🎲', '🎲', '🎲', '🎲', '🎲'];
@@ -71,7 +76,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 	const savedFilledArr = sessionStorage.getItem('isFilled')
 		? JSON.parse(sessionStorage.getItem('isFilled'))
-		: new Array(13).fill(false);
+		: new Array(15).fill(false);
 
 	const [isFilled, setIsFilled] = useState(savedFilledArr);
 
@@ -80,16 +85,37 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	}, [isFilled]);
 
 	const handleFill = (idx) => {
-		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
-		setIsFilled(newFilled);
-		sessionStorage.removeItem('dices', 'isHold', 'left');
-		setDices(diceArr);
-		setIsHold(new Array(5).fill(false));
-		setLeft(3);
+		const arr = [
+			'Ace',
+			'Duce',
+			'Threes',
+			'Fours',
+			'Fives',
+			'Sixes',
+			'SubTotal',
+			'Bonus',
+			'Choice',
+			'4 of Kind',
+			'Full House',
+			'S. Straght',
+			'L. Straght',
+			'YACHU',
+			'Total',
+		];
+		if (window.confirm(`Fill in item ${arr[idx]} ?`)) {
+			const newFilled = isFilled.map((filled, index) =>
+				idx === index ? true : filled
+			);
+			setIsFilled(newFilled);
+			sessionStorage.removeItem('dices', 'isHold', 'left');
+			setDices(diceArr);
+			setIsHold(new Array(5).fill(false));
+			setLeft(3);
 
-		setTimeout(() => {
-			setSideScoreOpen(false);
-		}, 1000);
+			setTimeout(() => {
+				setSideScoreOpen(false);
+			}, 500);
+		}
 	};
 
 	//----------LEFT----------//
@@ -103,10 +129,24 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	useEffect(() => {
 		sessionStorage.setItem('left', JSON.stringify(left));
 		left === 0 &&
+			isTablet &&
 			setTimeout(() => {
 				setSideScoreOpen(true);
-			}, 1000);
+			}, 500);
 	}, [left]);
+
+	//----------FINE----------//
+	useEffect(() => {
+		let i = 0;
+		isFilled.map((filled) => {
+			filled && i++;
+		});
+		i === 12 && setSnackBarOpen(true);
+
+		localStorage.getItem('BestScore') &&
+			localStorage.getItem('BestScore') < total &&
+			localStorage.setItem('BestScore', total);
+	}, [isFilled]);
 
 	//----------Rules------------//
 
@@ -259,7 +299,6 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	useEffect(() => {
 		if (!isFilled[13]) {
 			let i = 0;
-
 			[1, 2, 3, 4, 5, 6].map((num) => {
 				dices.includes(num) && i++;
 			});
@@ -270,28 +309,43 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	//TOTAL
 	useEffect(() => {
 		let sum = 0;
-		const arr = [
+		const totarArr = [
 			ace,
 			duce,
 			threes,
 			fours,
 			fives,
 			sixes,
+			subTotal,
+			bonus,
 			choice,
 			fourOfKind,
 			fullHouse,
 			sStraght,
 			lStraght,
 			yachu,
+			total,
 		];
 		isFilled.map((filled, idx) => {
-			filled && (sum = sum + arr[idx]);
+			filled && (sum = sum + Number(totarArr[idx]));
 		});
-		setTotal(sum + bonus);
+		setTotal(sum + Number(bonus));
 	}, [isFilled]);
+
+	console.log(yachu, total);
 
 	const [open, setOpen] = useState(false);
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
+
+	const [snackBarOpen, setSnackBarOpen] = useState(false);
+
+	const handleSnackBarClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setSnackBarOpen(false);
+	};
 
 	return (
 		<Box sx={{ display: 'flex', overflowX: 'hidden' }}>
@@ -390,6 +444,17 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 						/>
 					</Grid>
 				</Grid>
+				<Snackbar
+					open={snackBarOpen}
+					autoHideDuration={6000}
+					onClose={handleSnackBarClose}>
+					<Alert
+						onClose={handleSnackBarClose}
+						severity='success'
+						sx={{ width: 230, position: 'fixed', bottom: 20, mr: 10 }}>
+						Your Score is {total} !
+					</Alert>
+				</Snackbar>
 			</Main>
 		</Box>
 	);
