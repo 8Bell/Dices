@@ -184,9 +184,10 @@ export default function Score({
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										color: isFilled[idx]
-											? theme.palette.text.secondary
+											? blueGrey[400]
+											: scoreArr[idx] >= (idx + 1) * 4
+											? lightBlue[300]
 											: theme.palette.action.active,
-										fontWeight: isFilled[idx] ? 700 : 400,
 									}}>
 									{row.Me}
 								</StyledTableCell>
@@ -194,7 +195,7 @@ export default function Score({
 									{row.User}
 								</StyledTableCell>
 							</StyledTableRow>
-						) : 8 <= idx && idx < 14 ? (
+						) : idx === 8 ? (
 							<StyledTableRow key={row.Categories}>
 								<StyledTableCell component='th' scope='row'>
 									{row.Categories}
@@ -219,15 +220,53 @@ export default function Score({
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										color: isFilled[idx]
-											? theme.palette.text.secondary
+											? blueGrey[400]
+											: scoreArr[idx] > 25
+											? lightBlue[300]
+											: theme.palette.action.active,
+
+										fontWeight: isFilled[idx] ? 700 : 400,
+									}}>
+									{row.Me}
+								</StyledTableCell>
+								<StyledTableCell align='center'>
+									{row.User}
+								</StyledTableCell>
+							</StyledTableRow>
+						) : 9 <= idx && idx < 14 ? (
+							<StyledTableRow key={row.Categories}>
+								<StyledTableCell component='th' scope='row'>
+									{row.Categories}
+								</StyledTableCell>
+								<StyledTableCell
+									onClick={() =>
+										!isFilled[idx] &&
+										left !== 3 &&
+										onClick(idx)
+									}
+									align='center'
+									sx={{
+										'&:hover': {
+											backdropFilter:
+												theme.palette.mode ===
+												'dark'
+													? 'brightness(1.5)'
+													: 'brightness(1.05)',
+										},
+										backdropFilter:
+											theme.palette.mode === 'dark'
+												? 'brightness(1.3)'
+												: 'brightness(0.97)',
+										color: isFilled[idx]
+											? blueGrey[400]
 											: scoreArr[idx] > 0
-											? blueGrey[100]
+											? blueGrey[50]
 											: theme.palette.action.active,
 										fontWeight: isFilled[idx] ? 700 : 400,
 										backgroundColor: isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] > 0
-											? blueGrey[300]
+											? blueGrey[200]
 											: theme.palette.background,
 									}}>
 									{row.Me}
@@ -275,7 +314,7 @@ export default function Score({
 												: 'brightness(0.97)',
 										fontWeight: 500,
 										color:
-											scoreArr[idx] > 0
+											scoreArr[7] > 0
 												? lightBlue[700]
 												: 'default',
 									}}>
