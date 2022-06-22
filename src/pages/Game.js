@@ -10,7 +10,7 @@ import { Grid, Snackbar } from '@mui/material';
 import Score from '../components/scoreBoard/Score';
 import SideScore from '../components/scoreBoard/SideScore';
 import { useTheme } from '@emotion/react';
-import Board from '../components/Board';
+import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
 
 export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext }) {
@@ -61,7 +61,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 	const savedHoldArr = sessionStorage.getItem('isHold')
 		? JSON.parse(sessionStorage.getItem('isHold'))
-		: new Array(5).fill(false);
+		: new Array(5).fill(true);
 
 	const [isHold, setIsHold] = useState(savedHoldArr);
 
