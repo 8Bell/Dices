@@ -6,7 +6,6 @@ import { authService } from './fbase';
 import Game from './pages/Game';
 import Home from './pages/Home';
 import './App.css';
-import ThreeDice from './pages/ThreeDice';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
