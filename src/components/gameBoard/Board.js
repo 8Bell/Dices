@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { AttachFileRounded } from '@mui/icons-material';
 import { Button, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React from 'react';
@@ -121,10 +122,29 @@ export default function Board({
 							// 		? blueGrey[900]
 							// 		: blueGrey[100]
 							// 	: 'default',
+							position: 'relative',
 							bgcolor: theme.palette.text.secondary,
 							backgroundImage: 'none',
 							minHeight: '30%',
 						}}>
+						{isHold[idx] && (
+							<AttachFileRounded
+								sx={{
+									position: 'absolute',
+									zIndex: 1000,
+									top: '14%',
+									left: '50%',
+									transform: 'translate(-55%, -50%)',
+									fontSize: isMobile
+										? '200%'
+										: isTablet
+										? '300%'
+										: '500%',
+									color: theme.palette.background.paper,
+									opacity: 0.7,
+								}}
+							/>
+						)}
 						<img
 							key={Date.now()}
 							src={
@@ -176,7 +196,7 @@ export default function Board({
 						top: isMobile ? 17 : 22,
 						fontSize: 15,
 						zIndex: 1199,
-						color: theme.palette.action.active,
+						color: theme.palette.action.disabled,
 					}}>
 					Best Score : {bestScore}
 				</Typography>

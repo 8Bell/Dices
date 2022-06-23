@@ -13,7 +13,7 @@ import { blueGrey, lightBlue } from '@mui/material/colors';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
-		backgroundColor: theme.palette.action.disabledBackground,
+		backgroundColor: theme.palette.background.default,
 		color: theme.palette.text,
 		fontSize: 16,
 		borderBottom: '1px solid',
@@ -28,19 +28,23 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
 	'&:nth-of-type(7)': {
-		backgroundColor: theme.palette.action.disabledBackground,
+		backdropFilter: 'brightness(0.93)',
 	},
 	'&:nth-of-type(8)': {
-		backgroundColor: theme.palette.action.disabledBackground,
+		backdropFilter: 'brightness(0.93)',
 	},
 	// hide last border
 	'&:last-child td, &:last-child th': {
-		backgroundColor: theme.palette.action.disabledBackground,
+		backdropFilter: 'brightness(0.9)',
 	},
 }));
 
-function createData(Categories, Me, User) {
-	return { Categories, Me, User };
+// function createData(Categories, Me, User) {
+// 	return { Categories, Me, User };
+// }
+
+function createData(Categories, Me) {
+	return { Categories, Me };
 }
 
 export default function Score({
@@ -148,20 +152,30 @@ export default function Score({
 	return (
 		<TableContainer
 			component={Paper}
-			sx={{ border: '1px solid', borderColor: theme.palette.divider, maxWidth: 500 }}>
+			sx={{
+				border: '1px solid',
+				borderColor: theme.palette.divider,
+				maxWidth: isMobile ? 'none' : 340,
+			}}>
 			<Table sx={{ minWidth: 300 }} size={isMobile ? 'small' : 'medium'}>
 				<TableHead>
 					<TableRow>
 						<StyledTableCell>Categories</StyledTableCell>
-						<StyledTableCell align='center'>Me</StyledTableCell>
-						<StyledTableCell align='center'>User</StyledTableCell>
+						<StyledTableCell align='center'>Score</StyledTableCell>
+						{/* <StyledTableCell align='center'>User</StyledTableCell> */}
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{rows.map((row, idx) =>
 						0 <= idx && idx <= 5 ? (
 							<StyledTableRow key={row.Categories}>
-								<StyledTableCell component='th' scope='row'>
+								<StyledTableCell
+									component='th'
+									scope='row'
+									sx={{
+										bgcolor: theme.palette.background
+											.default,
+									}}>
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
@@ -198,17 +212,23 @@ export default function Score({
 												? blueGrey[800]
 												: blueGrey[200]
 											: theme.palette.background,
-										width: '30%',
+										width: '50%',
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								<StyledTableCell align='center'>
+								{/* <StyledTableCell align='center'>
 									{row.User}
-								</StyledTableCell>
+								</StyledTableCell> */}
 							</StyledTableRow>
 						) : idx === 8 ? (
 							<StyledTableRow key={row.Categories}>
-								<StyledTableCell component='th' scope='row'>
+								<StyledTableCell
+									component='th'
+									scope='row'
+									sx={{
+										bgcolor: theme.palette.background
+											.default,
+									}}>
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
@@ -247,13 +267,19 @@ export default function Score({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								<StyledTableCell align='center'>
+								{/* <StyledTableCell align='center'>
 									{row.User}
-								</StyledTableCell>
+								</StyledTableCell> */}
 							</StyledTableRow>
 						) : 9 <= idx && idx < 14 ? (
 							<StyledTableRow key={row.Categories}>
-								<StyledTableCell component='th' scope='row'>
+								<StyledTableCell
+									component='th'
+									scope='row'
+									sx={{
+										bgcolor: theme.palette.background
+											.default,
+									}}>
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
@@ -291,9 +317,9 @@ export default function Score({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								<StyledTableCell align='center'>
+								{/* <StyledTableCell align='center'>
 									{row.User}
-								</StyledTableCell>
+								</StyledTableCell> */}
 							</StyledTableRow>
 						) : idx === 14 ? (
 							<StyledTableRow key={row.Categories}>
@@ -316,9 +342,9 @@ export default function Score({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								<StyledTableCell align='center'>
+								{/* <StyledTableCell align='center'>
 									{row.User}
-								</StyledTableCell>
+								</StyledTableCell> */}
 							</StyledTableRow>
 						) : (
 							<StyledTableRow key={row.Categories}>
@@ -340,9 +366,9 @@ export default function Score({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								<StyledTableCell align='center'>
+								{/* <StyledTableCell align='center'>
 									{row.User}
-								</StyledTableCell>
+								</StyledTableCell> */}
 							</StyledTableRow>
 						)
 					)}
