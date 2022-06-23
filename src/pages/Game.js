@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
-import { Grid, Snackbar } from '@mui/material';
+import { Grid, Snackbar, Stack } from '@mui/material';
 import Score from '../components/scoreBoard/Score';
 import SideScore from '../components/scoreBoard/SideScore';
 import { useTheme } from '@emotion/react';
@@ -113,7 +113,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 		setTimeout(() => {
 			setSideScoreOpen(false);
-		}, 500);
+		}, 300);
 		// }
 	};
 
@@ -131,7 +131,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 			isTablet &&
 			setTimeout(() => {
 				setSideScoreOpen(true);
-			}, 1000);
+			}, 4000);
 	}, [left]);
 
 	//----------FINE----------//
@@ -280,16 +280,19 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 		if (!isFilled[11]) {
 			let i = 0;
 			let j = 0;
+			let k = 0;
 
-			[1, 2, 3, 4, 5, 6].map((num, idx) => {
+			[1, 2, 3, 4].map((num, idx) => {
 				dices.includes(num) && i++;
-				dices.includes(num) && (j = j + idx);
 			});
-
-			(i === 4 && (j === 6 || j === 10 || j === 14)) ||
-			(i === 5 && (j === 10 || j === 11 || j === 14 || j === 15))
-				? setSStraght(15)
-				: setSStraght(0);
+			[2, 3, 4, 5].map((num, idx) => {
+				dices.includes(num) && j++;
+			});
+			[3, 4, 5, 6].map((num, idx) => {
+				dices.includes(num) && k++;
+			});
+			i === 4 || (j === 4) | (k === 4) ? setSStraght(15) : setSStraght(0);
+			console.log('j', j);
 		}
 	}, [dices, isFilled]);
 
@@ -446,19 +449,24 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 							mr: isTablet ? 0 : 1,
 							mt: isTablet ? -1 : 1,
 						}}>
-						<Board
-							isMobile={isMobile}
-							isTablet={isTablet}
-							dices={dices}
-							setDices={setDices}
-							isHold={isHold}
-							setIsHold={setIsHold}
-							setIsFilled={setIsFilled}
-							left={left}
-							setLeft={setLeft}
-							isFine={isFine}
-							total={total}
-						/>
+						<Stack
+							direction='row'
+							justifyContent='center'
+							alignItems='center'>
+							<Board
+								isMobile={isMobile}
+								isTablet={isTablet}
+								dices={dices}
+								setDices={setDices}
+								isHold={isHold}
+								setIsHold={setIsHold}
+								setIsFilled={setIsFilled}
+								left={left}
+								setLeft={setLeft}
+								isFine={isFine}
+								total={total}
+							/>
+						</Stack>
 					</Grid>
 				</Grid>
 				<Snackbar

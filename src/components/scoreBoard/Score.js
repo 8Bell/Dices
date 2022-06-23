@@ -15,14 +15,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: theme.palette.action.disabledBackground,
 		color: theme.palette.text,
-		fontSize: 18,
+		fontSize: 16,
 		borderBottom: '1px solid',
 		borderBottomColor: theme.palette.divider,
 	},
 	[`&.${tableCellClasses.body}`]: {
 		borderBottom: '1px solid',
 		borderBottomColor: theme.palette.divider,
-		fontSize: 18,
+		fontSize: 16,
 	},
 }));
 
@@ -148,7 +148,7 @@ export default function Score({
 	return (
 		<TableContainer
 			component={Paper}
-			sx={{ border: '1px solid', borderColor: theme.palette.divider }}>
+			sx={{ border: '1px solid', borderColor: theme.palette.divider, maxWidth: 500 }}>
 			<Table sx={{ minWidth: 300 }} size={isMobile ? 'small' : 'medium'}>
 				<TableHead>
 					<TableRow>
@@ -198,6 +198,7 @@ export default function Score({
 												? blueGrey[800]
 												: blueGrey[200]
 											: theme.palette.background,
+										width: '30%',
 									}}>
 									{row.Me}
 								</StyledTableCell>

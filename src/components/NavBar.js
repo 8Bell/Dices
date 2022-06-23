@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import { FormatListBulletedRounded, GroupRounded } from '@mui/icons-material';
+import { GroupRounded, SportsScore } from '@mui/icons-material';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@emotion/react';
 
@@ -75,7 +75,7 @@ export default function Navbar({
 							onClick={handleScoreOpen}
 							edge='end'
 							sx={{ mr: 0.5, position: 'absolute', right: 0 }}>
-							<FormatListBulletedRounded sx={{ fontSize: 26 }} />
+							<SportsScore sx={{ fontSize: 26 }} />
 						</IconButton>
 					)}
 				</Toolbar>
