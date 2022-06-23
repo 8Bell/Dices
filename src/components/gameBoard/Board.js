@@ -111,7 +111,7 @@ export default function Board({
 					borderRadius: 5,
 					bgcolor: theme.palette.text.secondary,
 					minheight: '20%',
-					mt: isMobile ? '40%' : '20%',
+					mt: isMobile ? '50%' : '20%',
 				}}>
 				{dices.map((dice, idx) => (
 					<Item
