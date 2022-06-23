@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import { GroupRounded, SportsScore } from '@mui/icons-material';
+import { EmojiEventsRounded, SportsScore } from '@mui/icons-material';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@emotion/react';
 
@@ -66,7 +66,7 @@ export default function Navbar({
 						onClick={handleDrawerOpen}
 						edge='start'
 						sx={{ mr: 2, ...(open && { display: 'none' }) }}>
-						<GroupRounded sx={{ fontSize: 25 }} />
+						<EmojiEventsRounded sx={{ fontSize: 25 }} />
 					</IconButton>
 					{isTablet && (
 						<IconButton

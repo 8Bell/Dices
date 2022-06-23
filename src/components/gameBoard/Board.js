@@ -193,7 +193,7 @@ export default function Board({
 				<Typography
 					sx={{
 						position: 'fixed',
-						top: isMobile ? 17 : 22,
+						top: isMobile ? 18 : 22,
 						fontSize: 15,
 						zIndex: 1199,
 						color: theme.palette.action.disabled,
@@ -201,18 +201,6 @@ export default function Board({
 					Best Score : {bestScore}
 				</Typography>
 			</Stack>
-			{/* <ReactDice
-					size={180}
-					faceBg='rgba(0,0,0,0)'
-					faces={[
-						'./images/l1.png',
-						'./images/l2.png',
-						'./images/l3.png',
-						'./images/l4.png',
-						'./images/l5.png',
-						'./images/l6.png',
-					]}
-				/> */}
 		</Paper>
 	);
 }

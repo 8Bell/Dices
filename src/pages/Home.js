@@ -38,7 +38,7 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 		justifyContent: 'flex-end',
 	}));
 
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 
 	return (
 		<Box sx={{ display: 'flex' }}>

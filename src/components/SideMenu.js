@@ -17,7 +17,6 @@ import {
 	ChevronLeftRounded,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import { blueGrey } from '@mui/material/colors';
 
 export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext }) {
 	const theme = useTheme();
@@ -59,10 +58,10 @@ export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext 
 						left: 2,
 						ml: 2,
 					}}>
-					Current User
+					Ranking
 				</Typography>
 				<IconButton onClick={handleDrawerClose}>
-					<ChevronLeftRounded fontSize='large' sx={{ color: blueGrey[400] }} />
+					<ChevronLeftRounded fontSize='large' />
 				</IconButton>
 			</DrawerHeader>
 			<Divider />

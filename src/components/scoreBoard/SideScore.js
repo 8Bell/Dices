@@ -6,7 +6,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { ChevronRightRounded } from '@mui/icons-material';
 import Score from './Score';
-import { blueGrey } from '@mui/material/colors';
 
 export default function SideScore({
 	sideScoreOpen,
@@ -71,7 +70,7 @@ export default function SideScore({
 					Score
 				</Typography>
 				<IconButton onClick={handleDrawerClose}>
-					<ChevronRightRounded fontSize='large' sx={{ color: blueGrey[400] }} />
+					<ChevronRightRounded fontSize='large' />
 				</IconButton>
 			</DrawerHeader>
 			<Divider />
