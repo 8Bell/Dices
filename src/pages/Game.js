@@ -61,7 +61,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 	const savedHoldArr = sessionStorage.getItem('isHold')
 		? JSON.parse(sessionStorage.getItem('isHold'))
-		: new Array(5).fill(true);
+		: new Array(5).fill(false);
 
 	const [isHold, setIsHold] = useState(savedHoldArr);
 
