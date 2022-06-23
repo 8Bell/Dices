@@ -68,7 +68,7 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 				<Rooms />
 				<PWAPrompt
 					promptOnVisit={1}
-					timesToShow={1}
+					timesToShow={10}
 					delay={3000}
 					copyClosePrompt='Close'
 					permanentlyHideOnDismiss={false}
