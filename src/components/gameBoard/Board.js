@@ -89,8 +89,6 @@ export default function Board({
 		setLeft(left - 1);
 	};
 
-	//----------SOUND EFFECT ---------//
-
 	return (
 		<Paper
 			elevation={0}

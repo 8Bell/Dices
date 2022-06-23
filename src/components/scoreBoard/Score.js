@@ -238,6 +238,11 @@ export default function Score({
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
+									className={
+										scoreArr[idx] >= 25 && !isFilled[idx]
+											? 'bg'
+											: 'none'
+									}
 									onClick={() =>
 										!isFilled[idx] &&
 										left !== 3 &&
@@ -267,8 +272,8 @@ export default function Score({
 											? theme.palette.background
 											: scoreArr[idx] >= 25
 											? theme.palette.mode === 'dark'
-												? grey[800]
-												: grey[200]
+												? grey[600]
+												: grey[400]
 											: theme.palette.background,
 									}}>
 									{row.Me}
