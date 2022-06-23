@@ -418,7 +418,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 
 				<Grid container>
 					{!isTablet && (
-						<Grid xs={4}>
+						<Grid xs={3} sx={{ minWidth: 340 }}>
 							<Score
 								isMobile={isMobile}
 								isFilled={isFilled}
