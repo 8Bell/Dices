@@ -190,11 +190,12 @@ export default function Board({
 					{!isFine && left + ' Left'}
 				</Typography>
 				<Button
-					className={!left === 0 ? 'bg' : 'none'}
+					// eslint-disable-next-line eqeqeq
+					className={!left == 0 ? 'bg' : 'none'}
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
 					onClick={left !== 0 && handleChangeDice}
-					sx={{ height: 40, width: 300, mt: 3 }}>
+					sx={{ height: 50, width: 300, mt: 3, borderRadius: 30 }}>
 					{isFine
 						? `Your score : ${total}`
 						: left === 0
@@ -205,7 +206,7 @@ export default function Board({
 					variant={isFine ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={isFine ? handleNewGame : handleQuitGame}
-					sx={{ height: 40, width: 300, mt: 3 }}>
+					sx={{ height: 50, width: 300, mt: 3, borderRadius: 30 }}>
 					{isFine ? 'New Game' : 'Quit Game'}
 				</Button>
 				<Typography
