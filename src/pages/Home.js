@@ -6,6 +6,7 @@ import Rooms from '../components/Rooms';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
 import { useTheme } from '@emotion/react';
+import PWAPrompt from 'react-ios-pwa-prompt';
 
 export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 	const theme = useTheme();
@@ -65,6 +66,21 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 			<Main open={open}>
 				<DrawerHeader />
 				<Rooms />
+				<PWAPrompt
+					promptOnVisit={1}
+					timesToShow={1}
+					copyClosePrompt='Close'
+					permanentlyHideOnDismiss={true}
+					copyTitle='홈화면에 추가하기'
+					copyBody={[
+						'쾌적한 게임환경을 위해 아래 버튼을 눌러 ',
+						<br />,
+						'앱을 홈화면에 추가 후 사용해주세요',
+					]}
+					copyShareButtonLabel="1)  화면 하단의 '공유하기' 버튼을 눌러주세요."
+					copyAddHomeButtonLabel="2) '홈화면에 추가'를 누르면 끝! "
+					style={{ color: 'orange' }}
+				/>
 			</Main>
 		</Box>
 	);
