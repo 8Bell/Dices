@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AttachFileRounded } from '@mui/icons-material';
-import { Button, Paper, Stack, styled, Typography } from '@mui/material';
+import { AttachFileRounded, ExitToAppRounded, ReplayRounded } from '@mui/icons-material';
+import { Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -103,13 +103,17 @@ export default function Board({
 				justifyContent='center'
 				alignItems='center'
 				sx={{
-					border: '1px solid',
+					//border: '1px solid',
 					borderColor: theme.palette.divider,
 					p: isMobile ? 1.3 : 2,
 					borderRadius: 5,
-					bgcolor: theme.palette.text.secondary,
+					//bgcolor: theme.palette.text.secondary,
 					minheight: '20%',
 					mt: isMobile ? '50%' : '20%',
+					boxShadow:
+						theme.palette.mode === 'dark'
+							? ' inset 30px 30px 60px #080808,inset -30px -30px 60px #1a1a1a'
+							: '	inset 12px 12px 18px #c3c3c4,inset -12px -12px 18px #ffffff',
 				}}>
 				{dices.map((dice, idx) => (
 					<Item
@@ -119,7 +123,7 @@ export default function Board({
 						value={dice}
 						sx={{
 							position: 'relative',
-							bgcolor: theme.palette.text.secondary,
+							//	bgcolor: theme.palette.text.secondary,
 							backgroundImage: 'none',
 							minHeight: '30%',
 						}}>
@@ -128,18 +132,21 @@ export default function Board({
 								sx={{
 									position: 'absolute',
 									zIndex: 1000,
-									top: '14%',
+									top: '-10%',
 									left: '50%',
-									transform: isTablet
-										? 'translate(-51%, -50%)'
-										: 'translate(-55%, -50%)',
+									transform:
+										isTablet || isMobile
+											? 'translate(-51%, -50%)'
+											: 'translate(-55%, -50%)',
 									fontSize: isMobile
-										? '250%'
+										? '230%'
 										: isTablet
 										? '400%'
 										: '500%',
-									color: theme.palette.background.paper,
-									opacity: 0.7,
+									color: theme.palette.text.primary,
+									opacity: 0.8,
+									rotate: '-15deg',
+									//filter: 'dropShadow(30px 30px 3px #111)',
 								}}
 							/>
 						)}
@@ -164,14 +171,17 @@ export default function Board({
 									: '-50%',
 								transform: 'translate(-15.5%,-16%)',
 
-								filter: isHold[idx] ? 'invert(100%)' : 'none',
+								// filter: isHold[idx] ? 'invert(100%)' : 'none',
+								filter: isHold[idx]
+									? 'dropShadow(10px 4px 5px blue)'
+									: 'none',
 							}}
 						/>
 					</Item>
 				))}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
-				<Typography
+				{/* <Typography
 					align='center'
 					sx={{
 						fontSize: 20,
@@ -188,26 +198,27 @@ export default function Board({
 						borderRadius: 30,
 					}}>
 					{!isFine && left + ' Left'}
-				</Typography>
+				</Typography> */}
 				<Button
-					className={left !== 0 && !isFine ? 'bg' : 'none'}
+					//className={left !== 0 && !isFine ? 'bg' : 'none'}
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
 					onClick={left !== 0 && !isFine && handleChangeDice}
-					sx={{ height: 50, width: 300, mt: 3, borderRadius: 30 }}>
-					{isFine
-						? `Your score : ${total}`
-						: left === 0
-						? '0 Shake Left'
-						: 'SHAKE'}
+					sx={{
+						height: 150,
+						width: 150,
+						mt: 10,
+						fontSize: 20,
+						borderRadius: 30,
+						border: 'none',
+						boxShadow:
+							theme.palette.mode === 'dark'
+								? ' 23px 23px 45px #0a0a0a,-23px -23px 45px #181818'
+								: '31px 31px 62px #bcbcbd,-31px -31px 62px #ffffff',
+					}}>
+					{isFine ? [total, <br />, ' Point'] : [left, <br />, ' Left']}
 				</Button>
-				<Button
-					variant={isFine ? 'contained' : 'outlined'}
-					color='inherit'
-					onClick={isFine ? handleNewGame : handleQuitGame}
-					sx={{ height: 50, width: 300, mt: 3, borderRadius: 30 }}>
-					{isFine ? 'New Game' : 'Quit Game'}
-				</Button>
+
 				<Typography
 					sx={{
 						position: 'fixed',
@@ -218,6 +229,13 @@ export default function Board({
 					}}>
 					Best Score : {bestScore}
 				</Typography>
+				<IconButton
+					variant={isFine ? 'contained' : 'outlined'}
+					color='inherit'
+					onClick={isFine ? handleNewGame : handleQuitGame}
+					sx={{ position: 'absolute', bottom: 40 }}>
+					{isFine ? <ReplayRounded /> : <ExitToAppRounded />}
+				</IconButton>
 			</Stack>
 		</Paper>
 	);
