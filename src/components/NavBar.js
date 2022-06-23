@@ -68,7 +68,7 @@ export default function Navbar({
 						sx={{ mr: 2, ...(open && { display: 'none' }) }}>
 						<EmojiEventsRounded sx={{ fontSize: 25 }} />
 					</IconButton>
-					{isTablet && (
+					{(isTablet || isMobile) && (
 						<IconButton
 							color='inherit'
 							ariaLabel='open drawer'

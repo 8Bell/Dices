@@ -314,8 +314,9 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	useEffect(() => {
 		if (!isFilled[13]) {
 			let i = 0;
-			[1, 2, 3, 4, 5, 6].map((num) => {
+			[1, 2, 3, 4, 5, 6, 'l'].map((num) => {
 				dices.includes(num) && i++;
+				dices.includes('l') && i--;
 			});
 			i === 1 ? setYachu(50) : setYachu(0);
 		}
@@ -417,7 +418,7 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 				<DrawerHeader />
 
 				<Grid container>
-					{!isTablet && (
+					{!isTablet && !isMobile && (
 						<Grid xs={3} sx={{ minWidth: 340 }}>
 							<Score
 								isMobile={isMobile}
@@ -445,9 +446,9 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 					<Grid
 						xs
 						sx={{
-							ml: isTablet ? 0 : 2,
-							mr: isTablet ? 0 : 1,
-							mt: isTablet ? -1 : 1,
+							ml: isTablet || isMobile ? 0 : 2,
+							mr: isTablet || isMobile ? 0 : 1,
+							mt: isTablet || isMobile ? -1 : 1,
 						}}>
 						<Stack
 							direction='row'

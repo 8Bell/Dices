@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -15,10 +15,20 @@ import {
 	Casino,
 	CasinoOutlined,
 	ChevronLeftRounded,
+	MusicNoteRounded,
+	MusicOffRounded,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import { Howler } from 'howler';
 
-export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext }) {
+export default function SideMenu({
+	open,
+	setOpen,
+	drawerWidth,
+	ColorModeContext,
+	volum,
+	setVolum,
+}) {
 	const theme = useTheme();
 	const colorMode = useContext(ColorModeContext);
 
@@ -33,6 +43,13 @@ export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext 
 
 	const handleDrawerClose = () => {
 		setOpen(false);
+	};
+
+	const [mute, setMute] = useState(false);
+
+	const handleChangrVolum = () => {
+		mute ? Howler.volume(0.5) : Howler.volume(0);
+		setMute(!mute);
 	};
 
 	return (
@@ -102,6 +119,12 @@ export default function SideMenu({ open, setOpen, drawerWidth, ColorModeContext 
 					onClick={colorMode.toggleColorMode}
 					color='inherit'>
 					{theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+				</IconButton>
+				<IconButton
+					sx={{ position: 'absolute', left: 60, bottom: 10 }}
+					onClick={handleChangrVolum}
+					color='inherit'>
+					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
 				</IconButton>
 			</Box>
 		</Drawer>

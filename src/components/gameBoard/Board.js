@@ -89,6 +89,8 @@ export default function Board({
 		setLeft(left - 1);
 	};
 
+	//----------SOUND EFFECT ---------//
+
 	return (
 		<Paper
 			elevation={0}
@@ -99,14 +101,14 @@ export default function Board({
 			}}>
 			<Stack
 				direction='row'
-				spacing={isTablet ? 1 : 2}
+				spacing={isMobile ? 1 : isTablet ? 1.5 : 2}
 				justifyContent='center'
 				alignItems='center'
 				sx={{
 					border: '1px solid',
 					borderColor: theme.palette.divider,
-					p: isTablet ? 1 : 2,
-					borderRadius: isTablet ? 3 : 5,
+					p: isMobile ? 1.3 : 2,
+					borderRadius: 5,
 					bgcolor: theme.palette.text.secondary,
 					minheight: '20%',
 				}}>
@@ -117,11 +119,6 @@ export default function Board({
 						key={idx}
 						value={dice}
 						sx={{
-							// bgcolor: isHold[idx]
-							// 	? theme.palette.mode === 'dark'
-							// 		? blueGrey[900]
-							// 		: blueGrey[100]
-							// 	: 'default',
 							position: 'relative',
 							bgcolor: theme.palette.text.secondary,
 							backgroundImage: 'none',
@@ -134,11 +131,13 @@ export default function Board({
 									zIndex: 1000,
 									top: '14%',
 									left: '50%',
-									transform: 'translate(-55%, -50%)',
+									transform: isTablet
+										? 'translate(-51%, -50%)'
+										: 'translate(-55%, -50%)',
 									fontSize: isMobile
-										? '200%'
+										? '250%'
 										: isTablet
-										? '300%'
+										? '400%'
 										: '500%',
 									color: theme.palette.background.paper,
 									opacity: 0.7,
@@ -159,8 +158,12 @@ export default function Board({
 							alt={dice}
 							style={{
 								width: '145%',
-								marginBottom: isMobile ? '-57.5%' : '-53%',
-								transform: 'translate(-16.5%,-16%)',
+								marginBottom: isMobile
+									? '-58%'
+									: isTablet
+									? '-51%'
+									: '-53%',
+								transform: 'translate(-15.5%,-16%)',
 
 								filter: isHold[idx] ? 'invert(100%)' : 'none',
 							}}
@@ -169,8 +172,22 @@ export default function Board({
 				))}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
-				<Typography sx={{ fontSize: 20, mt: 3 }}>
-					{!isFine && left + 'Left'}
+				<Typography
+					align='center'
+					sx={{
+						fontSize: 20,
+						mt: 3,
+						backdropFilter:
+							theme.palette.mode === 'dark'
+								? 'brightness(2)'
+								: 'brightness(0.95)',
+						pt: 4.3,
+
+						width: 100,
+						height: 100,
+						borderRadius: 30,
+					}}>
+					{!isFine && left + ' Left'}
 				</Typography>
 				<Button
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}

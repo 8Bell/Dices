@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { blueGrey, lightBlue } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -179,6 +179,12 @@ export default function Score({
 									{row.Categories}
 								</StyledTableCell>
 								<StyledTableCell
+									className={
+										scoreArr[idx] >= (idx + 1) * 4 &&
+										!isFilled[idx]
+											? 'bg'
+											: 'none'
+									}
 									onClick={() =>
 										!isFilled[idx] &&
 										left !== 3 &&
@@ -200,17 +206,17 @@ export default function Score({
 										fontWeight: isFilled[idx] ? 800 : 200,
 
 										color: isFilled[idx]
-											? blueGrey[400]
+											? theme.palette.text.secondary
 											: scoreArr[idx] >= (idx + 1) * 4
-											? blueGrey[50]
+											? grey[50]
 											: theme.palette.action.active,
 
 										backgroundColor: isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] >= (idx + 1) * 4
 											? theme.palette.mode === 'dark'
-												? blueGrey[800]
-												: blueGrey[200]
+												? grey[600]
+												: grey[400]
 											: theme.palette.background,
 										width: '50%',
 									}}>
@@ -252,17 +258,17 @@ export default function Score({
 												: 'brightness(0.97)',
 										fontWeight: isFilled[idx] ? 800 : 200,
 										color: isFilled[idx]
-											? blueGrey[400]
+											? theme.palette.text.secondary
 											: scoreArr[idx] >= 25
-											? blueGrey[50]
+											? grey[50]
 											: theme.palette.action.active,
 
 										backgroundColor: isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] >= 25
 											? theme.palette.mode === 'dark'
-												? blueGrey[800]
-												: blueGrey[200]
+												? grey[800]
+												: grey[200]
 											: theme.palette.background,
 									}}>
 									{row.Me}
@@ -289,6 +295,11 @@ export default function Score({
 										onClick(idx)
 									}
 									align='center'
+									className={
+										scoreArr[idx] > 0 && !isFilled[idx]
+											? 'bg'
+											: 'none'
+									}
 									sx={{
 										'&:hover': {
 											backdropFilter:
@@ -302,17 +313,17 @@ export default function Score({
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										color: isFilled[idx]
-											? blueGrey[400]
+											? theme.palette.text.secondary
 											: scoreArr[idx] > 0
-											? blueGrey[50]
+											? grey[50]
 											: theme.palette.action.active,
 										fontWeight: isFilled[idx] ? 800 : 200,
 										backgroundColor: isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] > 0
 											? theme.palette.mode === 'dark'
-												? blueGrey[800]
-												: blueGrey[200]
+												? grey[600]
+												: grey[300]
 											: theme.palette.background,
 									}}>
 									{row.Me}
@@ -337,7 +348,7 @@ export default function Score({
 											scoreArr[idx] > 200 ? 700 : 500,
 										color:
 											scoreArr[idx] > 150
-												? lightBlue[700]
+												? grey[700]
 												: 'default',
 									}}>
 									{row.Me}
@@ -361,7 +372,7 @@ export default function Score({
 										fontWeight: 500,
 										color:
 											scoreArr[7] > 0
-												? lightBlue[700]
+												? grey[700]
 												: 'default',
 									}}>
 									{row.Me}

@@ -6,6 +6,8 @@ import { authService } from './fbase';
 import Game from './pages/Game';
 import Home from './pages/Home';
 import './App.css';
+import useSound from './hooks/useSound';
+import BGM from './sounds/bgm.mp3';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -17,6 +19,8 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 			: 'light'
 	);
 	// const [mode, setMode] = useState('light');
+
+	useSound(BGM, 0.5, 20000000000000000000000000);
 
 	const colorMode = useMemo(
 		() => ({
@@ -48,7 +52,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 								divider: '#aaa',
 								text: {
 									primary: grey[900],
-									secondary: grey[800],
+									secondary: grey[700],
 								},
 								action: {
 									active: grey[400],
@@ -71,7 +75,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 								},
 								text: {
 									primary: '#fff',
-									secondary: grey[400],
+									secondary: grey[500],
 								},
 								action: {
 									active: grey[800],
@@ -109,7 +113,7 @@ const App = () => {
 
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-	const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+	const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
 	const [drawerWidth, setDrawerWidth] = useState(340);
 	const ColorModeContext = createContext({ toggleColorMode: () => {} });
@@ -166,19 +170,6 @@ const App = () => {
 					}
 				/>
 			</Route>
-			{/* <Route
-				path='/dice'
-				element={
-					<ThreeDice
-						isLoggedIn={isLoggedIn}
-						setIsLoggedIn={setIsLoggedIn}
-						ColorModeContext={ColorModeContext}
-						drawerWidth={drawerWidth}
-						isMobile={isMobile}
-						isTablet={isTablet}
-					/>
-				}
-			/> */}
 		</Routes>
 	);
 };
