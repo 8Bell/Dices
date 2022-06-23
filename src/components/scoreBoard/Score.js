@@ -372,7 +372,11 @@ export default function Score({
 									sx={{
 										backdropFilter:
 											theme.palette.mode === 'dark'
-												? 'brightness(1.3)'
+												? scoreArr[7] > 0
+													? 'brightness(1.5)'
+													: 'brightness(1.3)'
+												: scoreArr[7] > 0
+												? 'brightness(0.93)'
 												: 'brightness(0.97)',
 										fontWeight: 500,
 										color:
