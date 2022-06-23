@@ -190,11 +190,10 @@ export default function Board({
 					{!isFine && left + ' Left'}
 				</Typography>
 				<Button
-					// eslint-disable-next-line eqeqeq
-					className={!left == 0 ? 'bg' : 'none'}
+					className={left !== 0 && !isFine ? 'bg' : 'none'}
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
-					onClick={left !== 0 && handleChangeDice}
+					onClick={left !== 0 && !isFine && handleChangeDice}
 					sx={{ height: 50, width: 300, mt: 3, borderRadius: 30 }}>
 					{isFine
 						? `Your score : ${total}`
