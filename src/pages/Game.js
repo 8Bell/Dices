@@ -1,5 +1,4 @@
 /* eslint-disable array-callback-return */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -132,33 +131,8 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 			setTimeout(() => {
 				setSideScoreOpen(true);
 			}, 2500);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [left]);
-
-	//----------FINE----------//
-	// eslint-disable-next-line no-unused-vars
-	const [isFine, setIsFine] = useState(false);
-
-	useEffect(() => {
-		let i = 0;
-		isFilled.map((filled) => {
-			filled && i++;
-		});
-		i === 12 && setSnackBarOpen(true);
-		i === 12 && setIsFine(true);
-		i === 12 && setDices([0, 0, 0, 0, 0]);
-	}, [isFilled]);
-
-	useEffect(() => {
-		if (isFine) {
-			localStorage.getItem('BestScore')
-				? JSON.parse(localStorage.getItem('BestScore')) < total
-					? localStorage.setItem('BestScore', JSON.stringify(total)) &&
-					  setNewBestScore(true)
-					: setNewBestScore(false)
-				: localStorage.setItem('BestScore', JSON.stringify(total)) &&
-				  setNewBestScore(true);
-		}
-	}, [isFine]);
 
 	//----------Rules------------//
 
@@ -366,6 +340,34 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	]);
 
 	console.log(yachu, total);
+
+	//----------FINE----------//
+	// eslint-disable-next-line no-unused-vars
+	const [isFine, setIsFine] = useState(false);
+
+	useEffect(() => {
+		let i = 0;
+		isFilled.map((filled) => {
+			filled && i++;
+		});
+		i === 12 && setSnackBarOpen(true);
+		i === 12 && setIsFine(true);
+		i === 12 && setDices([0, 0, 0, 0, 0]);
+	}, [isFilled]);
+
+	useEffect(() => {
+		if (isFine) {
+			setTimeout(() => {
+				localStorage.getItem('BestScore')
+					? JSON.parse(localStorage.getItem('BestScore')) < total
+						? localStorage.setItem('BestScore', JSON.stringify(total)) &&
+						  setNewBestScore(true)
+						: setNewBestScore(false)
+					: localStorage.setItem('BestScore', JSON.stringify(total)) &&
+					  setNewBestScore(true);
+			}, [300]);
+		}
+	}, [isFine, total]);
 
 	const [open, setOpen] = useState(false);
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);

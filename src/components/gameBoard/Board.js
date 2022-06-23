@@ -142,7 +142,7 @@ export default function Board({
 										? '230%'
 										: isTablet
 										? '400%'
-										: '500%',
+										: '450%',
 									color: theme.palette.text.primary,
 									opacity: 0.8,
 									rotate: '-15deg',
