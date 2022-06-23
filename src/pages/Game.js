@@ -128,10 +128,10 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 	useEffect(() => {
 		sessionStorage.setItem('left', JSON.stringify(left));
 		left === 0 &&
-			isTablet &&
+			(isTablet || isMobile) &&
 			setTimeout(() => {
 				setSideScoreOpen(true);
-			}, 4000);
+			}, 2500);
 	}, [left]);
 
 	//----------FINE----------//

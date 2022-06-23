@@ -111,6 +111,7 @@ export default function Board({
 					borderRadius: 5,
 					bgcolor: theme.palette.text.secondary,
 					minheight: '20%',
+					mt: isMobile ? '40%' : '20%',
 				}}>
 				{dices.map((dice, idx) => (
 					<Item
@@ -162,7 +163,7 @@ export default function Board({
 									? '-58%'
 									: isTablet
 									? '-51%'
-									: '-53%',
+									: '-50%',
 								transform: 'translate(-15.5%,-16%)',
 
 								filter: isHold[idx] ? 'invert(100%)' : 'none',
@@ -177,10 +178,11 @@ export default function Board({
 					sx={{
 						fontSize: 20,
 						mt: 3,
-						backdropFilter:
-							theme.palette.mode === 'dark'
-								? 'brightness(2)'
-								: 'brightness(0.95)',
+						backdropFilter: isFine
+							? 'none'
+							: theme.palette.mode === 'dark'
+							? 'brightness(2)'
+							: 'brightness(0.95)',
 						pt: 4.3,
 
 						width: 100,
@@ -190,6 +192,7 @@ export default function Board({
 					{!isFine && left + ' Left'}
 				</Typography>
 				<Button
+					className={!left === 0 ? 'bg' : 'none'}
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color={isFine ? 'info' : 'inherit'}
 					onClick={left !== 0 && handleChangeDice}
@@ -202,7 +205,7 @@ export default function Board({
 				</Button>
 				<Button
 					variant={isFine ? 'contained' : 'outlined'}
-					color={isFine ? 'info' : 'inherit'}
+					color={isFine ? 'contained' : 'inherit'}
 					onClick={isFine ? handleNewGame : handleQuitGame}
 					sx={{ height: 40, width: 300, mt: 3 }}>
 					{isFine ? 'New Game' : 'Quit Game'}
