@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -346,7 +346,24 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 			filled && (sum = sum + Number(totarArr[idx]));
 		});
 		setTotal(sum + Number(bonus));
-	}, [isFilled]);
+	}, [
+		ace,
+		bonus,
+		choice,
+		duce,
+		fives,
+		fourOfKind,
+		fours,
+		fullHouse,
+		isFilled,
+		lStraght,
+		sStraght,
+		sixes,
+		subTotal,
+		threes,
+		total,
+		yachu,
+	]);
 
 	console.log(yachu, total);
 
