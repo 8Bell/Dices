@@ -55,7 +55,7 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 				open={open}
 				setOpen={setOpen}
 				drawerWidth={drawerWidth}
-				isMobile={isMobile}
+				// isMobile={isMobile}
 			/>
 			<SideMenu
 				open={open}
