@@ -96,6 +96,7 @@ export default function Board({
 				height: '90vh',
 				width: '100%',
 				maxWidth: 1000,
+				p: isMobile ? 0 : 2,
 			}}>
 			<Stack
 				direction='row'

@@ -24,14 +24,15 @@ export default function Rooms() {
 				<Typography
 					sx={{
 						ml: 1,
-						mb: 2,
+						mb: 1,
+						mt: 2,
 					}}>
 					Games
 				</Typography>
 				<Box
 					sx={{
 						height: 100,
-						p: 0,
+						p: 2,
 
 						bgcolor: 'background.default',
 						display: 'grid',
@@ -43,7 +44,7 @@ export default function Rooms() {
 						},
 						gap: 3,
 					}}>
-					{['Yachu'].map((game) => (
+					{['Yacht Dice'].map((game) => (
 						<Item
 							key={game}
 							elevation='0'

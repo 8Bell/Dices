@@ -423,6 +423,7 @@ export default function Game({
 				setSideScoreOpen={setSideScoreOpen}
 				drawerWidth={drawerWidth}
 				isMobile={isMobile}
+				isTablet={isTablet}
 				isFilled={isFilled}
 				handleFill={handleFill}
 				ace={ace}

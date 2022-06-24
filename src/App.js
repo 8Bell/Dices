@@ -122,6 +122,10 @@ const App = () => {
 		isMobile ? setDrawerWidth('100%') : setDrawerWidth(340);
 	}, [isMobile]);
 
+	// const handleSignIn = () => {
+	// 	authService.sendPasswordResetEmail
+	//  }
+
 	useEffect(() => {
 		authService.onAuthStateChanged((user) => {
 			console.log(user);

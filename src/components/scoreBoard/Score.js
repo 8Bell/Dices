@@ -10,45 +10,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { grey } from '@mui/material/colors';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-	[`&.${tableCellClasses.head}`]: {
-		backgroundColor: theme.palette.background.default,
-		color: theme.palette.text,
-		fontSize: 16,
-		borderBottom: '1px solid',
-		borderBottomColor: theme.palette.divider,
-	},
-	[`&.${tableCellClasses.body}`]: {
-		borderBottom: '1px solid',
-		borderBottomColor: theme.palette.divider,
-		fontSize: 16,
-	},
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-	'&:nth-of-type(7)': {
-		backdropFilter: 'brightness(0.93)',
-	},
-	'&:nth-of-type(8)': {
-		backdropFilter: 'brightness(0.93)',
-	},
-	// hide last border
-	'&:last-child td, &:last-child th': {
-		backdropFilter: 'brightness(0.9)',
-	},
-}));
-
-// function createData(Categories, Me, User) {
-// 	return { Categories, Me, User };
-// }
-
-function createData(Categories, Me) {
-	return { Categories, Me };
-}
+import { IconButton } from '@mui/material';
+import { HelpRounded } from '@mui/icons-material';
 
 export default function Score({
 	isMobile,
+	isTablet,
 	isFilled,
 	handleFill,
 	ace,
@@ -69,6 +36,44 @@ export default function Score({
 	left,
 }) {
 	const theme = useTheme();
+
+	const StyledTableCell = styled(TableCell)(({ theme }) => ({
+		[`&.${tableCellClasses.head}`]: {
+			backgroundColor: theme.palette.background.default,
+			color: theme.palette.text,
+			fontSize: 16,
+			borderBottom: '1px solid',
+			borderBottomColor: theme.palette.divider,
+			lineHeight: isMobile ? '3.9vh' : '2vh',
+		},
+		[`&.${tableCellClasses.body}`]: {
+			borderBottom: '1px solid',
+			borderBottomColor: theme.palette.divider,
+			fontSize: 16,
+			lineHeight: isMobile ? '3.9vh' : '2vh',
+		},
+	}));
+
+	const StyledTableRow = styled(TableRow)(({ theme }) => ({
+		'&:nth-of-type(7)': {
+			backdropFilter: 'brightness(0.93)',
+		},
+		'&:nth-of-type(8)': {
+			backdropFilter: 'brightness(0.93)',
+		},
+		// hide last border
+		'&:last-child td, &:last-child th': {
+			backdropFilter: 'brightness(0.9)',
+		},
+	}));
+
+	// function createData(Categories, Me, User) {
+	// 	return { Categories, Me, User };
+	// }
+
+	function createData(Categories, Me) {
+		return { Categories, Me };
+	}
 
 	const onClick = (idx) => {
 		switch (idx) {
@@ -153,15 +158,29 @@ export default function Score({
 		<TableContainer
 			component={Paper}
 			sx={{
-				border: '1px solid',
+				borderRight: '0.5px solid',
+				borderRadius: 0,
 				borderColor: theme.palette.divider,
 				maxWidth: isMobile ? 'none' : 340,
 			}}>
-			<Table sx={{ minWidth: 300 }} size={isMobile ? 'small' : 'medium'}>
+			<Table
+				sx={{ minWidth: 300, borderRadius: 0, border: 0 }}
+				size={isMobile ? 'small' : 'medium'}>
 				<TableHead>
 					<TableRow>
 						<StyledTableCell>Categories</StyledTableCell>
-						<StyledTableCell align='center'>Score</StyledTableCell>
+						<StyledTableCell align='center' sx={{ position: 'relative' }}>
+							Score
+							<IconButton
+								href='https://namu.wiki/w/%EC%9A%94%ED%8A%B8(%EA%B2%8C%EC%9E%84)'
+								sx={{
+									position: 'absolute',
+									right: isMobile ? 30 : 25,
+									bottom: isMobile ? 0.4 : 6,
+								}}>
+								<HelpRounded />
+							</IconButton>
+						</StyledTableCell>
 						{/* <StyledTableCell align='center'>User</StyledTableCell> */}
 					</TableRow>
 				</TableHead>

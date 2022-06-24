@@ -95,7 +95,7 @@ export default function SideMenu({
 			<Divider />
 
 			<List>
-				{['User 1', 'User 2', 'User 3', 'User 4'].map((text, index) => (
+				{[].map((text, index) => (
 					<ListItem key={text} disablePadding>
 						<ListItemButton>
 							<ListItemText primary={text} />
@@ -106,7 +106,7 @@ export default function SideMenu({
 					</ListItem>
 				))}
 			</List>
-			<Divider />
+			{/* <Divider /> */}
 			<Box
 				sx={{
 					width: '100%',
@@ -117,19 +117,19 @@ export default function SideMenu({
 				}}>
 				<Divider />
 				<IconButton
-					sx={{ position: 'absolute', left: 10, bottom: 10 }}
+					sx={{ position: 'absolute', left: 15, bottom: 10 }}
 					onClick={colorMode.toggleColorMode}
 					color='inherit'>
 					{theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
 				</IconButton>
 				<IconButton
-					sx={{ position: 'absolute', left: 60, bottom: 10 }}
+					sx={{ position: 'absolute', left: 65, bottom: 10 }}
 					onClick={handleChangrVolum}
 					color='inherit'>
 					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
 				</IconButton>
 				<IconButton
-					sx={{ position: 'absolute', right: 10, bottom: 10 }}
+					sx={{ position: 'absolute', right: 65, bottom: 10 }}
 					color='inherit'>
 					{isLoggedIn ? <LogoutRounded /> : <LoginRounded />}
 				</IconButton>
