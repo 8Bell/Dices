@@ -26,7 +26,7 @@ export default function Rooms() {
 						ml: 1,
 						mb: 2,
 					}}>
-					Game Rooms
+					Games
 				</Typography>
 				<Box
 					sx={{
@@ -41,12 +41,12 @@ export default function Rooms() {
 							lg: '1fr 1fr 1fr',
 							xl: ' 1fr 1fr 1fr 1fr',
 						},
-						gap: 2,
+						gap: 3,
 					}}>
-					{[1].map((elevation) => (
+					{['Yachu'].map((game) => (
 						<Item
-							key={elevation}
-							elevation='1'
+							key={game}
+							elevation='0'
 							onClick={() => navigate('/game')}
 							sx={{
 								'&:hover': {
@@ -57,10 +57,14 @@ export default function Rooms() {
 								},
 
 								borderRadius: 5,
-								border: '2px solid',
+								//	border: '2px solid',
 								borderColor: theme.palette.divider,
+								boxShadow:
+									theme.palette.mode === 'dark'
+										? ' 14px 14px 28px #090909,-14px -14px 28px #191919;'
+										: '14px 14px 28px #a3a3a4,-14px -14px 28px #ffffff',
 							}}>
-							{` User's Game Room ${elevation}`}
+							{game}
 						</Item>
 					))}
 				</Box>

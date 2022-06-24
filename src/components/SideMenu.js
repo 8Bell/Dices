@@ -75,7 +75,7 @@ export default function SideMenu({
 						left: 2,
 						ml: 2,
 					}}>
-					Ranking
+					Rank
 				</Typography>
 				<IconButton onClick={handleDrawerClose}>
 					<ChevronLeftRounded fontSize='large' />
@@ -122,6 +122,12 @@ export default function SideMenu({
 				</IconButton>
 				<IconButton
 					sx={{ position: 'absolute', left: 60, bottom: 10 }}
+					onClick={handleChangrVolum}
+					color='inherit'>
+					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
+				</IconButton>
+				<IconButton
+					sx={{ position: 'absolute', right: 10, bottom: 10 }}
 					onClick={handleChangrVolum}
 					color='inherit'>
 					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
