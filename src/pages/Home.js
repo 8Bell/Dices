@@ -8,7 +8,13 @@ import SideMenu from '../components/SideMenu';
 import { useTheme } from '@emotion/react';
 import PWAPrompt from 'react-ios-pwa-prompt';
 
-export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
+export default function Home({
+	isLoggedIn,
+	setIsLoggedIn,
+	drawerWidth,
+	isMobile,
+	ColorModeContext,
+}) {
 	const theme = useTheme();
 	const Main = styled('main', {
 		shouldForwardProp: (prop) => prop !== 'open',
@@ -62,6 +68,8 @@ export default function Home({ drawerWidth, isMobile, ColorModeContext }) {
 				setOpen={setOpen}
 				drawerWidth={drawerWidth}
 				ColorModeContext={ColorModeContext}
+				isLoggedIn={isLoggedIn}
+				setIsLoggedIn={setIsLoggedIn}
 			/>
 			<Main open={open}>
 				<DrawerHeader />

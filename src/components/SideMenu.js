@@ -15,6 +15,8 @@ import {
 	Casino,
 	CasinoOutlined,
 	ChevronLeftRounded,
+	LoginRounded,
+	LogoutRounded,
 	MusicNoteRounded,
 	MusicOffRounded,
 } from '@mui/icons-material';
@@ -22,12 +24,12 @@ import { Box } from '@mui/material';
 import { Howler } from 'howler';
 
 export default function SideMenu({
+	isLoggedIn,
+	setIsLoggedIn,
 	open,
 	setOpen,
 	drawerWidth,
 	ColorModeContext,
-	volum,
-	setVolum,
 }) {
 	const theme = useTheme();
 	const colorMode = useContext(ColorModeContext);
@@ -128,9 +130,8 @@ export default function SideMenu({
 				</IconButton>
 				<IconButton
 					sx={{ position: 'absolute', right: 10, bottom: 10 }}
-					onClick={handleChangrVolum}
 					color='inherit'>
-					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
+					{isLoggedIn ? <LogoutRounded /> : <LoginRounded />}
 				</IconButton>
 			</Box>
 		</Drawer>

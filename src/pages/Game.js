@@ -12,7 +12,14 @@ import { useTheme } from '@emotion/react';
 import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
 
-export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext }) {
+export default function Game({
+	isLoggedIn,
+	setIsLoggedIn,
+	drawerWidth,
+	isMobile,
+	isTablet,
+	ColorModeContext,
+}) {
 	const theme = useTheme();
 
 	const Main = styled('main', {
@@ -404,6 +411,8 @@ export default function Game({ drawerWidth, isMobile, isTablet, ColorModeContext
 				isTablet={isTablet}
 			/>
 			<SideMenu
+				isLoggedIn={isLoggedIn}
+				setIsLoggedIn={setIsLoggedIn}
 				open={open}
 				setOpen={setOpen}
 				drawerWidth={drawerWidth}
