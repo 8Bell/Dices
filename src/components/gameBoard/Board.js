@@ -76,6 +76,10 @@ export default function Board({
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
 
+		setTimeout(() => {
+			window.location.reload();
+		}, 200);
+
 		// setTimeout(() => {
 
 		// 	window.location.reload();
@@ -109,33 +113,6 @@ export default function Board({
 
 	const D = [d0, d1, d2, d3, d4, d5, d6];
 	const L = [l0, l1, l2, l3, l4, l5, l6];
-
-	// useEffect(() => {
-
-	// 		LDice.map
-	// 	{
-	// 			images[i] = new Image();
-	// 			images[i].src = preload[i];
-
-	// 	}
-	// 	preload([
-	// 		'./images/d0.png',
-	// 		'./images/d1.png',
-	// 		'./images/d2.png',
-	// 		'./images/d3.png',
-	// 		'./images/d4.png',
-	// 		'./images/d5.png',
-	// 		'./images/d6.png',
-	// 		'./images/dl.gif',
-	// 		'./images/l0.png',
-	// 		'./images/l2.png',
-	// 		'./images/l3.png',
-	// 		'./images/l4.png',
-	// 		'./images/l5.png',
-	// 		'./images/l6.png',
-	// 		'./images/ll.gif',
-	// 	]);
-	// }, []);
 
 	return (
 		<Paper
