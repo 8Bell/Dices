@@ -372,7 +372,7 @@ export default function Game({
 						: setNewBestScore(false)
 					: localStorage.setItem('BestScore', JSON.stringify(total)) &&
 					  setNewBestScore(true);
-			}, [300]);
+			}, [100]);
 		}
 	}, [isFine, total]);
 
