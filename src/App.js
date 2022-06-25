@@ -59,6 +59,9 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 									hover: grey[200],
 									selected: grey[300],
 								},
+								info: {
+									main: '#ccc',
+								},
 						  }
 						: {
 								// palette values for dark mode
@@ -81,6 +84,9 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 									active: grey[800],
 									hover: grey[600],
 									selected: grey[700],
+								},
+								info: {
+									main: '#444',
 								},
 						  }),
 				},
