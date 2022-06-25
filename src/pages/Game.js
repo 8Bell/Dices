@@ -374,22 +374,28 @@ export default function Game({
 		isFilled.map((filled) => {
 			filled && i++;
 		});
-		i === 12 && setSnackBarOpen(true);
-		i === 12 && setIsFine(true);
-		i === 12 && setDices([0, 0, 0, 0, 0]);
+		if (i === 12) {
+			setIsFine(true);
+			setDices([0, 0, 0, 0, 0]);
+			setTimeout(() => {
+				setSnackBarOpen(true);
+			}, [100]);
+		}
 	}, [isFilled]);
 
 	useEffect(() => {
 		if (isFine) {
-			setTimeout(() => {
-				localStorage.getItem('BestScore')
-					? JSON.parse(localStorage.getItem('BestScore')) < total
-						? localStorage.setItem('BestScore', JSON.stringify(total)) &&
-						  setNewBestScore(true)
-						: setNewBestScore(false)
-					: localStorage.setItem('BestScore', JSON.stringify(total)) &&
-					  setNewBestScore(true);
-			}, [100]);
+			if (localStorage.getItem('BestScore')) {
+				if (JSON.parse(localStorage.getItem('BestScore')) < total) {
+					localStorage.setItem('BestScore', JSON.stringify(total));
+					setNewBestScore(true);
+				} else {
+					setNewBestScore(false);
+				}
+			} else {
+				localStorage.setItem('BestScore', JSON.stringify(total));
+				setNewBestScore(false);
+			}
 		}
 	}, [isFine, total]);
 
@@ -531,6 +537,7 @@ export default function Game({
 								left={left}
 								setLeft={setLeft}
 								isFine={isFine}
+								setIsFine={setIsFine}
 								total={total}
 							/>
 						</Stack>
@@ -542,14 +549,21 @@ export default function Game({
 					onClose={handleSnackBarClose}>
 					<Alert
 						onClose={handleSnackBarClose}
-						severity={newBestScore ? 'success' : 'info'}
 						sx={{
 							width: isTablet ? '95vw' : '97vw',
 							position: 'fixed',
 							bottom: '5%',
 							mr: 10,
+							backgroundColor: newBestScore
+								? theme.palette.text.primary
+								: theme.palette.action.active,
+							color: newBestScore
+								? theme.palette.background.default
+								: 'default',
 						}}>
-						Great! Your Score is {total}
+						{newBestScore
+							? 'Excellent! New Best Score ' + total
+							: 'Great! Your Score is ' + total}
 					</Alert>
 				</Snackbar>
 			</Main>

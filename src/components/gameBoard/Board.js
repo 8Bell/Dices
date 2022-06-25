@@ -32,6 +32,7 @@ export default function Board({
 	left,
 	setLeft,
 	isFine,
+	setIsFine,
 	total,
 }) {
 	const theme = useTheme();
@@ -75,13 +76,9 @@ export default function Board({
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
-
-		setTimeout(() => {
-			window.location.reload();
-		}, 200);
+		setIsFine(false);
 
 		// setTimeout(() => {
-
 		// 	window.location.reload();
 		// }, 200);
 	};
