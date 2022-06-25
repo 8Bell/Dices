@@ -12,6 +12,23 @@ import { useTheme } from '@emotion/react';
 import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
 
+import dl from '../img/dl.gif';
+import d0 from '../img/d0.png';
+import d1 from '../img/d1.png';
+import d2 from '../img/d2.png';
+import d3 from '../img/d3.png';
+import d4 from '../img/d4.png';
+import d5 from '../img/d5.png';
+import d6 from '../img/d6.png';
+import ll from '../img/ll.gif';
+import l0 from '../img/l0.png';
+import l1 from '../img/l1.png';
+import l2 from '../img/l2.png';
+import l3 from '../img/l3.png';
+import l4 from '../img/l4.png';
+import l5 from '../img/l5.png';
+import l6 from '../img/l6.png';
+
 export default function Game({
 	isLoggedIn,
 	setIsLoggedIn,
@@ -391,6 +408,25 @@ export default function Game({
 		setNewBestScore(false);
 	};
 
+	//--------IMG PRELOADER--------//
+
+	const D = [d0, d1, d2, d3, d4, d5, d6, dl];
+	const L = [l0, l1, l2, l3, l4, l5, l6, ll];
+
+	const PreloadImg = () => {
+		return (
+			<>
+				{theme.palette.mode === 'dark'
+					? D.map((img, idx) => {
+							<img src={img} alt={idx} style={{ display: 'none' }} />;
+					  })
+					: L.map((img, idx) => {
+							<img src={img} alt={idx} style={{ display: 'none' }} />;
+					  })}
+			</>
+		);
+	};
+
 	return (
 		<Box sx={{ display: 'flex', overflowX: 'hidden' }}>
 			<div
@@ -400,6 +436,7 @@ export default function Game({
 						: 'page-preloader-light'
 				}
 			/>
+			<PreloadImg />
 			<CssBaseline />
 			<Navbar
 				open={open}
