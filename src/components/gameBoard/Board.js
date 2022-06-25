@@ -4,6 +4,22 @@ import { Button, IconButton, Paper, Stack, styled, Typography } from '@mui/mater
 import { useTheme } from '@mui/system';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import dl from '../../img/dl.gif';
+import d0 from '../../img/d0.png';
+import d1 from '../../img/d1.png';
+import d2 from '../../img/d2.png';
+import d3 from '../../img/d3.png';
+import d4 from '../../img/d4.png';
+import d5 from '../../img/d5.png';
+import d6 from '../../img/d6.png';
+import ll from '../../img/ll.gif';
+import l0 from '../../img/l0.png';
+import l1 from '../../img/l1.png';
+import l2 from '../../img/l2.png';
+import l3 from '../../img/l3.png';
+import l4 from '../../img/l4.png';
+import l5 from '../../img/l5.png';
+import l6 from '../../img/l6.png';
 
 export default function Board({
 	isMobile,
@@ -60,10 +76,10 @@ export default function Board({
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
 
-		setTimeout(() => {
-			// navigate('/game');
-			window.location.reload();
-		}, 200);
+		// setTimeout(() => {
+
+		// 	window.location.reload();
+		// }, 200);
 	};
 
 	//----------HOLD----------//
@@ -88,6 +104,38 @@ export default function Board({
 
 		setLeft(left - 1);
 	};
+
+	//--------IMG PRELOADER--------//
+
+	const D = [d0, d1, d2, d3, d4, d5, d6];
+	const L = [l0, l1, l2, l3, l4, l5, l6];
+
+	// useEffect(() => {
+
+	// 		LDice.map
+	// 	{
+	// 			images[i] = new Image();
+	// 			images[i].src = preload[i];
+
+	// 	}
+	// 	preload([
+	// 		'./images/d0.png',
+	// 		'./images/d1.png',
+	// 		'./images/d2.png',
+	// 		'./images/d3.png',
+	// 		'./images/d4.png',
+	// 		'./images/d5.png',
+	// 		'./images/d6.png',
+	// 		'./images/dl.gif',
+	// 		'./images/l0.png',
+	// 		'./images/l2.png',
+	// 		'./images/l3.png',
+	// 		'./images/l4.png',
+	// 		'./images/l5.png',
+	// 		'./images/l6.png',
+	// 		'./images/ll.gif',
+	// 	]);
+	// }, []);
 
 	return (
 		<Paper
@@ -151,16 +199,16 @@ export default function Board({
 								}}
 							/>
 						)}
+						<img src={dl} alt='preload' style={{ display: 'none' }} />
 						<img
-							key={Date.now()}
 							src={
 								theme.palette.mode === 'dark'
 									? dice === 'l'
-										? `./images/dl.gif`
-										: `./images/d${dice}.png`
+										? dl
+										: D[dice]
 									: dice === 'l'
-									? `./images/ll.gif`
-									: `./images/l${dice}.png`
+									? ll
+									: L[dice]
 							}
 							alt={dice}
 							style={{

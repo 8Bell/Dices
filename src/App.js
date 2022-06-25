@@ -137,32 +137,6 @@ const App = () => {
 		});
 	}, []);
 
-	useEffect(() => {
-		function preload(images) {
-			for (let i = 0; i < 14; i++) {
-				images[i] = new Image();
-				images[i].src = preload[i];
-			}
-		}
-		preload([
-			'./images/d0.png',
-			'./images/d1.png',
-			'./images/d2.png',
-			'./images/d3.png',
-			'./images/d4.png',
-			'./images/d5.png',
-			'./images/d6.png',
-			'./images/dl.gif',
-			'./images/l0.png',
-			'./images/l2.png',
-			'./images/l3.png',
-			'./images/l4.png',
-			'./images/l5.png',
-			'./images/l6.png',
-			'./images/ll.gif',
-		]);
-	}, []);
-
 	return (
 		<Routes>
 			<Route
