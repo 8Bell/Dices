@@ -14,6 +14,7 @@ export default function SideScore({
 	isMobile,
 	isFilled,
 	handleFill,
+	dices,
 	ace,
 	duce,
 	threes,
@@ -79,6 +80,7 @@ export default function SideScore({
 				isMobile={isMobile}
 				isFilled={isFilled}
 				handleFill={handleFill}
+				dices={dices}
 				ace={ace}
 				duce={duce}
 				threes={threes}

@@ -22,6 +22,7 @@ import {
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { Howler } from 'howler';
+import SignIn from './auth/SignIn';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -52,6 +53,12 @@ export default function SideMenu({
 	const handleChangrVolum = () => {
 		mute ? Howler.volume(0.5) : Howler.volume(0);
 		setMute(!mute);
+	};
+
+	const [modalOpen, setModalOpen] = useState(false);
+
+	const handleClickOpen = () => {
+		setModalOpen(true);
 	};
 
 	return (
@@ -129,10 +136,12 @@ export default function SideMenu({
 					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
 				</IconButton>
 				<IconButton
-					sx={{ position: 'absolute', right: 65, bottom: 10 }}
+					sx={{ position: 'absolute', right: 15, bottom: 10 }}
+					onClick={handleClickOpen}
 					color='inherit'>
 					{isLoggedIn ? <LogoutRounded /> : <LoginRounded />}
 				</IconButton>
+				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} />
 			</Box>
 		</Drawer>
 	);

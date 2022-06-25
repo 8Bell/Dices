@@ -105,11 +105,24 @@ export default function Board({
 
 		setLeft(left - 1);
 	};
-
 	//--------IMG PRELOADER--------//
 
-	const D = [d0, d1, d2, d3, d4, d5, d6];
-	const L = [l0, l1, l2, l3, l4, l5, l6];
+	const D = [d0, d1, d2, d3, d4, d5, d6, dl];
+	const L = [l0, l1, l2, l3, l4, l5, l6, ll];
+
+	const PreloadImg = () => {
+		return (
+			<>
+				{theme.palette.mode === 'dark'
+					? D.map((img, idx) => {
+							<img src={img} alt={idx} style={{ display: 'none' }} />;
+					  })
+					: L.map((img, idx) => {
+							<img src={img} alt={idx} style={{ display: 'none' }} />;
+					  })}
+			</>
+		);
+	};
 
 	return (
 		<Paper
@@ -138,6 +151,7 @@ export default function Board({
 							? ' inset 30px 30px 60px #080808,inset -30px -30px 60px #1a1a1a'
 							: '	inset 12px 12px 18px #c3c3c4,inset -12px -12px 18px #ffffff',
 				}}>
+				<PreloadImg />
 				{dices.map((dice, idx) => (
 					<Item
 						className={isHold[idx] ? 'holdDice' : 'dice'}
@@ -234,12 +248,27 @@ export default function Board({
 						fontSize: 20,
 						borderRadius: 30,
 						border: 'none',
+						position: 'relative',
 						boxShadow:
 							theme.palette.mode === 'dark'
 								? ' 23px 23px 45px #0a0a0a,-23px -23px 45px #181818'
 								: '31px 31px 62px #bcbcbd,-31px -31px 62px #ffffff',
 					}}>
-					{isFine ? [total, <br />, ' Point'] : [left, <br />, ' Left']}
+					{isFine ? (
+						<>
+							{total} <br /> Point
+							<br />
+							<ReplayRounded
+								sx={{
+									position: 'absolute',
+									fontSize: 50,
+									fontWight: 100,
+								}}
+							/>
+						</>
+					) : (
+						[left, <br />, ' Left']
+					)}
 				</Button>
 
 				<Typography

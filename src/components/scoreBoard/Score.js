@@ -18,6 +18,7 @@ export default function Score({
 	isTablet,
 	isFilled,
 	handleFill,
+	dices,
 	ace,
 	duce,
 	threes,
@@ -206,6 +207,7 @@ export default function Score({
 									}
 									onClick={() =>
 										!isFilled[idx] &&
+										!dices.includes('l') &&
 										left !== 3 &&
 										onClick(idx)
 									}
