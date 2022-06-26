@@ -1,9 +1,8 @@
 /* eslint-disable array-callback-return */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { AttachFileRounded, ClearRounded } from '@mui/icons-material';
 import { Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import dl from '../../img/dl.gif';
 import d0 from '../../img/d0.png';
@@ -21,20 +20,40 @@ import l3 from '../../img/l3.png';
 import l4 from '../../img/l4.png';
 import l5 from '../../img/l5.png';
 import l6 from '../../img/l6.png';
+import Confirm from '../modal/Confilm';
 
 export default function Board({
+	isLoggedIn,
+	me,
 	isMobile,
 	isTablet,
 	dices,
 	setDices,
 	isHold,
 	setIsHold,
+	isFilled,
 	setIsFilled,
 	left,
 	setLeft,
 	isFine,
 	setIsFine,
 	total,
+	isStart,
+	setIsStart,
+	ace,
+	duce,
+	threes,
+	fours,
+	fives,
+	sixes,
+	subTotal,
+	bonus,
+	choice,
+	fourOfKind,
+	fullHouse,
+	sStraght,
+	lStraght,
+	yachu,
 }) {
 	const theme = useTheme();
 	const Item = styled(Paper)(({ theme }) => ({
@@ -48,11 +67,11 @@ export default function Board({
 		color: theme.palette.text,
 	}));
 
-	const bestScore = localStorage.getItem('BestScore')
+	const bestScore = isLoggedIn
+		? me[0] && me[0].bestScore
+		: localStorage.getItem('BestScore')
 		? JSON.parse(localStorage.getItem('BestScore'))
 		: 0;
-
-	const diceArr = [0, 0, 0, 0, 0];
 
 	//----------Quit Game----------//
 
@@ -69,18 +88,11 @@ export default function Board({
 
 	//----------New Game----------//
 
-	const handleNewGame = () => {
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
-		setDices(diceArr);
-		setIsHold(new Array(5).fill(false));
-		setIsFilled(new Array(15).fill(false));
-		setLeft(3);
-		setIsFine(false);
+	const [modalOpen, setModalOpen] = useState(false);
 
-		// setTimeout(() => {
-		// 	window.location.reload();
-		// }, 200);
-	};
+	// setTimeout(() => {
+	// 	window.location.reload();
+	// }, 200);
 
 	//----------HOLD----------//
 	const handleHoldDice = (idx) => {
@@ -123,6 +135,48 @@ export default function Board({
 		);
 	};
 
+	//----------BG SHINE & ALERT------------//
+
+	const scoreArr = [
+		ace,
+		duce,
+		threes,
+		fours,
+		fives,
+		sixes,
+		subTotal,
+		bonus,
+		choice,
+		fourOfKind,
+		fullHouse,
+		sStraght,
+		lStraght,
+		yachu,
+		total,
+	];
+
+	const [bgShine, setBgShine] = useState(false);
+	const [alert, setAlert] = useState('');
+
+	useEffect(() => {
+		scoreArr.map((score, idx) => {
+			if (0 <= idx && idx <= 5) {
+				score > (idx + 1) * 4 && !isFilled[idx] && setBgShine(true);
+			} else if (idx === 8) {
+				scoreArr[idx] >= 27 && !isFilled[idx] && setBgShine(true);
+				scoreArr[8] >= 27 && !isFilled[8] && setAlert('High Choice');
+			} else if (9 <= idx && idx < 14) {
+				scoreArr[idx] > 0 && !isFilled[idx] && setBgShine(true);
+				scoreArr[9] > 0 && !isFilled[9] && setAlert('4 of a Kind');
+				scoreArr[10] > 0 && !isFilled[10] && setAlert('Full House');
+				scoreArr[11] > 0 && !isFilled[11] && setAlert('Small Straght');
+				scoreArr[12] > 0 && !isFilled[12] && setAlert('Large Straght');
+				scoreArr[13] > 0 && !isFilled[13] && setAlert('YACHU');
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isFilled]);
+
 	return (
 		<Paper
 			elevation={0}
@@ -133,12 +187,14 @@ export default function Board({
 				p: isMobile ? 0 : 2,
 			}}>
 			<Stack
+				className={bgShine ? 'bg' : 'none'}
 				direction='row'
 				spacing={isMobile ? 1 : isTablet ? 1.5 : 2}
 				justifyContent='center'
 				alignItems='center'
 				sx={{
 					//border: '1px solid',
+					position: 'relative',
 					borderColor: theme.palette.divider,
 					p: isMobile ? 1.3 : 2,
 					borderRadius: 5,
@@ -147,9 +203,31 @@ export default function Board({
 					mt: isMobile ? '50%' : '20%',
 					boxShadow:
 						theme.palette.mode === 'dark'
-							? ' inset 30px 30px 60px #080808,inset -30px -30px 60px #1a1a1a'
-							: '	inset 12px 12px 18px #c3c3c4,inset -12px -12px 18px #ffffff',
+							? 'inset 7px 7px 10px #0c0c0c, inset -7px -7px 10px #161616'
+							: '	inset 9px 9px 17px #b6b6b6, inset -9px -9px 17px #ffffff;;',
 				}}>
+				<Typography
+					//className={alert !== '' ? 'bg' : 'none'}
+					sx={{
+						opacity: 0.5,
+						position: 'absolute',
+						top: 0,
+						mt: -10,
+
+						pt: 0.5,
+						pb: 0.5,
+						pl: 2,
+						pr: 2,
+						borderRadius: 10,
+						boxShadow:
+							alert !== ''
+								? theme.palette.mode === 'dark'
+									? ' 9px 9px 18px #0a0a0a,-9px -9px 18px #181818'
+									: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;'
+								: 'none',
+					}}>
+					{alert}
+				</Typography>
 				<PreloadImg />
 				{dices.map((dice, idx) => (
 					<Item
@@ -159,7 +237,7 @@ export default function Board({
 						value={dice}
 						sx={{
 							position: 'relative',
-							//	bgcolor: theme.palette.text.secondary,
+							bgcolor: 'rgba(0, 0, 0, 0)',
 							backgroundImage: 'none',
 							minHeight: '30%',
 						}}>
@@ -172,7 +250,7 @@ export default function Board({
 									left: '50%',
 									transform:
 										isTablet || isMobile
-											? 'translate(-51%, -50%)'
+											? 'translate(-50%, -50%)'
 											: 'translate(-55%, -50%)',
 									fontSize: isMobile
 										? '230%'
@@ -205,7 +283,7 @@ export default function Board({
 									: isTablet
 									? '-51%'
 									: '-50%',
-								transform: 'translate(-15.5%,-16%)',
+								transform: 'translate(-18.3%,-16%)',
 
 								// filter: isHold[idx] ? 'invert(100%)' : 'none',
 								filter: isHold[idx]
@@ -219,6 +297,7 @@ export default function Board({
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Button
 					//className={left !== 0 && !isFine ? 'bg' : 'none'}
+
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
 					onClick={left !== 0 && !isFine && handleChangeDice}
@@ -240,6 +319,8 @@ export default function Board({
 							{total} <br /> Point
 							<br />
 						</>
+					) : isStart && left === 3 ? (
+						'START'
 					) : (
 						[left, <br />, ' Left']
 					)}
@@ -258,7 +339,7 @@ export default function Board({
 				<IconButton
 					variant={isFine ? 'contained' : 'outlined'}
 					color='inherit'
-					onClick={handleNewGame}
+					onClick={() => setModalOpen(true)}
 					sx={{
 						position: 'absolute',
 						bottom: 40,
@@ -270,6 +351,16 @@ export default function Board({
 					<ClearRounded />
 				</IconButton>
 			</Stack>
+			<Confirm
+				modalOpen={modalOpen}
+				setModalOpen={setModalOpen}
+				setDices={setDices}
+				setIsHold={setIsHold}
+				setIsFilled={setIsFilled}
+				setLeft={setLeft}
+				setIsFine={setIsFine}
+				setIsStart={setIsStart}
+			/>
 		</Paper>
 	);
 }

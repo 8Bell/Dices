@@ -173,12 +173,12 @@
 		rgba(100, 100, 100, 0.3) 80%,
 		rgba(50, 50, 50, 0.1) 100%
 	);
-	animation: AnimateBG 3s ease infinite;
+	animation: AnimateBG 4s ease infinite;
 }
 
 @keyframes AnimateBG {
 	0% {
-		background-position: 100% 0%;
+		background-position: 250% 0%;
 	}
 
 	100% {

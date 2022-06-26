@@ -21,7 +21,25 @@ import {
 import { Box } from '@mui/material';
 import { Howler } from 'howler';
 import SignIn from './auth/SignIn';
-import { authService, dbService } from '../fbase';
+import { authService } from '../fbase';
+
+import dl from '../img/dl.gif';
+import d0 from '../img/d0.png';
+import d1 from '../img/d1.png';
+import d2 from '../img/d2.png';
+import d3 from '../img/d3.png';
+import d4 from '../img/d4.png';
+import d5 from '../img/d5.png';
+import d6 from '../img/d6.png';
+import ll from '../img/ll.gif';
+import l0 from '../img/l0.png';
+import l1 from '../img/l1.png';
+import l2 from '../img/l2.png';
+import l3 from '../img/l3.png';
+import l4 from '../img/l4.png';
+import l5 from '../img/l5.png';
+import l6 from '../img/l6.png';
+import SignOut from './auth/Signout';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -30,6 +48,8 @@ export default function SideMenu({
 	setOpen,
 	drawerWidth,
 	ColorModeContext,
+	me,
+	members,
 }) {
 	const theme = useTheme();
 	const colorMode = useContext(ColorModeContext);
@@ -55,6 +75,7 @@ export default function SideMenu({
 	};
 
 	const [modalOpen, setModalOpen] = useState(false);
+	const [modal2Open, setModal2Open] = useState(false);
 
 	const handleClickOpen = () => {
 		setModalOpen(true);
@@ -68,54 +89,15 @@ export default function SideMenu({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const handleLogOut = () => {
-		authService.signOut();
-		console.log('isLoggedIn', isLoggedIn);
-	};
-
-	//--------------CURRENT USER ---------------//
-
-	const [myUid, setMyUid] = useState('');
-
-	useEffect(() => {
-		authService.currentUser !== null && setMyUid(authService.currentUser.uid);
-	}, []);
-
-	//-----------------USERS------------------//
-
-	const [users, setUsers] = useState([]);
-	const [members, setMembers] = useState([]);
-
-	useEffect(() => {
-		dbService
-			.collection('users')
-			.orderBy('Rank')
-			.onSnapshot((snapshot) => {
-				const dbUsers = snapshot.docs.map((doc) => ({
-					...doc.data(),
-					id: doc.id,
-					checked: false,
-				}));
-				setUsers(dbUsers);
-			});
-	}, []);
-
-	const [me, setMe] = useState([]);
-
-	useEffect(() => {
-		setMe(users.filter((user) => user.id === myUid));
-		setMembers(users.filter((user) => user.id !== myUid));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [users]);
-
-	console.log('me', me);
-	console.log('members', members);
-	console.log('myUid', myUid);
-
 	//-----local best score ----//
 	const bestScore = localStorage.getItem('BestScore')
 		? JSON.parse(localStorage.getItem('BestScore'))
 		: 0;
+
+	//--------DICE IMGS-------//
+
+	const D = [d0, d1, d2, d3, d4, d5, d6, dl];
+	const L = [l0, l1, l2, l3, l4, l5, l6, ll];
 
 	return (
 		<Drawer
@@ -147,21 +129,42 @@ export default function SideMenu({
 				</IconButton>
 			</DrawerHeader>
 			<Divider />
+			<ListItem disablePadding>
+				<ListItemButton>
+					<ListItemText primary='NAME' sx={{ textAlign: 'left' }} />
+					<ListItemText
+						primary='Record'
+						sx={{ textAlign: 'right', position: 'absolute', right: 88 }}
+					/>
+					<ListItemText primary='Rank' sx={{ textAlign: 'right' }} />
+				</ListItemButton>
+			</ListItem>
+
+			<Divider />
 
 			<ListItem disablePadding>
 				<ListItemButton>
 					<ListItemText
-						primary={me[0] ? me[0].userName : 'player'}
+						primary={me[0] ? me[0].userName : 'guest player'}
 						sx={{ textAlign: 'left' }}
 					/>
 					<ListItemText
 						primary={me[0] ? me[0].bestScore : bestScore}
-						sx={{ textAlign: 'right', position: 'absolute', right: 70 }}
+						sx={{ textAlign: 'right', position: 'absolute', right: 100 }}
 					/>
-					<ListItemText
-						primary={me[0] ? me[0].Rank : 0}
-						sx={{ textAlign: 'right' }}
-					/>
+					{isLoggedIn ? (
+						<img
+							src={
+								theme.palette.mode === 'dark'
+									? D[`${me[0] ? me[0].Rank + 1 : 1}`]
+									: L[`${me[0] ? me[0].Rank + 1 : 1}`]
+							}
+							alt={me[0] ? me[0].Rank + 1 : 1}
+							style={{ width: 35 }}
+						/>
+					) : (
+						<ListItemText primary='-' sx={{ textAlign: 'right', mr: 2 }} />
+					)}
 				</ListItemButton>
 			</ListItem>
 
@@ -180,12 +183,17 @@ export default function SideMenu({
 								sx={{
 									textAlign: 'right',
 									position: 'absolute',
-									right: 70,
+									right: 100,
 								}}
 							/>
-							<ListItemText
-								primary={member.Rank}
-								sx={{ textAlign: 'right' }}
+							<img
+								src={
+									theme.palette.mode === 'dark'
+										? D[member.Rank + 1]
+										: L[member.Rank + 1]
+								}
+								alt={me[0] ? me[0].Rank + 1 : 1}
+								style={{ width: 35 }}
 							/>
 						</ListItemButton>
 					</ListItem>
@@ -215,11 +223,12 @@ export default function SideMenu({
 				</IconButton>
 				<IconButton
 					sx={{ position: 'absolute', right: 15, bottom: 10 }}
-					onClick={isLoggedIn ? handleLogOut : handleClickOpen}
+					onClick={isLoggedIn ? () => setModal2Open(true) : handleClickOpen}
 					color='inherit'>
 					{isLoggedIn ? <CloudOffRounded /> : <CloudUploadRounded />}
 				</IconButton>
 				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} />
+				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} />
 			</Box>
 		</Drawer>
 	);

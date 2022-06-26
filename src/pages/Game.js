@@ -11,6 +11,7 @@ import SideScore from '../components/scoreBoard/SideScore';
 import { useTheme } from '@emotion/react';
 import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
+import { authService, dbService } from '../fbase';
 
 export default function Game({
 	isLoggedIn,
@@ -98,6 +99,7 @@ export default function Game({
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setLeft(3);
+		setIsStart(false);
 
 		setTimeout(() => {
 			setSideScoreOpen(false);
@@ -122,7 +124,7 @@ export default function Game({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [left]);
 
-	//----------Rules------------//
+	//----------------------------Rules-----------------------------//
 
 	const [ace, setAce] = useState(0); //isFilled 0
 	const [duce, setDuce] = useState(0); //isFilled 1
@@ -215,7 +217,7 @@ export default function Game({
 				dices.includes(num) && i++;
 				dices.indexOf(num) !== dices.lastIndexOf(num) && j++;
 			});
-			0 < i && i <= 2 && j !== 2
+			0 < i && i <= 2 && j !== 2 && !dices.includes('l')
 				? setFourOfKind(dices.reduce((dice, cv) => dice + cv))
 				: setFourOfKind(0);
 		}
@@ -327,7 +329,7 @@ export default function Game({
 		yachu,
 	]);
 
-	//----------FINE----------//
+	//---------------------FINE--------------------//
 	// eslint-disable-next-line no-unused-vars
 	const [isFine, setIsFine] = useState(false);
 
@@ -361,6 +363,17 @@ export default function Game({
 		}
 	}, [isFine, total]);
 
+	useEffect(() => {
+		if (isFine) {
+			if (me[0] && me[0].bestScore < total) {
+				dbService.collection('users').doc(myUid).update({
+					bestScore: total,
+				});
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isFine, total]);
+
 	const [open, setOpen] = useState(false);
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
 
@@ -375,6 +388,48 @@ export default function Game({
 		setSnackBarOpen(false);
 		setNewBestScore(false);
 	};
+
+	//---------------START ----------------------//
+	const [isStart, setIsStart] = useState(true);
+
+	//--------------CURRENT USER ---------------//
+
+	const [myUid, setMyUid] = useState('');
+
+	useEffect(() => {
+		authService.currentUser !== null && setMyUid(authService.currentUser.uid);
+	}, []);
+
+	//-----------------USERS------------------//
+
+	const [users, setUsers] = useState([]);
+	const [members, setMembers] = useState([]);
+
+	useEffect(() => {
+		dbService
+			.collection('users')
+			.orderBy('Rank')
+			.onSnapshot((snapshot) => {
+				const dbUsers = snapshot.docs.map((doc) => ({
+					...doc.data(),
+					id: doc.id,
+					checked: false,
+				}));
+				setUsers(dbUsers);
+			});
+	}, []);
+
+	const [me, setMe] = useState([]);
+
+	useEffect(() => {
+		setMe(users.filter((user) => user.id === myUid));
+		setMembers(users.filter((user) => user.id !== myUid));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [users]);
+
+	console.log('me', me);
+	console.log('members', members);
+	console.log('myUid', myUid);
 
 	return (
 		<Box sx={{ display: 'flex', overflowX: 'hidden' }}>
@@ -403,6 +458,8 @@ export default function Game({
 				setOpen={setOpen}
 				drawerWidth={drawerWidth}
 				ColorModeContext={ColorModeContext}
+				me={me}
+				members={members}
 			/>
 			<SideScore
 				sideScoreOpen={sideScoreOpen}
@@ -472,18 +529,37 @@ export default function Game({
 							justifyContent='center'
 							alignItems='center'>
 							<Board
+								isLoggedIn={isLoggedIn}
+								me={me}
 								isMobile={isMobile}
 								isTablet={isTablet}
 								dices={dices}
 								setDices={setDices}
 								isHold={isHold}
 								setIsHold={setIsHold}
+								isFilled={isFilled}
 								setIsFilled={setIsFilled}
 								left={left}
 								setLeft={setLeft}
 								isFine={isFine}
 								setIsFine={setIsFine}
 								total={total}
+								isStart={isStart}
+								setIsStart={setIsStart}
+								ace={ace}
+								duce={duce}
+								threes={threes}
+								fours={fours}
+								fives={fives}
+								sixes={sixes}
+								choice={choice}
+								fourOfKind={fourOfKind}
+								fullHouse={fullHouse}
+								sStraght={sStraght}
+								lStraght={lStraght}
+								yachu={yachu}
+								subTotal={subTotal}
+								bonus={bonus}
 							/>
 						</Stack>
 					</Grid>

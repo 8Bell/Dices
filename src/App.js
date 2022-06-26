@@ -4,7 +4,7 @@ import { createContext, useEffect, useMemo, useState } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { authService } from './fbase';
 import Game from './pages/Game';
-import Home from './pages/Home';
+// import Home from './pages/Home';
 import './App.css';
 import useSound from './hooks/useSound';
 import BGM from './sounds/bgm.mp3';
@@ -167,7 +167,7 @@ const App = () => {
 						/>
 					}
 				/>
-				<Route
+				{/* <Route
 					path='/home'
 					element={
 						<Home
@@ -179,7 +179,7 @@ const App = () => {
 							isTablet={isTablet}
 						/>
 					}
-				/>
+				/> */}
 			</Route>
 		</Routes>
 	);

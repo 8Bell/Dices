@@ -260,7 +260,7 @@ export default function Score({
 								</StyledTableCell>
 								<StyledTableCell
 									className={
-										scoreArr[idx] >= 25 && !isFilled[idx]
+										scoreArr[idx] >= 27 && !isFilled[idx]
 											? 'bg'
 											: 'none'
 									}
@@ -285,13 +285,13 @@ export default function Score({
 										fontWeight: isFilled[idx] ? 800 : 200,
 										color: isFilled[idx]
 											? theme.palette.text.secondary
-											: scoreArr[idx] >= 25
+											: scoreArr[idx] >= 27
 											? grey[50]
 											: theme.palette.action.active,
 
 										backgroundColor: isFilled[idx]
 											? theme.palette.background
-											: scoreArr[idx] >= 25
+											: scoreArr[idx] >= 27
 											? theme.palette.mode === 'dark'
 												? grey[600]
 												: grey[400]

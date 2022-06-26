@@ -45,7 +45,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 		e.preventDefault();
 		try {
 			if (userName !== '') {
-				if (userName.length > 12) {
+				if (userName.length <= 12) {
 					const data = await authService.createUserWithEmailAndPassword(
 						email,
 						password
@@ -54,26 +54,17 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 						displayName: userName,
 					});
 					console.log('uid', data.user.uid);
-					await dbService
-						.collection('users')
-						.doc(data.user.uid)
-						.set({
-							uid: data.user.uid,
-							userName,
-							createdAt: Date.now(),
-							isOnline: true,
-							profileImg: null,
-							bestScore: 0,
-							totalScore: 0,
-							playtimes: 0,
-							Rank: 0,
-						})
-						.then(() => {
-							console.log('Document successfully written!');
-						})
-						.catch((error) => {
-							console.log('Error writing document: ', error);
-						});
+					await dbService.collection('users').doc(data.user.uid).set({
+						uid: data.user.uid,
+						userName,
+						createdAt: Date.now(),
+						isOnline: true,
+						profileImg: null,
+						bestScore: 0,
+						totalScore: 0,
+						playtimes: 0,
+						Rank: 0,
+					});
 				} else {
 					alert('Please enter your name in 12 characters or less.');
 				}
@@ -192,7 +183,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					margin='normal'
 					id='password'
 					label='Password'
-					helperText={!signIn ? ' Be at least 6 letters ' : ''}
+					helperText={!signIn ? ' At least 6 letters ' : ''}
 					type='password'
 					fullWidth
 					variant='standard'
@@ -216,7 +207,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 						left: 0,
 						ml: 2,
 					}}>
-					{signIn ? "i don't have" : 'i already have '}
+					{signIn ? 'New member ?' : 'i already have '}
 				</Button>
 
 				<IconButton
