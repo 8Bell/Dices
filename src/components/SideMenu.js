@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -23,6 +23,7 @@ import {
 import { Box } from '@mui/material';
 import { Howler } from 'howler';
 import SignIn from './auth/SignIn';
+import { authService } from '../fbase';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -60,6 +61,13 @@ export default function SideMenu({
 	const handleClickOpen = () => {
 		setModalOpen(true);
 	};
+
+	useEffect(() => {
+		authService.onAuthStateChanged((user) => {
+			user ? setIsLoggedIn(true) : setIsLoggedIn(false);
+		});
+		console.log('isLoggedIn', isLoggedIn);
+	}, []);
 
 	return (
 		<Drawer

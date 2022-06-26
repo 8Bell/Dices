@@ -60,7 +60,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 									selected: grey[300],
 								},
 								info: {
-									main: '#ccc',
+									main: '#bbb',
 								},
 						  }
 						: {

@@ -17,6 +17,8 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 		setModalOpen(false);
 	};
 
+	const [signIn, setSignIn] = useState(true);
+
 	const [userName, setUserName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -25,15 +27,19 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 		const {
 			target: { id, value },
 		} = e;
-		if (id === 'email') {
+		if (id === 'id') {
 			setEmail(value + '@dice.cloud');
 		} else if (id === 'password') {
 			setPassword(value);
 		} else if (id === 'name') setUserName(value);
 	};
 
-	const onSubmit = async (e) => {
+	//--------- SIGN IN -------------//
+
+	const onSignUpSubmit = async (e) => {
 		e.preventDefault();
+		console.log('email', email);
+
 		try {
 			if (userName !== '') {
 				const data = await authService.createUserWithEmailAndPassword(
@@ -45,23 +51,14 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 				});
 				console.log(data);
 
-				await dbService
-					.collection('users')
-					.doc(data.user.uid)
-					.set({
-						uid: data.user.uid,
-						email,
-						userName,
-						createdAt: Date.now(),
-						isOnline: true,
-						profileImg: null,
-						personalColor:
-							'#' +
-							(Math.floor(Math.random() * 80) + 50).toString(16) +
-							(Math.floor(Math.random() * 80) + 50).toString(16) +
-							(Math.floor(Math.random() * 156) + 100).toString(16),
-						friends: [],
-					});
+				await dbService.collection('users').doc(data.user.uid).set({
+					uid: data.user.uid,
+					email,
+					userName,
+					createdAt: Date.now(),
+					isOnline: true,
+					profileImg: null,
+				});
 			} else {
 				alert('이름을 입력해주세요.');
 			}
@@ -69,19 +66,19 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 			console.log(error);
 			switch (error.code) {
 				case 'auth/email-already-in-use':
-					alert('이미 사용중인 이메일 입니다.');
+					alert('This ID is already in use.');
 					break;
 				case 'auth/invalid-email':
-					alert('유효하지 않은 메일입니다');
+					alert('This ID is not available.');
 					break;
 				case 'auth/operation-not-allowed':
-					alert('이메일 가입이 중지되었습니다.');
+					alert('Your subscription has been stopped.');
 					break;
 				case 'auth/weak-password':
-					alert('비밀번호를 6자리 이상 입력해주세요');
+					alert('Please enter a password with at least 6 digits');
 					break;
 				default:
-					alert('올바른 아이디 혹은 비밀번호를 입력해주세요');
+					alert('Please enter a valid ID or password.');
 			}
 		}
 	};
@@ -104,30 +101,37 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					color: theme.palette.text.primary,
 					backdropFilter: 'opacity(0.3)',
 					pt: 4,
+					fontSize: 22,
+					fontWight: 800,
 				}}>
-				Join
+				{signIn ? 'Sign In' : 'Sign up'}
 			</DialogTitle>
 			<DialogContent
 				sx={{
 					backgroundColor: theme.palette.background.paper,
 					color: theme.palette.text.secondary,
 				}}>
-				<DialogContentText>
-					Join us and save your score to compete with your friends.
-				</DialogContentText>
-				<TextField
-					onChange={onChange}
-					margin='nomal'
-					id='name'
-					label='Name'
-					type='text'
-					fullWidth
-					variant='standard'
-					color='primary'
-					sx={{
-						mt: 2,
-					}}
-				/>
+				{signIn && (
+					<>
+						<DialogContentText>
+							Join us and save your score to compete with your friends.
+						</DialogContentText>
+
+						<TextField
+							onChange={onChange}
+							margin='nomal'
+							id='name'
+							label='Name'
+							type='text'
+							fullWidth
+							variant='standard'
+							color='info'
+							sx={{
+								mt: 2,
+							}}
+						/>
+					</>
+				)}
 				<TextField
 					onChange={onChange}
 					margin='nomal'
@@ -136,7 +140,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					type='text'
 					fullWidth
 					variant='standard'
-					color='primary'
+					color='info'
 					sx={{
 						mt: 2,
 					}}
@@ -144,16 +148,14 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 				<TextField
 					onChange={onChange}
 					margin='normal'
-					id='pasword'
-					label='Password'
+					id='password'
+					label='Password (+6)'
 					type='password'
 					fullWidth
 					variant='standard'
 					color='info'
 					sx={{
 						mb: 2,
-						borderColor: theme.palette.background.paper,
-						borderBottom: '1px solid',
 					}}
 				/>
 			</DialogContent>
@@ -163,11 +165,23 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					color: theme.palette.text.primary,
 					pb: 3,
 				}}>
+				<Button
+					onClick={() => setSignIn(!signIn)}
+					sx={{
+						color: theme.palette.text.primary,
+						position: 'absolute',
+						left: 0,
+						ml: 2,
+					}}>
+					{signIn ? 'Sign in' : 'Sign up'}
+				</Button>
 				<Button onClick={handleClose} sx={{ color: theme.palette.text.primary }}>
 					Cancel
 				</Button>
-				<Button onClick={handleClose} sx={{ color: theme.palette.text.primary }}>
-					Join
+				<Button
+					onClick={signIn ? onSignUpSubmit : onSignUpSubmit}
+					sx={{ color: theme.palette.text.primary, mr: 2 }}>
+					Sign up
 				</Button>
 			</DialogActions>
 		</Dialog>
