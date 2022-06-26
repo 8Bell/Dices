@@ -3,11 +3,10 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 
-export default function Rooms() {
+export default function GameMenu({ isLoggedIn, isMobile, isTablet }) {
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const Item = styled(Paper)(({ theme }) => ({
@@ -20,33 +19,38 @@ export default function Rooms() {
 
 	return (
 		<Grid container spacing={2}>
-			<Grid item xs={12}>
-				<Typography
+			<Grid item xs={12} sx={{ display: 'grid', placeItems: 'center' }}>
+				{/* <Typography
+					align='center'
 					sx={{
 						ml: 1,
 						mb: 1,
-						mt: 2,
+						mt: 10,
 					}}>
-					Games
-				</Typography>
+					Yacht Dice
+				</Typography> */}
 				<Box
 					sx={{
-						height: 100,
-						p: 2,
+						height: 200,
 
+						p: 1,
+						width: '100%',
+						maxWidth: 'sm',
 						bgcolor: 'background.default',
 						display: 'grid',
+
 						gridTemplateColumns: {
 							sm: '1fr',
-							md: '1fr 1fr',
-							lg: '1fr 1fr 1fr',
-							xl: ' 1fr 1fr 1fr 1fr',
+							md: '1fr',
+							lg: '1fr',
+							xl: '1fr',
 						},
-						gap: 3,
+						gap: 4,
+						lineHeight: 0,
 					}}>
-					{['Yacht Dice'].map((game) => (
+					{['NOMAL', 'RANK'].map((game, idx) => (
 						<Item
-							key={game}
+							key={idx}
 							elevation='0'
 							onClick={() => navigate('/game')}
 							sx={{
@@ -56,14 +60,15 @@ export default function Rooms() {
 											? 'brightness(1.1)'
 											: 'brightness(0.95)',
 								},
+								fontSize: 20,
 
-								borderRadius: 5,
+								borderRadius: 30,
 								//	border: '2px solid',
 								borderColor: theme.palette.divider,
 								boxShadow:
 									theme.palette.mode === 'dark'
 										? ' 14px 14px 28px #090909,-14px -14px 28px #191919;'
-										: '14px 14px 28px #a3a3a4,-14px -14px 28px #ffffff',
+										: '14px 14px 28px #c8c8c9,-14px -14px 28px #fefeff',
 							}}>
 							{game}
 						</Item>

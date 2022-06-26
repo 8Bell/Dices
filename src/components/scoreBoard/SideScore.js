@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -12,6 +12,7 @@ export default function SideScore({
 	setSideScoreOpen,
 	drawerWidth,
 	isMobile,
+	isTablet,
 	isFilled,
 	handleFill,
 	dices,
@@ -41,6 +42,7 @@ export default function SideScore({
 		justifyContent: 'flex-end',
 	}));
 
+	const theme = useTheme();
 	const handleDrawerClose = () => {
 		setSideScoreOpen(false);
 	};
@@ -58,7 +60,11 @@ export default function SideScore({
 			variant='persistent'
 			anchor='right'
 			open={sideScoreOpen}>
-			<DrawerHeader>
+			<DrawerHeader
+				sx={{
+					borderTop: isTablet ? '1px solid' : 'none',
+					borderColor: theme.palette.divider,
+				}}>
 				<Typography
 					variant='h6'
 					noWrap

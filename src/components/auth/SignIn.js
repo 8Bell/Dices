@@ -1,3 +1,4 @@
+import { CheckRounded, CloseRounded } from '@mui/icons-material';
 import {
 	Button,
 	Dialog,
@@ -5,6 +6,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
+	IconButton,
 	TextField,
 	useTheme,
 } from '@mui/material';
@@ -19,6 +21,8 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 
 	const [signIn, setSignIn] = useState(true);
 
+	//--------- INPUT -------------//
+
 	const [userName, setUserName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -27,49 +31,63 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 		const {
 			target: { id, value },
 		} = e;
-		if (id === 'id') {
+		if (id === 'name') {
+			setUserName(value);
 			setEmail(value + '@dice.cloud');
 		} else if (id === 'password') {
 			setPassword(value);
-		} else if (id === 'name') setUserName(value);
+		}
 	};
 
-	//--------- SIGN IN -------------//
+	//--------- SIGN UP -------------//
 
-	const onSignUpSubmit = async (e) => {
+	const handleSignUp = async (e) => {
 		e.preventDefault();
-		console.log('email', email);
-
 		try {
 			if (userName !== '') {
-				const data = await authService.createUserWithEmailAndPassword(
-					email,
-					password
-				);
-				await data.user.updateProfile({
-					displayName: userName,
-				});
-				console.log(data);
-
-				await dbService.collection('users').doc(data.user.uid).set({
-					uid: data.user.uid,
-					email,
-					userName,
-					createdAt: Date.now(),
-					isOnline: true,
-					profileImg: null,
-				});
+				if (userName.length > 12) {
+					const data = await authService.createUserWithEmailAndPassword(
+						email,
+						password
+					);
+					await data.user.updateProfile({
+						displayName: userName,
+					});
+					console.log('uid', data.user.uid);
+					await dbService
+						.collection('users')
+						.doc(data.user.uid)
+						.set({
+							uid: data.user.uid,
+							userName,
+							createdAt: Date.now(),
+							isOnline: true,
+							profileImg: null,
+							bestScore: 0,
+							totalScore: 0,
+							playtimes: 0,
+							Rank: 0,
+						})
+						.then(() => {
+							console.log('Document successfully written!');
+						})
+						.catch((error) => {
+							console.log('Error writing document: ', error);
+						});
+				} else {
+					alert('Please enter your name in 12 characters or less.');
+				}
 			} else {
-				alert('이름을 입력해주세요.');
+				alert('Please enter your name.');
 			}
 		} catch (error) {
 			console.log(error);
 			switch (error.code) {
 				case 'auth/email-already-in-use':
-					alert('This ID is already in use.');
+					alert('This Name is already in use.');
 					break;
 				case 'auth/invalid-email':
-					alert('This ID is not available.');
+					alert('This Name is not available.');
 					break;
 				case 'auth/operation-not-allowed':
 					alert('Your subscription has been stopped.');
@@ -78,7 +96,34 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					alert('Please enter a password with at least 6 digits');
 					break;
 				default:
-					alert('Please enter a valid ID or password.');
+					alert('Please enter a valid Name or password.');
+			}
+		}
+	};
+
+	//---------------SIGN IN-------------------//
+
+	const handleSignIn = async (e) => {
+		e.preventDefault();
+		try {
+			await authService.signInWithEmailAndPassword(email, password);
+		} catch (error) {
+			console.log(error);
+			switch (error.code) {
+				case 'auth/wrong-password':
+					alert('The Name or Password is incorrect.');
+					break;
+				case 'auth/user-not-found':
+					alert('The Name or Password is incorrect.');
+					break;
+				case 'auth/invalid-email':
+					alert('The Name form is not vaild.');
+					break;
+				case 'auth/too-many-requests':
+					alert('Please try again later');
+					break;
+				default:
+					alert('An unknown error occurred.');
 			}
 		}
 	};
@@ -93,63 +138,61 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 						? 'rgba(17, 17, 17, 0.5)'
 						: 'rgba(227, 227, 227, 0.4)',
 				backdropFilter: 'blur(5px)',
-				transitionDuration: '0.5s',
+				transitionDuration: '0.8s',
 			}}>
 			<DialogTitle
 				sx={{
 					backgroundColor: theme.palette.background.paper,
 					color: theme.palette.text.primary,
 					backdropFilter: 'opacity(0.3)',
-					pt: 4,
+					pt: 3,
+					pb: 0,
+					mb: 0,
 					fontSize: 22,
 					fontWight: 800,
 				}}>
 				{signIn ? 'Sign In' : 'Sign up'}
 			</DialogTitle>
+			<IconButton
+				onClick={handleClose}
+				sx={{ position: 'absolute', top: 15, right: 0, mr: 3 }}>
+				<CloseRounded />
+			</IconButton>
 			<DialogContent
 				sx={{
 					backgroundColor: theme.palette.background.paper,
 					color: theme.palette.text.secondary,
 				}}>
-				{signIn && (
-					<>
-						<DialogContentText>
-							Join us and save your score to compete with your friends.
-						</DialogContentText>
-
-						<TextField
-							onChange={onChange}
-							margin='nomal'
-							id='name'
-							label='Name'
-							type='text'
-							fullWidth
-							variant='standard'
-							color='info'
-							sx={{
-								mt: 2,
-							}}
-						/>
-					</>
+				{!signIn && (
+					<DialogContentText sx={{ mb: 2 }}>
+						{[
+							'Join us and save your score',
+							<br />,
+							'to compete with your friends.',
+						]}
+					</DialogContentText>
 				)}
+
 				<TextField
 					onChange={onChange}
 					margin='nomal'
-					id='id'
-					label='ID'
+					id='name'
+					label='Name'
+					helperText={!signIn ? 'Under 12 letters ' : ''}
 					type='text'
 					fullWidth
 					variant='standard'
 					color='info'
 					sx={{
-						mt: 2,
+						mt: 0,
 					}}
 				/>
 				<TextField
 					onChange={onChange}
 					margin='normal'
 					id='password'
-					label='Password (+6)'
+					label='Password'
+					helperText={!signIn ? ' Be at least 6 letters ' : ''}
 					type='password'
 					fullWidth
 					variant='standard'
@@ -173,16 +216,14 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 						left: 0,
 						ml: 2,
 					}}>
-					{signIn ? 'Sign in' : 'Sign up'}
+					{signIn ? "i don't have" : 'i already have '}
 				</Button>
-				<Button onClick={handleClose} sx={{ color: theme.palette.text.primary }}>
-					Cancel
-				</Button>
-				<Button
-					onClick={signIn ? onSignUpSubmit : onSignUpSubmit}
-					sx={{ color: theme.palette.text.primary, mr: 2 }}>
-					Sign up
-				</Button>
+
+				<IconButton
+					onClick={signIn ? handleSignIn : handleSignUp}
+					sx={{ color: theme.palette.text.primary, ml: 0, mr: 2 }}>
+					<CheckRounded />
+				</IconButton>
 			</DialogActions>
 		</Dialog>
 	);

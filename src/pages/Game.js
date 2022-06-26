@@ -231,7 +231,7 @@ export default function Game({
 				dices.includes(num) && i++;
 				dices.indexOf(num) !== dices.lastIndexOf(num) && j++;
 			});
-			i === 1 || (i === 2 && j === 2)
+			(i === 1 || (i === 2 && j === 2)) && !dices.includes('l')
 				? setFullHouse(dices.reduce((dice, cv) => dice + cv))
 				: setFullHouse(0);
 		}
@@ -326,8 +326,6 @@ export default function Game({
 		total,
 		yachu,
 	]);
-
-	console.log(yachu, total);
 
 	//----------FINE----------//
 	// eslint-disable-next-line no-unused-vars
@@ -437,7 +435,7 @@ export default function Game({
 
 				<Grid container>
 					{!isTablet && !isMobile && (
-						<Grid xs={3} sx={{ minWidth: 340 }}>
+						<Grid xs={3} sx={{ minWidth: 340, ml: -1, mt: -1 }}>
 							<Score
 								isMobile={isMobile}
 								isFilled={isFilled}

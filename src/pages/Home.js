@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Rooms from '../components/Rooms';
+
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
 import { useTheme } from '@emotion/react';
 import PWAPrompt from 'react-ios-pwa-prompt';
+import GameMenu from '../components/GameMenu';
 
 export default function Home({
 	isLoggedIn,
 	setIsLoggedIn,
 	drawerWidth,
 	isMobile,
+	isTablet,
 	ColorModeContext,
 }) {
 	const theme = useTheme();
@@ -73,7 +75,7 @@ export default function Home({
 			/>
 			<Main open={open}>
 				<DrawerHeader />
-				<Rooms />
+				<GameMenu isLoggedIn={isLoggedIn} isMobile={isMobile} isTablet={isTablet} />
 				<PWAPrompt
 					promptOnVisit={1}
 					timesToShow={10}

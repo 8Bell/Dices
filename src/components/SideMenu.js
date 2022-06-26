@@ -7,23 +7,21 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
+
 import ListItemText from '@mui/material/ListItemText';
 import {
 	Brightness4,
 	Brightness7,
-	Casino,
-	CasinoOutlined,
 	ChevronLeftRounded,
-	LoginRounded,
-	LogoutRounded,
+	CloudOffRounded,
+	CloudUploadRounded,
 	MusicNoteRounded,
 	MusicOffRounded,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { Howler } from 'howler';
 import SignIn from './auth/SignIn';
-import { authService } from '../fbase';
+import { authService, dbService } from '../fbase';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -67,7 +65,57 @@ export default function SideMenu({
 			user ? setIsLoggedIn(true) : setIsLoggedIn(false);
 		});
 		console.log('isLoggedIn', isLoggedIn);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	const handleLogOut = () => {
+		authService.signOut();
+		console.log('isLoggedIn', isLoggedIn);
+	};
+
+	//--------------CURRENT USER ---------------//
+
+	const [myUid, setMyUid] = useState('');
+
+	useEffect(() => {
+		authService.currentUser !== null && setMyUid(authService.currentUser.uid);
+	}, []);
+
+	//-----------------USERS------------------//
+
+	const [users, setUsers] = useState([]);
+	const [members, setMembers] = useState([]);
+
+	useEffect(() => {
+		dbService
+			.collection('users')
+			.orderBy('Rank')
+			.onSnapshot((snapshot) => {
+				const dbUsers = snapshot.docs.map((doc) => ({
+					...doc.data(),
+					id: doc.id,
+					checked: false,
+				}));
+				setUsers(dbUsers);
+			});
+	}, []);
+
+	const [me, setMe] = useState([]);
+
+	useEffect(() => {
+		setMe(users.filter((user) => user.id === myUid));
+		setMembers(users.filter((user) => user.id !== myUid));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [users]);
+
+	console.log('me', me);
+	console.log('members', members);
+	console.log('myUid', myUid);
+
+	//-----local best score ----//
+	const bestScore = localStorage.getItem('BestScore')
+		? JSON.parse(localStorage.getItem('BestScore'))
+		: 0;
 
 	return (
 		<Drawer
@@ -99,24 +147,46 @@ export default function SideMenu({
 				</IconButton>
 			</DrawerHeader>
 			<Divider />
+
 			<ListItem disablePadding>
 				<ListItemButton>
-					<ListItemText primary='Me' />
-					<ListItemIcon>
-						<Casino />
-					</ListItemIcon>
+					<ListItemText
+						primary={me[0] ? me[0].userName : 'player'}
+						sx={{ textAlign: 'left' }}
+					/>
+					<ListItemText
+						primary={me[0] ? me[0].bestScore : bestScore}
+						sx={{ textAlign: 'right', position: 'absolute', right: 70 }}
+					/>
+					<ListItemText
+						primary={me[0] ? me[0].Rank : 0}
+						sx={{ textAlign: 'right' }}
+					/>
 				</ListItemButton>
 			</ListItem>
+
 			<Divider />
 
 			<List>
-				{[].map((text, index) => (
-					<ListItem key={text} disablePadding>
+				{members.map((member, idx) => (
+					<ListItem key={idx} disablePadding>
 						<ListItemButton>
-							<ListItemText primary={text} />
-							<ListItemIcon>
-								{index % 2 === 0 ? <Casino /> : <CasinoOutlined />}
-							</ListItemIcon>
+							<ListItemText
+								primary={member.userName}
+								sx={{ textAlign: 'left' }}
+							/>
+							<ListItemText
+								primary={member.bestScore}
+								sx={{
+									textAlign: 'right',
+									position: 'absolute',
+									right: 70,
+								}}
+							/>
+							<ListItemText
+								primary={member.Rank}
+								sx={{ textAlign: 'right' }}
+							/>
 						</ListItemButton>
 					</ListItem>
 				))}
@@ -145,9 +215,9 @@ export default function SideMenu({
 				</IconButton>
 				<IconButton
 					sx={{ position: 'absolute', right: 15, bottom: 10 }}
-					onClick={handleClickOpen}
+					onClick={isLoggedIn ? handleLogOut : handleClickOpen}
 					color='inherit'>
-					{isLoggedIn ? <LogoutRounded /> : <LoginRounded />}
+					{isLoggedIn ? <CloudOffRounded /> : <CloudUploadRounded />}
 				</IconButton>
 				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} />
 			</Box>

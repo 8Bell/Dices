@@ -157,19 +157,20 @@ const App = () => {
 				<Route
 					index
 					element={
-						<Home
+						<Game
 							isLoggedIn={isLoggedIn}
 							setIsLoggedIn={setIsLoggedIn}
 							ColorModeContext={ColorModeContext}
 							drawerWidth={drawerWidth}
 							isMobile={isMobile}
+							isTablet={isTablet}
 						/>
 					}
 				/>
 				<Route
-					path='/game'
+					path='/home'
 					element={
-						<Game
+						<Home
 							isLoggedIn={isLoggedIn}
 							setIsLoggedIn={setIsLoggedIn}
 							ColorModeContext={ColorModeContext}

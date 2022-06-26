@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AttachFileRounded, ExitToAppRounded, ReplayRounded } from '@mui/icons-material';
+import { AttachFileRounded, ClearRounded } from '@mui/icons-material';
 import { Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import dl from '../../img/dl.gif';
 import d0 from '../../img/d0.png';
 import d1 from '../../img/d1.png';
@@ -37,8 +37,6 @@ export default function Board({
 	total,
 }) {
 	const theme = useTheme();
-	const navigate = useNavigate();
-
 	const Item = styled(Paper)(({ theme }) => ({
 		//	backgroundColor: theme.palette.background,
 		// border: 'solid 1px',
@@ -58,16 +56,16 @@ export default function Board({
 
 	//----------Quit Game----------//
 
-	const handleQuitGame = () => {
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
-		setDices(diceArr);
-		setIsHold(new Array(5).fill(false));
-		setIsFilled(new Array(15).fill(false));
-		setLeft(3);
-		setTimeout(() => {
-			navigate('/');
-		}, 200);
-	};
+	// const handleQuitGame = () => {
+	// 	sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+	// 	setDices(diceArr);
+	// 	setIsHold(new Array(5).fill(false));
+	// 	setIsFilled(new Array(15).fill(false));
+	// 	setLeft(3);
+	// 	setTimeout(() => {
+	// 		navigate('/');
+	// 	}, 200);
+	// };
 
 	//----------New Game----------//
 
@@ -219,24 +217,6 @@ export default function Board({
 				))}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
-				{/* <Typography
-					align='center'
-					sx={{
-						fontSize: 20,
-						mt: 3,
-						backdropFilter: isFine
-							? 'none'
-							: theme.palette.mode === 'dark'
-							? 'brightness(2)'
-							: 'brightness(0.95)',
-						pt: 4.3,
-
-						width: 100,
-						height: 100,
-						borderRadius: 30,
-					}}>
-					{!isFine && left + ' Left'}
-				</Typography> */}
 				<Button
 					//className={left !== 0 && !isFine ? 'bg' : 'none'}
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
@@ -259,13 +239,6 @@ export default function Board({
 						<>
 							{total} <br /> Point
 							<br />
-							<ReplayRounded
-								sx={{
-									position: 'absolute',
-									fontSize: 50,
-									fontWight: 100,
-								}}
-							/>
 						</>
 					) : (
 						[left, <br />, ' Left']
@@ -285,9 +258,16 @@ export default function Board({
 				<IconButton
 					variant={isFine ? 'contained' : 'outlined'}
 					color='inherit'
-					onClick={isFine ? handleNewGame : handleQuitGame}
-					sx={{ position: 'absolute', bottom: 40 }}>
-					{isFine ? <ReplayRounded /> : <ExitToAppRounded />}
+					onClick={handleNewGame}
+					sx={{
+						position: 'absolute',
+						bottom: 40,
+						boxShadow:
+							theme.palette.mode === 'dark'
+								? ' 9px 9px 18px #0a0a0a,-9px -9px 18px #181818'
+								: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;',
+					}}>
+					<ClearRounded />
 				</IconButton>
 			</Stack>
 		</Paper>
