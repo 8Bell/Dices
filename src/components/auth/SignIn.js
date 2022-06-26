@@ -87,7 +87,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					alert('Please enter a password with at least 6 digits');
 					break;
 				default:
-					alert('Please enter a valid Name or password.');
+					alert('An unknown error occurred.');
 			}
 		}
 	};
