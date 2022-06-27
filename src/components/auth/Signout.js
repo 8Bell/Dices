@@ -10,15 +10,23 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { authService } from '../../fbase';
+import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import effectSound from '../../hooks/effectSound';
 
 export default function SignOut({ modal2Open, setModal2Open }) {
+	//-----------EFFECT SOUNDS-------------//
+
+	const smallFlatSound = effectSound(SmallFlatSound, 1);
+
 	const theme = useTheme();
 
 	const handleClose = () => {
+		smallFlatSound.play();
 		setModal2Open(false);
 	};
 
 	const handleLogOut = () => {
+		smallFlatSound.play();
 		authService.signOut();
 	};
 
@@ -67,7 +75,10 @@ export default function SignOut({ modal2Open, setModal2Open }) {
 					pb: 5,
 				}}>
 				<IconButton
-					onClick={() => setModal2Open(false)}
+					onClick={() => {
+						setModal2Open(false);
+						smallFlatSound.play();
+					}}
 					sx={{
 						color: theme.palette.text.primary,
 						ml: 5,

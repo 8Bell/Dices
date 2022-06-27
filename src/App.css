@@ -164,21 +164,21 @@
 	justify-content: center;
 	background-size: 300% 300%;
 	background-image: linear-gradient(
-		-40deg,
-		rgba(50, 50, 50, 0.1) 0%,
-		rgba(100, 100, 100, 0.3) 20%,
-		rgba(150, 150, 150, 0.7) 30%,
+		-60deg,
+		rgba(30, 30, 30, 0.4) 0%,
+		rgba(100, 100, 100, 0.6) 20%,
+		rgba(130, 130, 130, 0.7) 30%,
 		rgba(200, 200, 200, 0.9) 50%,
-		rgba(150, 150, 150, 0.7) 70%,
-		rgba(100, 100, 100, 0.3) 80%,
-		rgba(50, 50, 50, 0.1) 100%
+		rgba(130, 130, 130, 0.7) 70%,
+		rgba(100, 100, 100, 0.6) 80%,
+		rgba(30, 30, 30, 0.4) 100%
 	);
 	animation: AnimateBG 4s ease infinite;
 }
 
 @keyframes AnimateBG {
 	0% {
-		background-position: 250% 0%;
+		background-position: 300% 0%;
 	}
 
 	100% {

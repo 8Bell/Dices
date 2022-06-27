@@ -13,7 +13,7 @@ import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
 import { authService, dbService } from '../fbase';
 import effectSound from '../hooks/effectSound';
-import HoldSound from '../sounds/hold.mp3';
+import FilledSound from '../sounds/filled.mp3';
 
 export default function Game({
 	isLoggedIn,
@@ -63,7 +63,7 @@ export default function Game({
 
 	//-----------EFFECT SOUNDS-------------//
 
-	const putSound = effectSound(HoldSound, 1);
+	const filledSound = effectSound(FilledSound, 1);
 
 	//----------DICES------------//
 
@@ -103,7 +103,7 @@ export default function Game({
 	const handleFill = (idx) => {
 		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
 		setIsFilled(newFilled);
-		putSound.play();
+		filledSound.play();
 		sessionStorage.removeItem('dices', 'isHold', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
@@ -129,7 +129,7 @@ export default function Game({
 			(isTablet || isMobile) &&
 			setTimeout(() => {
 				setSideScoreOpen(true);
-			}, 4000);
+			}, 3500);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [left]);
 

@@ -13,7 +13,14 @@ import {
 import React, { useState } from 'react';
 import { authService, dbService } from '../../fbase';
 
+import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import effectSound from '../../hooks/effectSound';
+
 export default function SignIn({ modalOpen, setModalOpen }) {
+	//-----------EFFECT SOUNDS-------------//
+
+	const smallFlatSound = effectSound(SmallFlatSound, 1);
+
 	const theme = useTheme();
 	const handleClose = () => {
 		setModalOpen(false);
@@ -42,6 +49,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 	//--------- SIGN UP -------------//
 
 	const handleSignUp = async (e) => {
+		smallFlatSound.play();
 		e.preventDefault();
 		try {
 			if (userName !== '') {
@@ -95,6 +103,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 	//---------------SIGN IN-------------------//
 
 	const handleSignIn = async (e) => {
+		smallFlatSound.play();
 		e.preventDefault();
 		try {
 			await authService.signInWithEmailAndPassword(email, password);
@@ -145,7 +154,10 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 				{signIn ? 'Sign In' : 'Sign up'}
 			</DialogTitle>
 			<IconButton
-				onClick={handleClose}
+				onClick={() => {
+					handleClose();
+					smallFlatSound.play();
+				}}
 				sx={{ position: 'absolute', top: 15, right: 0, mr: 3 }}>
 				<CloseRounded />
 			</IconButton>
@@ -200,7 +212,10 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					pb: 3,
 				}}>
 				<Button
-					onClick={() => setSignIn(!signIn)}
+					onClick={() => {
+						setSignIn(!signIn);
+						smallFlatSound.play();
+					}}
 					sx={{
 						color: theme.palette.text.primary,
 						position: 'absolute',

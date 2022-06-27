@@ -9,6 +9,8 @@ import {
 	useTheme,
 } from '@mui/material';
 import React from 'react';
+import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import effectSound from '../../hooks/effectSound';
 
 export default function Confirm({
 	modalOpen,
@@ -20,14 +22,20 @@ export default function Confirm({
 	setIsFine,
 	setIsStart,
 }) {
+	//-----------EFFECT SOUNDS-------------//
+
+	const smallFlatSound = effectSound(SmallFlatSound, 1);
+
 	const theme = useTheme();
 
 	const handleClose = () => {
+		smallFlatSound.play();
 		setModalOpen(false);
 	};
 	const diceArr = [0, 0, 0, 0, 0];
 
 	const handleNewGame = () => {
+		smallFlatSound.play();
 		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
@@ -82,7 +90,10 @@ export default function Confirm({
 					pb: 5,
 				}}>
 				<IconButton
-					onClick={() => setModalOpen(false)}
+					onClick={() => {
+						setModalOpen(false);
+						smallFlatSound.play();
+					}}
 					sx={{
 						color: theme.palette.text.primary,
 						ml: 5,

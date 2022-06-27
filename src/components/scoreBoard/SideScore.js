@@ -6,6 +6,8 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { ChevronRightRounded } from '@mui/icons-material';
 import Score from './Score';
+import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import effectSound from '../../hooks/effectSound';
 
 export default function SideScore({
 	sideScoreOpen,
@@ -43,6 +45,10 @@ export default function SideScore({
 		justifyContent: 'flex-end',
 	}));
 
+	//-----------EFFECT SOUNDS-------------//
+
+	const smallFlatSound = effectSound(SmallFlatSound, 1);
+
 	const theme = useTheme();
 	const handleDrawerClose = () => {
 		setSideScoreOpen(false);
@@ -77,7 +83,11 @@ export default function SideScore({
 					}}>
 					Score
 				</Typography>
-				<IconButton onClick={handleDrawerClose}>
+				<IconButton
+					onClick={() => {
+						handleDrawerClose();
+						smallFlatSound.play();
+					}}>
 					<ChevronRightRounded fontSize='large' />
 				</IconButton>
 			</DrawerHeader>

@@ -24,8 +24,11 @@ import Confirm from '../modal/Confilm';
 import effectSound from '../../hooks/effectSound';
 
 import HoldSound from '../../sounds/hold.mp3';
+
 import PutSound from '../../sounds/put.mp3';
 import ShakeSound from '../../sounds/shake.mp3';
+import BigButton from '../../sounds/bigButton.mp3';
+import SmallButton from '../../sounds/smallButton.mp3';
 
 export default function Board({
 	isLoggedIn,
@@ -80,9 +83,12 @@ export default function Board({
 
 	//-----------EFFECT SOUNDS-------------//
 
-	const holdSound = effectSound(HoldSound, 0.4);
-	const putSound = effectSound(PutSound, 0.15);
-	const shakeSound = effectSound(ShakeSound, 0.35);
+	const holdSound = effectSound(HoldSound, 1.0);
+
+	const putSound = effectSound(PutSound, 0.1);
+	const shakeSound = effectSound(ShakeSound, 0.4);
+	const smallButton = effectSound(SmallButton, 1);
+	const bigButton = effectSound(BigButton, 1);
 
 	//--------------Regame--------------//
 
@@ -118,6 +124,7 @@ export default function Board({
 		const newDice = await dices.map((dice, idx) =>
 			isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
 		);
+
 		shakeSound.play();
 		setDices(lodingDice);
 		setTimeout(() => {
@@ -315,8 +322,16 @@ export default function Board({
 					color='inherit'
 					onClick={
 						left !== 0 && !isFine
-							? handleChangeDice
-							: isFine && handleReGame
+							? () => {
+									handleChangeDice();
+									bigButton.play();
+							  }
+							: isFine
+							? () => {
+									handleReGame();
+									bigButton.play();
+							  }
+							: () => bigButton.play()
 					}
 					sx={{
 						height: 150,
@@ -351,7 +366,10 @@ export default function Board({
 				<IconButton
 					variant={isFine ? 'contained' : 'outlined'}
 					color='inherit'
-					onClick={() => setModalOpen(true)}
+					onClick={() => {
+						smallButton.play();
+						setModalOpen(true);
+					}}
 					sx={{
 						position: 'absolute',
 						bottom: 40,

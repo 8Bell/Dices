@@ -40,6 +40,8 @@ import l4 from '../img/l4.png';
 import l5 from '../img/l5.png';
 import l6 from '../img/l6.png';
 import SignOut from './auth/Signout';
+import SmallFlatSound from '../sounds/smallFlat.mp3';
+import effectSound from '../hooks/effectSound';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -51,6 +53,10 @@ export default function SideMenu({
 	me,
 	members,
 }) {
+	//-----------EFFECT SOUNDS-------------//
+
+	const smallFlatSound = effectSound(SmallFlatSound, 1);
+
 	const theme = useTheme();
 	const colorMode = useContext(ColorModeContext);
 
@@ -64,12 +70,14 @@ export default function SideMenu({
 	}));
 
 	const handleDrawerClose = () => {
+		smallFlatSound.play();
 		setOpen(false);
 	};
 
 	const [mute, setMute] = useState(false);
 
 	const handleChangrVolum = () => {
+		smallFlatSound.play();
 		mute ? Howler.volume(0.5) : Howler.volume(0);
 		setMute(!mute);
 	};
@@ -78,6 +86,7 @@ export default function SideMenu({
 	const [modal2Open, setModal2Open] = useState(false);
 
 	const handleClickOpen = () => {
+		smallFlatSound.play();
 		setModalOpen(true);
 	};
 
@@ -211,7 +220,10 @@ export default function SideMenu({
 				<Divider />
 				<IconButton
 					sx={{ position: 'absolute', left: 15, bottom: 10 }}
-					onClick={colorMode.toggleColorMode}
+					onClick={() => {
+						colorMode.toggleColorMode();
+						smallFlatSound.play();
+					}}
 					color='inherit'>
 					{theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
 				</IconButton>
@@ -223,7 +235,14 @@ export default function SideMenu({
 				</IconButton>
 				<IconButton
 					sx={{ position: 'absolute', right: 15, bottom: 10 }}
-					onClick={isLoggedIn ? () => setModal2Open(true) : handleClickOpen}
+					onClick={
+						isLoggedIn
+							? () => {
+									setModal2Open(true);
+									smallFlatSound.play();
+							  }
+							: handleClickOpen
+					}
 					color='inherit'>
 					{isLoggedIn ? <CloudOffRounded /> : <CloudUploadRounded />}
 				</IconButton>

@@ -6,6 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import { EmojiEventsRounded, SportsScore } from '@mui/icons-material';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@emotion/react';
+import SmallFlatSound from '../sounds/smallFlat.mp3';
+import effectSound from '../hooks/effectSound';
 
 export default function Navbar({
 	open,
@@ -35,6 +37,10 @@ export default function Navbar({
 		}),
 	}));
 
+	//-----------EFFECT SOUNDS-------------//
+
+	const smallFlatSound = effectSound(SmallFlatSound, 1);
+
 	const handleDrawerOpen = () => {
 		setOpen(true);
 	};
@@ -63,7 +69,10 @@ export default function Navbar({
 					<IconButton
 						color='inherit'
 						ariaLabel='open drawer'
-						onClick={handleDrawerOpen}
+						onClick={() => {
+							handleDrawerOpen();
+							smallFlatSound.play();
+						}}
 						edge='start'
 						sx={{ mr: 2, ...(open && { display: 'none' }) }}>
 						<EmojiEventsRounded sx={{ fontSize: 25 }} />
@@ -72,7 +81,10 @@ export default function Navbar({
 						<IconButton
 							color='inherit'
 							ariaLabel='open drawer'
-							onClick={handleScoreOpen}
+							onClick={() => {
+								handleScoreOpen();
+								smallFlatSound.play();
+							}}
 							edge='end'
 							sx={{ mr: 0.5, position: 'absolute', right: 0 }}>
 							<SportsScore sx={{ fontSize: 26 }} />
