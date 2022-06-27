@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { AttachFileRounded, AutorenewRounded, ClearRounded } from '@mui/icons-material';
+import { AttachFileRounded, ClearRounded } from '@mui/icons-material';
 import { Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
