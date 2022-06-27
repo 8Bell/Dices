@@ -12,6 +12,8 @@ import { useTheme } from '@emotion/react';
 import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
 import { authService, dbService } from '../fbase';
+import effectSound from '../hooks/effectSound';
+import HoldSound from '../sounds/hold.mp3';
 
 export default function Game({
 	isLoggedIn,
@@ -59,6 +61,10 @@ export default function Game({
 
 	//-----------------PVP-----------------//
 
+	//-----------EFFECT SOUNDS-------------//
+
+	const putSound = effectSound(HoldSound, 1);
+
 	//----------DICES------------//
 
 	const diceArr = [0, 0, 0, 0, 0];
@@ -97,6 +103,7 @@ export default function Game({
 	const handleFill = (idx) => {
 		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
 		setIsFilled(newFilled);
+		putSound.play();
 		sessionStorage.removeItem('dices', 'isHold', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
@@ -122,7 +129,7 @@ export default function Game({
 			(isTablet || isMobile) &&
 			setTimeout(() => {
 				setSideScoreOpen(true);
-			}, 2500);
+			}, 4000);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [left]);
 
@@ -141,7 +148,7 @@ export default function Game({
 	const [fullHouse, setFullHouse] = useState(0); //isFilled 10
 	const [sStraght, setSStraght] = useState(0); //isFilled 11
 	const [lStraght, setLStraght] = useState(0); //isFilled 12
-	const [yachu, setYachu] = useState(0); //isFilled 13
+	const [yacht, setYacht] = useState(0); //isFilled 13
 	const [total, setTotal] = useState(0);
 
 	//ACE //isFilled 0
@@ -276,7 +283,7 @@ export default function Game({
 		}
 	}, [dices, isFilled]);
 
-	//YACHU //isFilled 13
+	//Yacht //isFilled 13
 	useEffect(() => {
 		if (!isFilled[13]) {
 			let i = 0;
@@ -284,7 +291,7 @@ export default function Game({
 				dices.includes(num) && i++;
 				dices.includes('l') && i--;
 			});
-			i === 1 ? setYachu(50) : setYachu(0);
+			i === 1 ? setYacht(50) : setYacht(0);
 		}
 	}, [dices, isFilled]);
 
@@ -305,7 +312,7 @@ export default function Game({
 			fullHouse,
 			sStraght,
 			lStraght,
-			yachu,
+			yacht,
 			total,
 		];
 		isFilled.map((filled, idx) => {
@@ -328,7 +335,7 @@ export default function Game({
 		subTotal,
 		threes,
 		total,
-		yachu,
+		yacht,
 	]);
 
 	//---------------------FINE--------------------//
@@ -483,7 +490,7 @@ export default function Game({
 				fullHouse={fullHouse}
 				sStraght={sStraght}
 				lStraght={lStraght}
-				yachu={yachu}
+				yacht={yacht}
 				subTotal={subTotal}
 				bonus={bonus}
 				total={total}
@@ -511,7 +518,7 @@ export default function Game({
 								fullHouse={fullHouse}
 								sStraght={sStraght}
 								lStraght={lStraght}
-								yachu={yachu}
+								yacht={yacht}
 								subTotal={subTotal}
 								bonus={bonus}
 								total={total}
@@ -559,7 +566,7 @@ export default function Game({
 								fullHouse={fullHouse}
 								sStraght={sStraght}
 								lStraght={lStraght}
-								yachu={yachu}
+								yacht={yacht}
 								subTotal={subTotal}
 								bonus={bonus}
 							/>

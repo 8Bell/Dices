@@ -29,7 +29,7 @@ export default function SideScore({
 	fullHouse,
 	sStraght,
 	lStraght,
-	yachu,
+	yacht,
 	total,
 	left,
 	PVP,
@@ -101,7 +101,7 @@ export default function SideScore({
 				fullHouse={fullHouse}
 				sStraght={sStraght}
 				lStraght={lStraght}
-				yachu={yachu}
+				yacht={yacht}
 				total={total}
 				left={left}
 			/>

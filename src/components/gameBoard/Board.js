@@ -58,7 +58,7 @@ export default function Board({
 	fullHouse,
 	sStraght,
 	lStraght,
-	yachu,
+	yacht,
 }) {
 	const theme = useTheme();
 	const Item = styled(Paper)(({ theme }) => ({
@@ -80,9 +80,9 @@ export default function Board({
 
 	//-----------EFFECT SOUNDS-------------//
 
-	const holdSound = effectSound(HoldSound, 0.3);
-	const putSound = effectSound(PutSound, 0.3);
-	const shakeSound = effectSound(ShakeSound, 0.3);
+	const holdSound = effectSound(HoldSound, 0.4);
+	const putSound = effectSound(PutSound, 0.15);
+	const shakeSound = effectSound(ShakeSound, 0.35);
 
 	//--------------Regame--------------//
 
@@ -161,7 +161,7 @@ export default function Board({
 		fullHouse,
 		sStraght,
 		lStraght,
-		yachu,
+		yacht,
 		total,
 	];
 
@@ -181,7 +181,7 @@ export default function Board({
 				scoreArr[10] > 0 && !isFilled[10] && setAlert('Full House');
 				scoreArr[11] > 0 && !isFilled[11] && setAlert('Small Straght');
 				scoreArr[12] > 0 && !isFilled[12] && setAlert('Large Straght');
-				scoreArr[13] > 0 && !isFilled[13] && setAlert('YACHU');
+				scoreArr[13] > 0 && !isFilled[13] && setAlert('Yacht');
 			}
 		});
 		isFine && setAlert('TOTAL ' + total);

@@ -32,7 +32,7 @@ export default function Score({
 	fullHouse,
 	sStraght,
 	lStraght,
-	yachu,
+	yacht,
 	total,
 	left,
 }) {
@@ -133,7 +133,7 @@ export default function Score({
 		fullHouse,
 		sStraght,
 		lStraght,
-		yachu,
+		yacht,
 		total,
 	];
 
@@ -151,7 +151,7 @@ export default function Score({
 		createData('Full House', fullHouse, ''),
 		createData('S. Straight', sStraght, ''),
 		createData('L. Straight', lStraght, ''),
-		createData('YACHU', yachu, ''),
+		createData('Yacht', yacht, ''),
 		createData('Total', total, '0'),
 	];
 
