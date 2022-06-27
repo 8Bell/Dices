@@ -555,6 +555,7 @@ export default function Game({
 								total={total}
 								isStart={isStart}
 								setIsStart={setIsStart}
+								setSnackBarOpen={setSnackBarOpen}
 								ace={ace}
 								duce={duce}
 								threes={threes}
