@@ -8,7 +8,6 @@ import Game from './pages/Game';
 import './App.css';
 import useSound from './hooks/useSound';
 import BGM from './sounds/bgm.mp3';
-import Pvp from './pages/Pvp';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');

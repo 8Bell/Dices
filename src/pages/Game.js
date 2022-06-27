@@ -58,7 +58,6 @@ export default function Game({
 	});
 
 	//-----------------PVP-----------------//
-	const PVP = false;
 
 	//----------DICES------------//
 
