@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { AttachFileRounded, ClearRounded } from '@mui/icons-material';
+import { AttachFileRounded, AutorenewRounded, ClearRounded } from '@mui/icons-material';
 import { Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
@@ -21,6 +21,11 @@ import l4 from '../../img/l4.png';
 import l5 from '../../img/l5.png';
 import l6 from '../../img/l6.png';
 import Confirm from '../modal/Confilm';
+import effectSound from '../../hooks/effectSound';
+
+import HoldSound from '../../sounds/hold.mp3';
+import PutSound from '../../sounds/put.mp3';
+import ShakeSound from '../../sounds/shake.mp3';
 
 export default function Board({
 	isLoggedIn,
@@ -73,32 +78,37 @@ export default function Board({
 		? JSON.parse(localStorage.getItem('BestScore'))
 		: 0;
 
-	//----------Quit Game----------//
+	//-----------EFFECT SOUNDS-------------//
 
-	// const handleQuitGame = () => {
-	// 	sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
-	// 	setDices(diceArr);
-	// 	setIsHold(new Array(5).fill(false));
-	// 	setIsFilled(new Array(15).fill(false));
-	// 	setLeft(3);
-	// 	setTimeout(() => {
-	// 		navigate('/');
-	// 	}, 200);
-	// };
+	const holdSound = effectSound(HoldSound, 1);
+	const putSound = effectSound(PutSound, 1);
+	const shakeSound = effectSound(ShakeSound, 1);
+
+	//--------------Regame--------------//
+
+	const diceArr = [0, 0, 0, 0, 0];
+
+	const handleReGame = () => {
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
+		setIsFilled(new Array(15).fill(false));
+		setLeft(3);
+		setIsFine(false);
+		setIsStart(true);
+	};
 
 	//----------New Game----------//
 
 	const [modalOpen, setModalOpen] = useState(false);
 
-	// setTimeout(() => {
-	// 	window.location.reload();
-	// }, 200);
-
 	//----------HOLD----------//
 	const handleHoldDice = (idx) => {
 		// setStopGif(true);
 		const newHold = isHold.map((hold, index) => (index === idx ? !hold : hold));
+
 		setIsHold(newHold);
+		isHold[idx] === false ? holdSound.play() : putSound.play();
 	};
 
 	//----------SHAKE----------//
@@ -108,7 +118,7 @@ export default function Board({
 		const newDice = await dices.map((dice, idx) =>
 			isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
 		);
-
+		shakeSound.play();
 		setDices(lodingDice);
 		setTimeout(() => {
 			setDices(newDice);
@@ -174,6 +184,7 @@ export default function Board({
 				scoreArr[13] > 0 && !isFilled[13] && setAlert('YACHU');
 			}
 		});
+		isFine && setAlert('TOTAL ' + total);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFilled]);
 
@@ -300,7 +311,7 @@ export default function Board({
 
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
-					onClick={left !== 0 && !isFine && handleChangeDice}
+					onClick={left !== 0 && !isFine ? handleChangeDice : handleReGame}
 					sx={{
 						height: 150,
 						width: 150,
@@ -314,16 +325,11 @@ export default function Board({
 								? ' 23px 23px 45px #0a0a0a,-23px -23px 45px #181818'
 								: '31px 31px 62px #bcbcbd,-31px -31px 62px #ffffff',
 					}}>
-					{isFine ? (
-						<>
-							{total} <br /> Point
-							<br />
-						</>
-					) : isStart && left === 3 ? (
-						'START'
-					) : (
-						[left, <br />, ' Left']
-					)}
+					{isFine
+						? 'regame'
+						: isStart && left === 3
+						? 'START'
+						: [left, <br />, ' Left']}
 				</Button>
 
 				<Typography
