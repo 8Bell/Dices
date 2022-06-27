@@ -21,7 +21,6 @@ export default function SignOut({ modal2Open, setModal2Open }) {
 	const theme = useTheme();
 
 	const handleClose = () => {
-		smallFlatSound.play();
 		setModal2Open(false);
 	};
 

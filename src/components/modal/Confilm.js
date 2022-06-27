@@ -29,7 +29,6 @@ export default function Confirm({
 	const theme = useTheme();
 
 	const handleClose = () => {
-		smallFlatSound.play();
 		setModalOpen(false);
 	};
 	const diceArr = [0, 0, 0, 0, 0];
