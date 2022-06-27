@@ -80,9 +80,9 @@ export default function Board({
 
 	//-----------EFFECT SOUNDS-------------//
 
-	const holdSound = effectSound(HoldSound, 0.5);
-	const putSound = effectSound(PutSound, 0.5);
-	const shakeSound = effectSound(ShakeSound, 0.5);
+	const holdSound = effectSound(HoldSound, 0.3);
+	const putSound = effectSound(PutSound, 0.3);
+	const shakeSound = effectSound(ShakeSound, 0.3);
 
 	//--------------Regame--------------//
 

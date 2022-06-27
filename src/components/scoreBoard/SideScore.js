@@ -106,28 +106,6 @@ export default function SideScore({
 				left={left}
 			/>
 
-			<Score
-				isMobile={isMobile}
-				isFilled={isFilled}
-				handleFill={handleFill}
-				dices={dices}
-				ace={ace}
-				duce={duce}
-				threes={threes}
-				fours={fours}
-				fives={fives}
-				sixes={sixes}
-				subTotal={subTotal}
-				bonus={bonus}
-				choice={choice}
-				fourOfKind={fourOfKind}
-				fullHouse={fullHouse}
-				sStraght={sStraght}
-				lStraght={lStraght}
-				yachu={yachu}
-				total={total}
-				left={left}
-			/>
 			<Divider />
 		</Drawer>
 	);
