@@ -1,0 +1,24 @@
+@font-face {
+	font-family: 'Comfortaa';
+	font-display: fallback;
+
+	src: url('./Comfortaa-Regular.ttf') url('./Comfortaa-Bold.ttf') url('./Comfortaa-Light.ttf')
+		format('truetype');
+
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SFUIDisplay';
+	font-display: fallback;
+
+	src: url('./SFUIDisplay-Medium.ttf') url('./SFUIDisplay-Black.ttf')
+		url('./SFUIDisplay-Bold.ttf') url('./SFUIDisplay-Heavy.ttf')
+		url('./SFUIDisplay-Light.ttf') url('./SFUIDisplay-Regular.ttf')
+		url('./SFUIDisplay-Semibold.ttf') url('./SFUIDisplay-Thin.ttf')
+		url('./SFUIDisplay-Ultralight.ttf') format('truetype');
+
+	font-weight: 400;
+	font-style: normal;
+}

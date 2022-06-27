@@ -6,6 +6,7 @@ import { authService } from './fbase';
 import Game from './pages/Game';
 // import Home from './pages/Home';
 import './App.css';
+import './fonts/font.css';
 import useSound from './hooks/useSound';
 import BGM from './sounds/bgm.mp3';
 

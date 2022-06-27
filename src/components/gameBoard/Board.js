@@ -48,6 +48,7 @@ export default function Board({
 	total,
 	isStart,
 	setIsStart,
+	setSnackBarOpen,
 	ace,
 	duce,
 	threes,
@@ -102,6 +103,11 @@ export default function Board({
 		setLeft(3);
 		setIsFine(false);
 		setIsStart(true);
+		setSnackBarOpen(false);
+
+		setTimeout(() => {
+			window.location.reload();
+		}, [100]);
 	};
 
 	//----------New Game----------//
@@ -143,10 +149,10 @@ export default function Board({
 			<>
 				{theme.palette.mode === 'dark'
 					? D.map((img, idx) => {
-							<img src={img} alt={idx} style={{ display: 'none' }} />;
+							<img src={img} alt={idx} style={{ height: 0 }} />;
 					  })
 					: L.map((img, idx) => {
-							<img src={img} alt={idx} style={{ display: 'none' }} />;
+							<img src={img} alt={idx} style={{ height: 0 }} />;
 					  })}
 			</>
 		);
