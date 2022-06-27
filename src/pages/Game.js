@@ -57,6 +57,9 @@ export default function Game({
 		return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 	});
 
+	//-----------------PVP-----------------//
+	const PVP = false;
+
 	//----------DICES------------//
 
 	const diceArr = [0, 0, 0, 0, 0];

@@ -195,7 +195,9 @@ export default function Board({
 				height: '90vh',
 				width: '100%',
 				maxWidth: 1000,
-				p: isMobile ? 0 : 2,
+				p: isMobile ? -0 : 2,
+				mt: -8,
+				overflowX: 'hidden',
 			}}>
 			<Stack
 				className={bgShine ? 'bg' : 'none'}
@@ -311,7 +313,11 @@ export default function Board({
 
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
-					onClick={left !== 0 && !isFine ? handleChangeDice : handleReGame}
+					onClick={
+						left !== 0 && !isFine
+							? handleChangeDice
+							: isFine && handleReGame
+					}
 					sx={{
 						height: 150,
 						width: 150,

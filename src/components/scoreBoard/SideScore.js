@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { ChevronRightRounded } from '@mui/icons-material';
 import Score from './Score';
+import PvpScore from './PvpScore';
 
 export default function SideScore({
 	sideScoreOpen,
@@ -32,6 +33,7 @@ export default function SideScore({
 	yachu,
 	total,
 	left,
+	PVP,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -81,7 +83,53 @@ export default function SideScore({
 				</IconButton>
 			</DrawerHeader>
 			<Divider />
-
+			{PVP ? (
+				<PvpScore
+					isMobile={isMobile}
+					isFilled={isFilled}
+					handleFill={handleFill}
+					dices={dices}
+					ace={ace}
+					duce={duce}
+					threes={threes}
+					fours={fours}
+					fives={fives}
+					sixes={sixes}
+					subTotal={subTotal}
+					bonus={bonus}
+					choice={choice}
+					fourOfKind={fourOfKind}
+					fullHouse={fullHouse}
+					sStraght={sStraght}
+					lStraght={lStraght}
+					yachu={yachu}
+					total={total}
+					left={left}
+				/>
+			) : (
+				<Score
+					isMobile={isMobile}
+					isFilled={isFilled}
+					handleFill={handleFill}
+					dices={dices}
+					ace={ace}
+					duce={duce}
+					threes={threes}
+					fours={fours}
+					fives={fives}
+					sixes={sixes}
+					subTotal={subTotal}
+					bonus={bonus}
+					choice={choice}
+					fourOfKind={fourOfKind}
+					fullHouse={fullHouse}
+					sStraght={sStraght}
+					lStraght={lStraght}
+					yachu={yachu}
+					total={total}
+					left={left}
+				/>
+			)}
 			<Score
 				isMobile={isMobile}
 				isFilled={isFilled}
