@@ -445,7 +445,7 @@ export default function Game({
 	console.log('myUid', myUid);
 
 	return (
-		<Box sx={{ display: 'flex', overflowX: 'hidden' }}>
+		<Box sx={{ display: 'flex', overflowX: 'hidden', overflowY: 'hidden' }}>
 			<div
 				class={
 					theme.palette.mode === 'dark'
