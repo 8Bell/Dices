@@ -204,3 +204,10 @@
 .MuiBackdrop-root {
 	background-color: rgba(0, 0, 0, 0) !important;
 }
+
+/* SPEEDIAL */
+
+.MuiSpeedDial-fab {
+	background-color: rgba(0, 0, 0, 0) !important;
+	box-shadow: none !important;
+}

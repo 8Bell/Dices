@@ -171,7 +171,7 @@ export default function Score({
 					minWidth: 300,
 					borderRadius: 0,
 					border: 0,
-					height: 'calc(100vh - 55px)',
+					height: isMobile || isTablet ? 'calc(100vh - 55px)' : 'calc(95vh)',
 				}}
 				size={isMobile ? 'small' : 'medium'}>
 				<TableHead>

@@ -17,8 +17,9 @@ import {
 	CloudUploadRounded,
 	MusicNoteRounded,
 	MusicOffRounded,
+	Settings,
 } from '@mui/icons-material';
-import { Box } from '@mui/material';
+import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { Howler } from 'howler';
 import SignIn from './auth/SignIn';
 import { authService } from '../fbase';
@@ -109,6 +110,49 @@ export default function SideMenu({
 
 	const D = [d0, d1, d2, d3, d4, d5, d6, dl];
 	const L = [l0, l1, l2, l3, l4, l5, l6, ll];
+
+	//-------SPEEDDIAL--------//
+	const actions = [
+		{
+			icon: (
+				<IconButton
+					//sx={{ position: 'absolute', left: 15, bottom: 10 }}
+					onClick={() => {
+						colorMode.toggleColorMode();
+						smallFlatSound.play();
+					}}
+					color='inherit'>
+					{theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+				</IconButton>
+			),
+			name: 'Mode',
+		},
+		{
+			icon: (
+				<IconButton
+					//	sx={{ position: 'absolute', left: 65, bottom: 10 }}
+					onClick={handleChangrVolum}
+					color='inherit'>
+					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
+				</IconButton>
+			),
+			name: 'Bgm',
+		},
+		{
+			icon: (
+				<IconButton
+					sx={{ fontSize: 18, fontWeight: 'bold' }}
+					onClick={() => {
+						setEng(!Eng);
+						smallFlatSound.play();
+					}}
+					color='inherit'>
+					{Eng ? 'EN' : 'KO'}
+				</IconButton>
+			),
+			name: 'Language',
+		},
+	];
 
 	return (
 		<Drawer
@@ -241,30 +285,6 @@ export default function SideMenu({
 					bottom: 0,
 				}}>
 				<Divider />
-				<IconButton
-					sx={{ position: 'absolute', left: 15, bottom: 10 }}
-					onClick={() => {
-						colorMode.toggleColorMode();
-						smallFlatSound.play();
-					}}
-					color='inherit'>
-					{theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
-				</IconButton>
-				<IconButton
-					sx={{ position: 'absolute', left: 65, bottom: 10 }}
-					onClick={handleChangrVolum}
-					color='inherit'>
-					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
-				</IconButton>
-				<IconButton
-					sx={{ position: 'absolute', right: 65, bottom: 10, fontSize: 18 }}
-					onClick={() => {
-						setEng(!Eng);
-						smallFlatSound.play();
-					}}
-					color='inherit'>
-					{Eng ? 'EN' : 'KO'}
-				</IconButton>
 
 				<IconButton
 					sx={{ position: 'absolute', right: 15, bottom: 10 }}
@@ -279,6 +299,30 @@ export default function SideMenu({
 					color='inherit'>
 					{isLoggedIn ? <CloudOffRounded /> : <CloudUploadRounded />}
 				</IconButton>
+
+				<SpeedDial
+					ariaLabel='SpeedDial openIcon example'
+					sx={{
+						position: 'absolute',
+						bottom: 4,
+						left: 10,
+					}}
+					icon={
+						<SpeedDialIcon
+							icon={<Settings sx={{ fontSize: 27 }} />}
+							openIcon={<Settings sx={{ fontSize: 27 }} />}
+						/>
+					}
+					onOpen={() => smallFlatSound.play()}>
+					{actions.map((action) => (
+						<SpeedDialAction
+							key={action.name}
+							icon={action.icon}
+							tooltipTitle={action.name}
+						/>
+					))}
+				</SpeedDial>
+
 				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} Eng={Eng} />
 				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} Eng={Eng} />
 			</Box>
