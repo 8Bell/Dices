@@ -43,7 +43,7 @@ import l6 from '../static/img/l6.png';
 import SignOut from './auth/Signout';
 import SmallFlatSound from '../static/sounds/smallFlat.mp3';
 import effectSound from '../hooks/effectSound';
-import UserInformation from './modal/UserInformation';
+//import UserInformation from './modal/UserInformation';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -74,7 +74,7 @@ export default function SideMenu({
 
 	const [modalOpen, setModalOpen] = useState(false); // login
 	const [modal2Open, setModal2Open] = useState(false); //logout
-	const [modal3Open, setModal3Open] = useState(false); //userinfo
+	//const [modal3Open, setModal3Open] = useState(false); //userinfo
 	const theme = useTheme();
 	const colorMode = useContext(ColorModeContext);
 
@@ -106,15 +106,15 @@ export default function SideMenu({
 	}, []);
 
 	//------ HANDLE MEMBER CLICK ------//
-	const [propIdx, setPropIdx] = useState(0);
+	// const [propIdx, setPropIdx] = useState(0);
 
-	const handleMemberClick = (idx) => {
-		smallFlatSound.play();
-		setPropIdx(idx);
-		setTimeout(() => {
-			setModal3Open(true);
-		}, [100]);
-	};
+	// const handleMemberClick = (idx) => {
+	// 	smallFlatSound.play();
+	// 	setPropIdx(idx);
+	// 	setTimeout(() => {
+	// 		setModal3Open(true);
+	// 	}, [100]);
+	// };
 
 	//-----local best score ----//
 	const bestScore = localStorage.getItem('BestScore')
@@ -267,9 +267,10 @@ export default function SideMenu({
 				{members.map((member, idx) => (
 					<ListItem key={idx} disablePadding>
 						<ListItemButton
-							onClick={() => {
-								handleMemberClick(idx);
-							}}>
+						// onClick={() => {
+						// 	handleMemberClick(idx);
+						// }}
+						>
 							<ListItemText
 								primary={member.userName}
 								sx={{ textAlign: 'left' }}
