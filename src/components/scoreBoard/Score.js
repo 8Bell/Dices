@@ -46,13 +46,13 @@ export default function Score({
 			fontSize: 16,
 			borderBottom: '1px solid',
 			borderBottomColor: theme.palette.divider,
-			lineHeight: isMobile ? '3.9vh' : '2vh',
+			//	lineHeight: isMobile ? '3.9vh' : '2vh',
 		},
 		[`&.${tableCellClasses.body}`]: {
 			borderBottom: '1px solid',
 			borderBottomColor: theme.palette.divider,
 			fontSize: 16,
-			lineHeight: isMobile ? '3.9vh' : '2vh',
+			//	lineHeight: isMobile ? '3.9vh' : '2vh',
 		},
 	}));
 
@@ -66,6 +66,7 @@ export default function Score({
 		// hide last border
 		'&:last-child td, &:last-child th': {
 			backdropFilter: 'brightness(0.9)',
+			paddingBottom: '20px',
 		},
 	}));
 
@@ -166,7 +167,12 @@ export default function Score({
 				maxWidth: isMobile ? 'none' : 340,
 			}}>
 			<Table
-				sx={{ minWidth: 300, borderRadius: 0, border: 0 }}
+				sx={{
+					minWidth: 300,
+					borderRadius: 0,
+					border: 0,
+					height: 'calc(100vh - 55px)',
+				}}
 				size={isMobile ? 'small' : 'medium'}>
 				<TableHead>
 					<TableRow>

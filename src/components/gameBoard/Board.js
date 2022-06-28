@@ -273,7 +273,7 @@ export default function Board({
 		<Paper
 			elevation={0}
 			sx={{
-				height: '100vh',
+				height: isMobile ? 'calc(100vh - 10px)' : 'calc(100vh - 50px)',
 				width: '100%',
 				maxWidth: 1000,
 				p: isMobile ? -0 : 2,
@@ -475,7 +475,7 @@ export default function Board({
 						},
 
 						position: 'absolute',
-						bottom: 40,
+						bottom: 20,
 						boxShadow:
 							theme.palette.mode === 'dark'
 								? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
@@ -492,7 +492,7 @@ export default function Board({
 					}}
 					sx={{
 						position: 'absolute',
-						bottom: 15,
+						bottom: 0,
 						left: 15,
 						color: theme.palette.action.disabled,
 					}}>
@@ -512,7 +512,7 @@ export default function Board({
 					}}
 					sx={{
 						position: 'absolute',
-						bottom: 15,
+						bottom: 0,
 						right: 15,
 						color: theme.palette.action.disabled,
 					}}>
