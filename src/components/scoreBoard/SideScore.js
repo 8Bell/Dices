@@ -8,7 +8,7 @@ import { ChevronRightRounded } from '@mui/icons-material';
 import Score from './Score';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
-import { SwipeableDrawer } from '@mui/material';
+import { Drawer } from '@mui/material';
 
 export default function SideScore({
 	sideScoreOpen,
@@ -56,7 +56,7 @@ export default function SideScore({
 	};
 
 	return (
-		<SwipeableDrawer
+		<Drawer
 			sx={{
 				width: drawerWidth,
 				flexShrink: 0,
@@ -120,6 +120,6 @@ export default function SideScore({
 				left={left}
 				Eng={Eng}
 			/>
-		</SwipeableDrawer>
+		</Drawer>
 	);
 }
