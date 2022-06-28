@@ -6,10 +6,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
 import { Grid, Snackbar, Stack } from '@mui/material';
-import Score from '../components/scoreBoard/Score';
-import SideScore from '../components/scoreBoard/SideScore';
+
 import { useTheme } from '@emotion/react';
-import Board from '../components/gameBoard/Board';
+
 import MuiAlert from '@mui/material/Alert';
 import { authService, dbService } from '../fbase';
 import effectSound from '../hooks/effectSound';

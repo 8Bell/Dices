@@ -24,10 +24,6 @@ export default function UserInformation({ modal3Open, setModal3Open, members, pr
 		setModal3Open(false);
 	};
 
-	const handleRefreshGame = () => {
-		window.location.reload();
-	};
-
 	const user = members[propIdx];
 	console.log('user', user);
 
@@ -95,7 +91,10 @@ export default function UserInformation({ modal3Open, setModal3Open, members, pr
 				</IconButton>
 
 				<IconButton
-					onClick={handleRefreshGame}
+					onClick={() => {
+						setModal3Open(false);
+						smallFlatSound.play();
+					}}
 					sx={{
 						color: theme.palette.text.primary,
 						mr: 5,

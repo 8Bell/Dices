@@ -349,13 +349,13 @@ export default function SideMenu({
 
 				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} Eng={Eng} />
 				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} Eng={Eng} />
-				<UserInformation
+				{/* <UserInformation
 					modal3Open={modal3Open}
 					setModal3Open={setModal3Open}
 					members={members}
 					propIdx={propIdx}
 					Eng={Eng}
-				/>
+				/> */}
 			</Box>
 		</Drawer>
 	);
