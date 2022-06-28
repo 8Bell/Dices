@@ -505,6 +505,7 @@ export default function Board({
 							? 'https://en.wikipedia.org/wiki/Yacht_(dice_game)'
 							: 'https://namu.wiki/w/%EC%9A%94%ED%8A%B8(%EA%B2%8C%EC%9E%84)'
 					}
+					target='_blank'
 					onClick={() => {
 						smallFlatSound.play();
 					}}
