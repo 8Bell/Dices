@@ -1,5 +1,10 @@
 /* eslint-disable array-callback-return */
-import { AttachFileRounded, BugReportRounded, ClearRounded } from '@mui/icons-material';
+import {
+	AttachFileRounded,
+	BugReportRounded,
+	CasinoRounded,
+	ClearRounded,
+} from '@mui/icons-material';
 import { Box, Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
@@ -78,11 +83,11 @@ export default function Board({
 		color: theme.palette.text,
 	}));
 
-	const bestScore = isLoggedIn
-		? me[0] && me[0].bestScore
-		: localStorage.getItem('BestScore')
-		? JSON.parse(localStorage.getItem('BestScore'))
-		: 0;
+	// const bestScore = isLoggedIn
+	// 	? me[0] && me[0].bestScore
+	// 	: localStorage.getItem('BestScore')
+	// 	? JSON.parse(localStorage.getItem('BestScore'))
+	// 	: 0;
 
 	//-----------EFFECT SOUNDS-------------//
 
@@ -163,6 +168,9 @@ export default function Board({
 			</>
 		);
 	};
+
+	// --------------ROUND ------------------//
+	const round = isFilled.reduce((round, filled) => round + (true === filled), 0);
 
 	//----------BG SHINE & ALERT------------//
 
@@ -290,13 +298,11 @@ export default function Board({
 							: '	inset 9px 9px 17px #b6b6b6, inset -9px -9px 17px #ffffff',
 				}}>
 				<Typography
-					//className={alert !== '' ? 'bg' : 'none'}
 					sx={{
 						opacity: 0.5,
 						position: 'absolute',
 						top: 0,
-						mt: -10,
-
+						mt: -5.5,
 						pt: 0.5,
 						pb: 0.5,
 						pl: 2,
@@ -437,12 +443,17 @@ export default function Board({
 				<Typography
 					sx={{
 						position: 'fixed',
-						top: isMobile ? 18 : 22,
-						fontSize: 15,
+						top: isMobile ? 12 : 16,
+						fontSize: 18,
 						zIndex: 1199,
-						color: theme.palette.action.disabled,
+						color: theme.palette.text.secondary,
+						fontWeight: 'bold',
+						transform: 'translateX(5px)',
 					}}>
-					{(Eng ? 'Best Record : ' : '최고 기록 : ') + bestScore}
+					<CasinoRounded
+						sx={{ transform: 'translate(-6px,5.5px)', fontSize: 23 }}
+					/>
+					{[12 - round]}
 				</Typography>
 				<IconButton
 					variant={isFine ? 'contained' : 'outlined'}
@@ -452,6 +463,13 @@ export default function Board({
 						setResetModalOpen(true);
 					}}
 					sx={{
+						'&:active': {
+							boxShadow:
+								theme.palette.mode === 'dark'
+									? 'inset 17px 17px 23px #0b0b0b, inset -17px -17px 23px #272727'
+									: 'inset 9px 9px 18px #c8c8c9, inset -9px -9px 18px #fefeff;',
+						},
+
 						position: 'absolute',
 						bottom: 40,
 						boxShadow:
