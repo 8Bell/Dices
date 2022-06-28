@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { EmojiEventsRounded, SportsScore } from '@mui/icons-material';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@emotion/react';
-import SmallFlatSound from '../sounds/smallFlat.mp3';
+import SmallFlatSound from '../static/sounds/smallFlat.mp3';
 import effectSound from '../hooks/effectSound';
 
 export default function Navbar({

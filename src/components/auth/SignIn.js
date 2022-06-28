@@ -13,7 +13,7 @@ import {
 import React, { useState } from 'react';
 import { authService, dbService } from '../../fbase';
 
-import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
 export default function SignIn({ modalOpen, setModalOpen, Eng }) {

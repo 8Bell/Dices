@@ -10,7 +10,7 @@ import {
 	useTheme,
 } from '@mui/material';
 import React from 'react';
-import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
 export default function ResetConfirm({

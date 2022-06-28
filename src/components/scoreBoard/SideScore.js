@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { ChevronRightRounded } from '@mui/icons-material';
 import Score from './Score';
-import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
 export default function SideScore({

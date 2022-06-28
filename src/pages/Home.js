@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
 import { useTheme } from '@emotion/react';
-import PWAPrompt from 'react-ios-pwa-prompt';
+
 import GameMenu from '../components/GameMenu';
 
 export default function Home({

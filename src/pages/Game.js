@@ -13,7 +13,7 @@ import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
 import { authService, dbService } from '../fbase';
 import effectSound from '../hooks/effectSound';
-import FilledSound from '../sounds/filled.mp3';
+import FilledSound from '../static/sounds/filled.mp3';
 
 export default function Game({
 	isLoggedIn,
@@ -60,6 +60,7 @@ export default function Game({
 	});
 
 	//-----------------PVP-----------------//
+	//const [isPVPMode, setIsPVPMode] = useState(false);
 
 	//--------------Language---------------//
 

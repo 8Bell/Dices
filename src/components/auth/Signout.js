@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { authService } from '../../fbase';
-import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
 export default function SignOut({ modal2Open, setModal2Open, Eng }) {

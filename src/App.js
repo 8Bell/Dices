@@ -6,9 +6,9 @@ import { authService } from './fbase';
 import Game from './pages/Game';
 // import Home from './pages/Home';
 import './App.css';
-import './fonts/font.css';
+import './static/fonts/font.css';
 import useSound from './hooks/useSound';
-import BGM from './sounds/bgm.mp3';
+import BGM from './static/sounds/bgm.mp3';
 import PWAPrompt from 'react-ios-pwa-prompt';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {

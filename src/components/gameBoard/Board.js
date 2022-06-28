@@ -10,33 +10,32 @@ import { Box, Button, IconButton, Paper, Stack, styled, Typography } from '@mui/
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 
-import dl from '../../img/dl.gif';
-import d0 from '../../img/d0.png';
-import d1 from '../../img/d1.png';
-import d2 from '../../img/d2.png';
-import d3 from '../../img/d3.png';
-import d4 from '../../img/d4.png';
-import d5 from '../../img/d5.png';
-import d6 from '../../img/d6.png';
-import ll from '../../img/ll.gif';
-import l0 from '../../img/l0.png';
-import l1 from '../../img/l1.png';
-import l2 from '../../img/l2.png';
-import l3 from '../../img/l3.png';
-import l4 from '../../img/l4.png';
-import l5 from '../../img/l5.png';
-import l6 from '../../img/l6.png';
+import dl from '../../static/img/dl.gif';
+import d0 from '../../static/img/d0.png';
+import d1 from '../../static/img/d1.png';
+import d2 from '../../static/img/d2.png';
+import d3 from '../../static/img/d3.png';
+import d4 from '../../static/img/d4.png';
+import d5 from '../../static/img/d5.png';
+import d6 from '../../static/img/d6.png';
+import ll from '../../static/img/ll.gif';
+import l0 from '../../static/img/l0.png';
+import l1 from '../../static/img/l1.png';
+import l2 from '../../static/img/l2.png';
+import l3 from '../../static/img/l3.png';
+import l4 from '../../static/img/l4.png';
+import l5 from '../../static/img/l5.png';
+import l6 from '../../static/img/l6.png';
 import ResetConfirm from '../modal/ResetConfilm';
 import effectSound from '../../hooks/effectSound';
 
-import HoldSound from '../../sounds/hold.mp3';
-
-import PutSound from '../../sounds/put.mp3';
-import ShakeSound from '../../sounds/shake.mp3';
-import BigButton from '../../sounds/bigButton.mp3';
-import SmallButton from '../../sounds/smallButton.mp3';
+import HoldSound from '../../static/sounds/hold.mp3';
+import PutSound from '../../static/sounds/put.mp3';
+import ShakeSound from '../../static/sounds/shake.mp3';
+import BigButton from '../../static/sounds/bigButton.mp3';
+import SmallButton from '../../static/sounds/smallButton.mp3';
 import RefreshConfirm from '../modal/RefreshConfirm';
-import SmallFlatSound from '../../sounds/smallFlat.mp3';
+import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 
 export default function Board({
 	isLoggedIn,
