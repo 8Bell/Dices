@@ -57,7 +57,7 @@ export default function SideMenu({
 }) {
 	//-----------EFFECT SOUNDS-------------//
 
-	const smallFlatSound = effectSound(SmallFlatSound, 1);
+	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
 
 	const theme = useTheme();
 	const colorMode = useContext(ColorModeContext);

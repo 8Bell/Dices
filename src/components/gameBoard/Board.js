@@ -4,6 +4,7 @@ import {
 	BugReportRounded,
 	CasinoRounded,
 	ClearRounded,
+	HelpRounded,
 } from '@mui/icons-material';
 import { Box, Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
@@ -35,6 +36,7 @@ import ShakeSound from '../../sounds/shake.mp3';
 import BigButton from '../../sounds/bigButton.mp3';
 import SmallButton from '../../sounds/smallButton.mp3';
 import RefreshConfirm from '../modal/RefreshConfirm';
+import SmallFlatSound from '../../sounds/smallFlat.mp3';
 
 export default function Board({
 	isLoggedIn,
@@ -97,6 +99,7 @@ export default function Board({
 	const shakeSound = effectSound(ShakeSound, 0.4);
 	const smallButton = effectSound(SmallButton, 1);
 	const bigButton = effectSound(BigButton, 1);
+	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
 
 	//--------------Regame--------------//
 
@@ -483,7 +486,7 @@ export default function Board({
 					variant={isFine ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
-						smallButton.play();
+						smallFlatSound.play();
 						setRefreshModalOpen(true);
 					}}
 					sx={{
@@ -493,6 +496,25 @@ export default function Board({
 						color: theme.palette.action.disabled,
 					}}>
 					<BugReportRounded />
+				</IconButton>
+				<IconButton
+					variant={isFine ? 'contained' : 'outlined'}
+					color='inherit'
+					href={
+						Eng
+							? 'https://en.wikipedia.org/wiki/Yacht_(dice_game)'
+							: 'https://namu.wiki/w/%EC%9A%94%ED%8A%B8(%EA%B2%8C%EC%9E%84)'
+					}
+					onClick={() => {
+						smallFlatSound.play();
+					}}
+					sx={{
+						position: 'absolute',
+						bottom: 20,
+						right: 15,
+						color: theme.palette.action.disabled,
+					}}>
+					<HelpRounded />
 				</IconButton>
 			</Stack>
 			<ResetConfirm

@@ -47,7 +47,7 @@ export default function SideScore({
 
 	//-----------EFFECT SOUNDS-------------//
 
-	const smallFlatSound = effectSound(SmallFlatSound, 1);
+	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
 
 	const theme = useTheme();
 	const handleDrawerClose = () => {

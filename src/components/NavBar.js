@@ -39,7 +39,7 @@ export default function Navbar({
 
 	//-----------EFFECT SOUNDS-------------//
 
-	const smallFlatSound = effectSound(SmallFlatSound, 1);
+	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
