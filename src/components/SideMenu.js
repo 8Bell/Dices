@@ -14,7 +14,7 @@ import {
 	Brightness7,
 	ChevronLeftRounded,
 	CloudDoneRounded,
-	CloudOffRounded,
+	CloudUploadOutlined,
 	MusicNoteRounded,
 	MusicOffRounded,
 	Settings,
@@ -307,7 +307,7 @@ export default function SideMenu({
 				</SpeedDial>
 
 				<IconButton
-					sx={{ position: 'absolute', right: 15, bottom: 10 }}
+					sx={{ position: 'absolute', right: 20, bottom: 7 }}
 					onClick={
 						isLoggedIn
 							? () => {
@@ -318,9 +318,9 @@ export default function SideMenu({
 					}
 					color='inherit'>
 					{isLoggedIn ? (
-						<CloudDoneRounded sx={{ fontSize: 27 }} />
+						<CloudDoneRounded sx={{ fontSize: 28 }} />
 					) : (
-						<CloudOffRounded sx={{ fontSize: 27 }} />
+						<CloudUploadOutlined sx={{ fontSize: 28 }} />
 					)}
 				</IconButton>
 

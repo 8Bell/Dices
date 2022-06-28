@@ -9,6 +9,7 @@ import './App.css';
 import './fonts/font.css';
 import useSound from './hooks/useSound';
 import BGM from './sounds/bgm.mp3';
+import PWAPrompt from 'react-ios-pwa-prompt';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -109,6 +110,21 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={theme}>
 					<Outlet />
+					<PWAPrompt
+						promptOnVisit={1}
+						timesToShow={10}
+						delay={3000}
+						copyClosePrompt='Close'
+						permanentlyHideOnDismiss={false}
+						copyTitle='홈화면에 추가하기'
+						copyBody={[
+							'쾌적한 게임환경을 위해 아래 버튼을 눌러 ',
+							<br />,
+							'앱을 홈화면에 추가 후 사용해주세요',
+						]}
+						copyShareButtonLabel="1)  화면 하단의 '공유하기' 버튼을 눌러주세요."
+						copyAddHomeButtonLabel="2) '홈화면에 추가'를 누르면 완료! "
+					/>
 				</ThemeProvider>
 			</ColorModeContext.Provider>
 		</div>

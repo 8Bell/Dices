@@ -450,7 +450,7 @@ export default function Game({
 				display: 'flex',
 				overflowX: 'hidden',
 				overflowY: 'hidden',
-				maxHeight: '100vh',
+				maxHeight: isMobile || isTablet ? 'none' : '100vh',
 			}}>
 			<div
 				class={
@@ -515,7 +515,7 @@ export default function Game({
 				<Grid
 					container
 					sx={{
-						maxHeight: isMobile || isTablet ? 'none' : '930px',
+						maxHeight: isMobile ? 'none' : isTablet ? 'none' : '930px',
 						borderBottom: isMobile || isTablet ? 'none' : '1px solid',
 						borderColor: theme.palette.divider,
 					}}>
