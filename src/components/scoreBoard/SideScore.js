@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import Drawer from '@mui/material/Drawer';
+
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -8,6 +8,7 @@ import { ChevronRightRounded } from '@mui/icons-material';
 import Score from './Score';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
+import { SwipeableDrawer } from '@mui/material';
 
 export default function SideScore({
 	sideScoreOpen,
@@ -55,7 +56,7 @@ export default function SideScore({
 	};
 
 	return (
-		<Drawer
+		<SwipeableDrawer
 			sx={{
 				width: drawerWidth,
 				flexShrink: 0,
@@ -66,7 +67,8 @@ export default function SideScore({
 			}}
 			variant='persistent'
 			anchor='right'
-			open={sideScoreOpen}>
+			open={sideScoreOpen}
+			disableSwipeToOpen={false}>
 			<DrawerHeader
 				sx={{
 					borderTop: isTablet ? '1px solid' : 'none',
@@ -93,6 +95,7 @@ export default function SideScore({
 					<ChevronRightRounded fontSize='large' />
 				</IconButton>
 			</DrawerHeader>
+
 			<Divider />
 			<Score
 				isMobile={isMobile}
@@ -117,6 +120,6 @@ export default function SideScore({
 				left={left}
 				Eng={Eng}
 			/>
-		</Drawer>
+		</SwipeableDrawer>
 	);
 }
