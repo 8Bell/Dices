@@ -34,7 +34,7 @@ export default function SideScore({
 	yacht,
 	total,
 	left,
-	PVP,
+	Eng,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -80,8 +80,9 @@ export default function SideScore({
 						position: 'absolute',
 						left: 2,
 						ml: 2,
+						fontWeight: 'bold',
 					}}>
-					Score
+					{Eng ? 'Score Board' : '점수표'}
 				</Typography>
 				<IconButton
 					onClick={() => {
@@ -114,6 +115,7 @@ export default function SideScore({
 				yacht={yacht}
 				total={total}
 				left={left}
+				Eng={Eng}
 			/>
 
 			<Divider />

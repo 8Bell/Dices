@@ -5,15 +5,25 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
+	//DialogTitle,
 	IconButton,
 	useTheme,
 } from '@mui/material';
 import React from 'react';
-import { authService } from '../../fbase';
 import SmallFlatSound from '../../sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
-export default function SignOut({ modal2Open, setModal2Open, Eng }) {
+export default function ResetConfirm({
+	resetModalOpen,
+	setResetModalOpen,
+	setDices,
+	setIsHold,
+	setIsFilled,
+	setLeft,
+	setIsFine,
+	setIsStart,
+	Eng,
+}) {
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -21,17 +31,24 @@ export default function SignOut({ modal2Open, setModal2Open, Eng }) {
 	const theme = useTheme();
 
 	const handleClose = () => {
-		setModal2Open(false);
+		setResetModalOpen(false);
 	};
+	const diceArr = [0, 0, 0, 0, 0];
 
-	const handleLogOut = () => {
+	const handleNewGame = () => {
 		smallFlatSound.play();
-		authService.signOut();
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
+		setIsFilled(new Array(15).fill(false));
+		setLeft(3);
+		setIsFine(false);
+		setIsStart(true);
 	};
 
 	return (
 		<Dialog
-			open={modal2Open}
+			open={resetModalOpen}
 			onClose={handleClose}
 			sx={{
 				backgroundColor:
@@ -47,29 +64,29 @@ export default function SignOut({ modal2Open, setModal2Open, Eng }) {
 					color: theme.palette.text.primary,
 					backdropFilter: 'opacity(0.3)',
 					pt: 3,
-					pb: 3,
+					pb: 2,
 					mb: 0,
-					fontSize: 22,
+					fontSize: 20,
 					fontWight: 800,
 				}}>
-				{Eng ? 'Log Out' : '로그아웃'}
+				{Eng ? 'New Game' : '새 게임'}
 			</DialogTitle>
 			<DialogContent
 				sx={{
 					backgroundColor: theme.palette.background.paper,
 					color: theme.palette.text.secondary,
 				}}>
-				<DialogContentText sx={{ mb: 2 }}>
+				<DialogContentText sx={{ mb: 1, mt: 0 }}>
 					{Eng
 						? [
-								"Are you sure you're Log Out?",
+								'Reset the game?',
 								<br />,
-								'The current score will not be uploaded.',
+								'Current content will not be saved.',
 						  ]
 						: [
-								'로그아웃 하시겠습니까?',
+								'게임을 재시작할까요?',
 								<br />,
-								'게임 진행상황은 저장되지 않습니다.',
+								'게임 진행 상황은 저장되지 않습니다.',
 						  ]}
 				</DialogContentText>
 			</DialogContent>
@@ -81,7 +98,7 @@ export default function SignOut({ modal2Open, setModal2Open, Eng }) {
 				}}>
 				<IconButton
 					onClick={() => {
-						setModal2Open(false);
+						setResetModalOpen(false);
 						smallFlatSound.play();
 					}}
 					sx={{
@@ -94,7 +111,7 @@ export default function SignOut({ modal2Open, setModal2Open, Eng }) {
 				</IconButton>
 
 				<IconButton
-					onClick={handleLogOut}
+					onClick={handleNewGame}
 					sx={{
 						color: theme.palette.text.primary,
 						mr: 5,

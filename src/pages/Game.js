@@ -61,6 +61,10 @@ export default function Game({
 
 	//-----------------PVP-----------------//
 
+	//--------------Language---------------//
+
+	const [Eng, setEng] = useState(false);
+
 	//-----------EFFECT SOUNDS-------------//
 
 	const filledSound = effectSound(FilledSound, 1);
@@ -469,6 +473,8 @@ export default function Game({
 				ColorModeContext={ColorModeContext}
 				me={me}
 				members={members}
+				Eng={Eng}
+				setEng={setEng}
 			/>
 			<SideScore
 				sideScoreOpen={sideScoreOpen}
@@ -495,6 +501,7 @@ export default function Game({
 				bonus={bonus}
 				total={total}
 				left={left}
+				Eng={Eng}
 			/>
 			<Main open={open}>
 				<DrawerHeader />
@@ -523,6 +530,7 @@ export default function Game({
 								bonus={bonus}
 								total={total}
 								left={left}
+								Eng={Eng}
 							/>
 						</Grid>
 					)}
@@ -570,6 +578,7 @@ export default function Game({
 								yacht={yacht}
 								subTotal={subTotal}
 								bonus={bonus}
+								Eng={Eng}
 							/>
 						</Stack>
 					</Grid>

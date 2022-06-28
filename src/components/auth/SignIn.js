@@ -16,7 +16,7 @@ import { authService, dbService } from '../../fbase';
 import SmallFlatSound from '../../sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
-export default function SignIn({ modalOpen, setModalOpen }) {
+export default function SignIn({ modalOpen, setModalOpen, Eng }) {
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -83,19 +83,50 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 			console.log(error);
 			switch (error.code) {
 				case 'auth/email-already-in-use':
-					alert('This Name is already in use.');
+					alert(
+						`${
+							Eng
+								? 'This Name is already in use.'
+								: '사용 중인 이름입니다.'
+						}`
+					);
 					break;
 				case 'auth/invalid-email':
-					alert('This Name is not available.');
+					alert(
+						`${
+							Eng
+								? 'This Name is not available.'
+								: '사용이 불가능한 이름입니다.'
+						}`
+					);
 					break;
 				case 'auth/operation-not-allowed':
-					alert('Your subscription has been stopped.');
+					alert(
+						`${
+							Eng
+								? 'Your subscription has been stopped.'
+								: '가입이 중지되었습니다. 잠시 뒤 다시 시도해주세요.'
+						}`
+					);
 					break;
 				case 'auth/weak-password':
-					alert('Please enter a password with at least 6 digits');
+					alert(
+						`${
+							Eng
+								? 'Please enter a password with at least 6 digits'
+								: '6자리 이상의 비밀번호를 설정해주세요.'
+						}`
+					);
+
 					break;
 				default:
-					alert('An unknown error occurred.');
+					alert(
+						`${
+							Eng
+								? 'An unknown error occurred.'
+								: '알 수 없는 오류가 발생했습니다.'
+						}`
+					);
 			}
 		}
 	};
@@ -111,19 +142,50 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 			console.log(error);
 			switch (error.code) {
 				case 'auth/wrong-password':
-					alert('The Name or Password is incorrect.');
+					alert(
+						`${
+							Eng
+								? 'The Name or Password is incorrect.'
+								: '이름 혹은 비밀번호가 틀렸습니다.'
+						}`
+					);
+
 					break;
 				case 'auth/user-not-found':
-					alert('The Name or Password is incorrect.');
+					alert(
+						`${
+							Eng
+								? 'The Name or Password is incorrect.'
+								: '이름 혹은 비밀번호가 틀렸습니다.'
+						}`
+					);
 					break;
 				case 'auth/invalid-email':
-					alert('The Name form is not vaild.');
+					alert(
+						`${
+							Eng
+								? 'The Name form is not vaild.'
+								: '유효하지 않은 이름입니다.'
+						}`
+					);
 					break;
 				case 'auth/too-many-requests':
-					alert('Please try again later');
+					alert(
+						`${
+							Eng
+								? 'Please try again later'
+								: '로그인이이 중지되었습니다. 잠시 뒤 다시 시도해주세요.'
+						}`
+					);
 					break;
 				default:
-					alert('An unknown error occurred.');
+					alert(
+						`${
+							Eng
+								? 'An unknown error occurred.'
+								: '알 수 없는 오류가 발생했습니다.'
+						}`
+					);
 			}
 		}
 	};
@@ -151,7 +213,7 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					fontSize: 22,
 					fontWight: 800,
 				}}>
-				{signIn ? 'Sign In' : 'Sign up'}
+				{signIn ? (Eng ? 'Sign In' : '로그인') : Eng ? 'Sign up' : '가입하기'}
 			</DialogTitle>
 			<IconButton
 				onClick={() => {
@@ -168,11 +230,17 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 				}}>
 				{!signIn && (
 					<DialogContentText sx={{ mb: 2 }}>
-						{[
-							'Join us and save your score',
-							<br />,
-							'to compete with your friends.',
-						]}
+						{Eng
+							? [
+									'Join us and save your score',
+									<br />,
+									'to compete with your friends.',
+							  ]
+							: [
+									'가입하고 점수를 저장하세요.',
+									<br />,
+									'친구와 경쟁할 수 있습니다! ',
+							  ]}
 					</DialogContentText>
 				)}
 
@@ -180,8 +248,14 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					onChange={onChange}
 					margin='nomal'
 					id='name'
-					label='Name'
-					helperText={!signIn ? 'Under 12 letters ' : ''}
+					label={Eng ? 'Name' : '이름'}
+					helperText={
+						!signIn
+							? Eng
+								? 'Under 12 letters '
+								: '12자 이내로 입력해주세요.'
+							: ''
+					}
 					type='text'
 					fullWidth
 					variant='standard'
@@ -194,8 +268,14 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 					onChange={onChange}
 					margin='normal'
 					id='password'
-					label='Password'
-					helperText={!signIn ? ' At least 6 letters ' : ''}
+					label={Eng ? 'Password' : '비밀번호'}
+					helperText={
+						!signIn
+							? Eng
+								? ' At least 6 letters '
+								: '6자 이상 입력해주세요.'
+							: ''
+					}
 					type='password'
 					fullWidth
 					variant='standard'
@@ -222,7 +302,13 @@ export default function SignIn({ modalOpen, setModalOpen }) {
 						left: 0,
 						ml: 2,
 					}}>
-					{signIn ? 'New member ?' : 'i already have '}
+					{signIn
+						? Eng
+							? 'New member ?'
+							: '아이디가 없으신가요?'
+						: Eng
+						? 'i already have'
+						: '회원이신가요?'}
 				</Button>
 
 				<IconButton

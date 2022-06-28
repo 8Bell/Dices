@@ -57,7 +57,7 @@ export default function Navbar({
 					backgroundImage: 'none',
 					backgroundColor:
 						theme.palette.mode === 'dark'
-							? 'rgba(17,17,17,0.3)'
+							? 'rgba(25,25,25,0.3)'
 							: 'rgba(227, 227, 228,0.3)',
 					backdropFilter: 'blur(5px)',
 					WebkitBackdropFilter: 'blur(5px)',

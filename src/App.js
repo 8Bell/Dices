@@ -68,14 +68,14 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 								// palette values for dark mode
 
 								primary: {
-									main: '#111',
+									main: '#191919',
 								},
 								secondary: {
 									main: '#222',
 								},
 								background: {
-									default: '#111',
-									paper: '#111',
+									default: '#191919',
+									paper: '#191919',
 								},
 								text: {
 									primary: '#fff',
@@ -98,7 +98,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	const appleThemeColor = document.getElementById('theme-color');
 	useEffect(() => {
 		mode === 'dark'
-			? appleThemeColor.setAttribute('content', '#111')
+			? appleThemeColor.setAttribute('content', '#191919')
 			: appleThemeColor.setAttribute('content', '#e3e3e4');
 		localStorage.setItem('mode', mode);
 	}, [appleThemeColor, mode]);

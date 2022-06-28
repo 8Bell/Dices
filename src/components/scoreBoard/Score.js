@@ -35,6 +35,7 @@ export default function Score({
 	yacht,
 	total,
 	left,
+	Eng,
 }) {
 	const theme = useTheme();
 
@@ -144,15 +145,15 @@ export default function Score({
 		createData('Fours', fours, ''),
 		createData('Fives', fives, ''),
 		createData('Sixes', sixes, ''),
-		createData('SubTotal', `${subTotal} / 63`, '0 / 63'),
-		createData('+ 35 Bonus', bonus, '0'),
+		createData(`${Eng ? 'Sub Total' : '중간 합계'}`, `${subTotal} / 63`, '0 / 63'),
+		createData(`${Eng ? '+ 35 Bonus' : '+ 35 보너스'}`, bonus, '0'),
 		createData('Choice ', choice, ''),
 		createData('4 of a Kind', fourOfKind, ''),
 		createData('Full House', fullHouse, ''),
 		createData('S. Straight', sStraght, ''),
 		createData('L. Straight', lStraght, ''),
 		createData('Yacht', yacht, ''),
-		createData('Total', total, '0'),
+		createData(`${Eng ? 'Total' : '총 점수'}`, total, '0'),
 	];
 
 	return (
@@ -169,15 +170,18 @@ export default function Score({
 				size={isMobile ? 'small' : 'medium'}>
 				<TableHead>
 					<TableRow>
-						<StyledTableCell>Categories</StyledTableCell>
+						<StyledTableCell>
+							{' '}
+							{Eng ? 'Categories' : '카테고리'}{' '}
+						</StyledTableCell>
 						<StyledTableCell align='center' sx={{ position: 'relative' }}>
-							Score
+							{Eng ? 'Score' : '점수'}
 							<IconButton
 								href='https://namu.wiki/w/%EC%9A%94%ED%8A%B8(%EA%B2%8C%EC%9E%84)'
 								sx={{
 									position: 'absolute',
-									right: isMobile ? 30 : 25,
-									bottom: isMobile ? 0.4 : 6,
+									right: isMobile ? 32 : 25,
+									bottom: isMobile ? 1 : 6,
 								}}>
 								<HelpRounded />
 							</IconButton>

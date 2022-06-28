@@ -52,6 +52,8 @@ export default function SideMenu({
 	ColorModeContext,
 	me,
 	members,
+	Eng,
+	setEng,
 }) {
 	//-----------EFFECT SOUNDS-------------//
 
@@ -130,8 +132,9 @@ export default function SideMenu({
 						position: 'absolute',
 						left: 2,
 						ml: 2,
+						fontWeight: 'bold',
 					}}>
-					Rank
+					{Eng ? 'Rank' : '랭킹'}
 				</Typography>
 				<IconButton onClick={handleDrawerClose}>
 					<ChevronLeftRounded fontSize='large' />
@@ -140,12 +143,26 @@ export default function SideMenu({
 			<Divider />
 			<ListItem disablePadding>
 				<ListItemButton>
-					<ListItemText primary='NAME' sx={{ textAlign: 'left' }} />
 					<ListItemText
-						primary='Record'
-						sx={{ textAlign: 'right', position: 'absolute', right: 88 }}
+						primary={Eng ? 'NAME' : '이름'}
+						sx={{ textAlign: 'left' }}
 					/>
-					<ListItemText primary='Rank' sx={{ textAlign: 'right' }} />
+					<ListItemText
+						primary={Eng ? 'Record' : '최고 점수'}
+						sx={{
+							textAlign: 'right',
+							position: 'absolute',
+							right: Eng ? 88 : 83,
+						}}
+					/>
+					<ListItemText
+						primary={Eng ? 'Rank' : '랭크'}
+						sx={{
+							textAlign: 'right',
+							position: 'absolute',
+							right: Eng ? 17 : 20,
+						}}
+					/>
 				</ListItemButton>
 			</ListItem>
 
@@ -154,7 +171,13 @@ export default function SideMenu({
 			<ListItem disablePadding>
 				<ListItemButton>
 					<ListItemText
-						primary={me[0] ? me[0].userName : 'guest player'}
+						primary={
+							me[0]
+								? me[0].userName
+								: Eng
+								? 'guest player(me)'
+								: '손님(나)'
+						}
 						sx={{ textAlign: 'left' }}
 					/>
 					<ListItemText
@@ -234,6 +257,16 @@ export default function SideMenu({
 					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
 				</IconButton>
 				<IconButton
+					sx={{ position: 'absolute', right: 65, bottom: 10, fontSize: 18 }}
+					onClick={() => {
+						setEng(!Eng);
+						smallFlatSound.play();
+					}}
+					color='inherit'>
+					{Eng ? 'EN' : 'KO'}
+				</IconButton>
+
+				<IconButton
 					sx={{ position: 'absolute', right: 15, bottom: 10 }}
 					onClick={
 						isLoggedIn
@@ -246,8 +279,8 @@ export default function SideMenu({
 					color='inherit'>
 					{isLoggedIn ? <CloudOffRounded /> : <CloudUploadRounded />}
 				</IconButton>
-				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} />
-				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} />
+				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} Eng={Eng} />
+				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} Eng={Eng} />
 			</Box>
 		</Drawer>
 	);

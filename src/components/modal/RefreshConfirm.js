@@ -5,6 +5,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
+	//DialogTitle,
 	IconButton,
 	useTheme,
 } from '@mui/material';
@@ -12,15 +13,16 @@ import React from 'react';
 import SmallFlatSound from '../../sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
-export default function Confirm({
-	modalOpen,
-	setModalOpen,
+export default function RefreshConfirm({
+	refreshModalOpen,
+	setRefreshModalOpen,
 	setDices,
 	setIsHold,
 	setIsFilled,
 	setLeft,
 	setIsFine,
 	setIsStart,
+	Eng,
 }) {
 	//-----------EFFECT SOUNDS-------------//
 
@@ -29,24 +31,16 @@ export default function Confirm({
 	const theme = useTheme();
 
 	const handleClose = () => {
-		setModalOpen(false);
+		setRefreshModalOpen(false);
 	};
-	const diceArr = [0, 0, 0, 0, 0];
 
-	const handleNewGame = () => {
-		smallFlatSound.play();
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
-		setDices(diceArr);
-		setIsHold(new Array(5).fill(false));
-		setIsFilled(new Array(15).fill(false));
-		setLeft(3);
-		setIsFine(false);
-		setIsStart(true);
+	const handleRefreshGame = () => {
+		window.location.reload();
 	};
 
 	return (
 		<Dialog
-			open={modalOpen}
+			open={refreshModalOpen}
 			onClose={handleClose}
 			sx={{
 				backgroundColor:
@@ -62,24 +56,26 @@ export default function Confirm({
 					color: theme.palette.text.primary,
 					backdropFilter: 'opacity(0.3)',
 					pt: 3,
-					pb: 3,
+					pb: 2,
 					mb: 0,
-					fontSize: 22,
+					fontSize: 20,
 					fontWight: 800,
 				}}>
-				{'Reset'}
+				{Eng ? 'Bug Fix' : '버그 수정'}
 			</DialogTitle>
 			<DialogContent
 				sx={{
 					backgroundColor: theme.palette.background.paper,
 					color: theme.palette.text.secondary,
 				}}>
-				<DialogContentText sx={{ mb: 2 }}>
-					{[
-						"Are you sure you're resetting the game?",
-						<br />,
-						'Current content will not be saved',
-					]}
+				<DialogContentText sx={{ mb: 1, mt: 0 }}>
+					{Eng
+						? ['Refresh the game?', <br />, 'Current content will be saved']
+						: [
+								'게임을 다시 불러올까요?',
+								<br />,
+								'게임 진행 상황은 저장됩니다.',
+						  ]}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions
@@ -90,7 +86,7 @@ export default function Confirm({
 				}}>
 				<IconButton
 					onClick={() => {
-						setModalOpen(false);
+						setRefreshModalOpen(false);
 						smallFlatSound.play();
 					}}
 					sx={{
@@ -103,7 +99,7 @@ export default function Confirm({
 				</IconButton>
 
 				<IconButton
-					onClick={handleNewGame}
+					onClick={handleRefreshGame}
 					sx={{
 						color: theme.palette.text.primary,
 						mr: 5,

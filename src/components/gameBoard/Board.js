@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
-import { AttachFileRounded, ClearRounded } from '@mui/icons-material';
-import { Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
+import { AttachFileRounded, BugReportRounded, ClearRounded } from '@mui/icons-material';
+import { Box, Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 
@@ -20,7 +20,7 @@ import l3 from '../../img/l3.png';
 import l4 from '../../img/l4.png';
 import l5 from '../../img/l5.png';
 import l6 from '../../img/l6.png';
-import Confirm from '../modal/Confilm';
+import ResetConfirm from '../modal/ResetConfilm';
 import effectSound from '../../hooks/effectSound';
 
 import HoldSound from '../../sounds/hold.mp3';
@@ -29,6 +29,7 @@ import PutSound from '../../sounds/put.mp3';
 import ShakeSound from '../../sounds/shake.mp3';
 import BigButton from '../../sounds/bigButton.mp3';
 import SmallButton from '../../sounds/smallButton.mp3';
+import RefreshConfirm from '../modal/RefreshConfirm';
 
 export default function Board({
 	isLoggedIn,
@@ -63,6 +64,7 @@ export default function Board({
 	sStraght,
 	lStraght,
 	yacht,
+	Eng,
 }) {
 	const theme = useTheme();
 	const Item = styled(Paper)(({ theme }) => ({
@@ -112,7 +114,11 @@ export default function Board({
 
 	//----------New Game----------//
 
-	const [modalOpen, setModalOpen] = useState(false);
+	const [resetModalOpen, setResetModalOpen] = useState(false);
+
+	//----------Refresh Game----------//
+
+	const [refreshModalOpen, setRefreshModalOpen] = useState(false);
 
 	//----------HOLD----------//
 	const handleHoldDice = (idx) => {
@@ -201,6 +207,57 @@ export default function Board({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFilled]);
 
+	//-------BUTTON DOTS ----------//
+
+	const DotOn = () => {
+		return (
+			<Box
+				fontSize='small'
+				sx={{
+					color: theme.palette.text.secondary,
+					borderRadius: 10,
+					background:
+						theme.palette.mode === 'dark'
+							? 'linear-gradient(145deg, #ddd, #222)'
+							: 'linear-gradient(145deg, #555, #222)',
+
+					height: 20,
+					width: 20,
+					p: -1,
+					m: 0.5,
+					boxShadow:
+						theme.palette.mode === 'dark'
+							? ' 5px 5px 10px #0a0a0a, -5px -5px 10px #282828'
+							: ' 5px 5px 10px #969696, -5px -5px 10px #ffffff',
+				}}
+			/>
+		);
+	};
+
+	const DotOff = () => {
+		return (
+			<Box
+				fontSize='small'
+				sx={{
+					color: theme.palette.text.secondary,
+					borderRadius: 10,
+					background:
+						theme.palette.mode === 'dark'
+							? 'linear-gradient(145deg, #333, #222)'
+							: 'linear-gradient(145deg, #999, #555)',
+					height: 20,
+					width: 20,
+					p: -1,
+					m: 0.5,
+					boxShadow:
+						theme.palette.mode === 'dark'
+							? 'inset 5px 5px 16px #090909,inset -5px -5px 16px #252525'
+							: ' inset 5px 5px 14px #adadad,	inset -5px -5px 14px #ffffff;',
+				}}
+			/>
+		);
+	};
+
 	return (
 		<Paper
 			elevation={0}
@@ -229,8 +286,8 @@ export default function Board({
 					mt: isMobile ? '50%' : '20%',
 					boxShadow:
 						theme.palette.mode === 'dark'
-							? 'inset 7px 7px 10px #0c0c0c, inset -7px -7px 10px #161616'
-							: '	inset 9px 9px 17px #b6b6b6, inset -9px -9px 17px #ffffff;;',
+							? 'inset 14px 14px 27px #0e0e0e, inset -14px -14px 27px #242424'
+							: '	inset 9px 9px 17px #b6b6b6, inset -9px -9px 17px #ffffff',
 				}}>
 				<Typography
 					//className={alert !== '' ? 'bg' : 'none'}
@@ -248,7 +305,7 @@ export default function Board({
 						boxShadow:
 							alert !== ''
 								? theme.palette.mode === 'dark'
-									? ' 9px 9px 18px #0a0a0a,-9px -9px 18px #181818'
+									? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
 									: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;'
 								: 'none',
 					}}>
@@ -340,6 +397,12 @@ export default function Board({
 							: () => bigButton.play()
 					}
 					sx={{
+						'&:active': {
+							boxShadow:
+								theme.palette.mode === 'dark'
+									? ' inset 25px 25px 50px #090909,	inset -25px -25px 50px #252525'
+									: 'inset 25px 25px 50px #bcbcbd, inset -25px -25px 50px #ffffff',
+						},
 						height: 150,
 						width: 150,
 						mt: 10,
@@ -347,16 +410,28 @@ export default function Board({
 						borderRadius: 30,
 						border: 'none',
 						position: 'relative',
+						background:
+							theme.palette.mode === 'dark'
+								? 'linear-gradient(145deg, #202020, #111)'
+								: 'linear-gradient(145deg, #efefef, #d7d7d7)',
 						boxShadow:
 							theme.palette.mode === 'dark'
-								? ' 23px 23px 45px #0a0a0a,-23px -23px 45px #181818'
-								: '31px 31px 62px #bcbcbd,-31px -31px 62px #ffffff',
+								? '25px 25px 50px #090909,	-25px -25px 50px #252525'
+								: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
 					}}>
 					{isFine
 						? 'regame'
 						: isStart && left === 3
-						? 'START'
-						: [left, <br />, ' Left']}
+						? Eng
+							? 'START'
+							: '시작하기'
+						: left === 3
+						? [<DotOn />, <DotOn />, <DotOn />]
+						: left === 2
+						? [<DotOn />, <DotOn />, <DotOff />]
+						: left === 1
+						? [<DotOn />, <DotOff />, <DotOff />]
+						: [<DotOff />, <DotOff />, <DotOff />]}
 				</Button>
 
 				<Typography
@@ -367,35 +442,62 @@ export default function Board({
 						zIndex: 1199,
 						color: theme.palette.action.disabled,
 					}}>
-					Best Score : {bestScore}
+					{(Eng ? 'Best Record : ' : '최고 기록 : ') + bestScore}
 				</Typography>
 				<IconButton
 					variant={isFine ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
 						smallButton.play();
-						setModalOpen(true);
+						setResetModalOpen(true);
 					}}
 					sx={{
 						position: 'absolute',
 						bottom: 40,
 						boxShadow:
 							theme.palette.mode === 'dark'
-								? ' 9px 9px 18px #0a0a0a,-9px -9px 18px #181818'
+								? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
 								: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;',
 					}}>
 					<ClearRounded />
 				</IconButton>
+				<IconButton
+					variant={isFine ? 'contained' : 'outlined'}
+					color='inherit'
+					onClick={() => {
+						smallButton.play();
+						setRefreshModalOpen(true);
+					}}
+					sx={{
+						position: 'absolute',
+						bottom: 20,
+						left: 15,
+						color: theme.palette.action.disabled,
+					}}>
+					<BugReportRounded />
+				</IconButton>
 			</Stack>
-			<Confirm
-				modalOpen={modalOpen}
-				setModalOpen={setModalOpen}
+			<ResetConfirm
+				resetModalOpen={resetModalOpen}
+				setResetModalOpen={setResetModalOpen}
 				setDices={setDices}
 				setIsHold={setIsHold}
 				setIsFilled={setIsFilled}
 				setLeft={setLeft}
 				setIsFine={setIsFine}
 				setIsStart={setIsStart}
+				Eng={Eng}
+			/>
+			<RefreshConfirm
+				refreshModalOpen={refreshModalOpen}
+				setRefreshModalOpen={setRefreshModalOpen}
+				setDices={setDices}
+				setIsHold={setIsHold}
+				setIsFilled={setIsFilled}
+				setLeft={setLeft}
+				setIsFine={setIsFine}
+				setIsStart={setIsStart}
+				Eng={Eng}
 			/>
 		</Paper>
 	);
