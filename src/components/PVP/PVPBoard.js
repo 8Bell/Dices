@@ -37,7 +37,9 @@ import SmallButton from '../../static/sounds/smallButton.mp3';
 import RefreshConfirm from '../modal/RefreshConfirm';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 
-export default function Board({
+export default function PVPBoard({
+	isLoggedIn,
+	me,
 	isMobile,
 	isTablet,
 	dices,

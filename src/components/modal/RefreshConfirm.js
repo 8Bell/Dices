@@ -13,17 +13,7 @@ import React from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
-export default function RefreshConfirm({
-	refreshModalOpen,
-	setRefreshModalOpen,
-	setDices,
-	setIsHold,
-	setIsFilled,
-	setLeft,
-	setIsFine,
-	setIsStart,
-	Eng,
-}) {
+export default function RefreshConfirm({ refreshModalOpen, setRefreshModalOpen, Eng }) {
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);

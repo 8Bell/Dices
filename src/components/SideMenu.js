@@ -43,6 +43,7 @@ import l6 from '../static/img/l6.png';
 import SignOut from './auth/Signout';
 import SmallFlatSound from '../static/sounds/smallFlat.mp3';
 import effectSound from '../hooks/effectSound';
+import UserInformation from './modal/UserInformation';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -57,13 +58,6 @@ export default function SideMenu({
 	Eng,
 	setEng,
 }) {
-	//-----------EFFECT SOUNDS-------------//
-
-	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
-
-	const theme = useTheme();
-	const colorMode = useContext(ColorModeContext);
-
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
 		alignItems: 'center',
@@ -78,6 +72,16 @@ export default function SideMenu({
 		setOpen(false);
 	};
 
+	const [modalOpen, setModalOpen] = useState(false); // login
+	const [modal2Open, setModal2Open] = useState(false); //logout
+	const [modal3Open, setModal3Open] = useState(false); //userinfo
+	const theme = useTheme();
+	const colorMode = useContext(ColorModeContext);
+
+	//-----------EFFECT SOUNDS-------------//
+
+	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
+
 	const [mute, setMute] = useState(false);
 
 	const handleChangrVolum = () => {
@@ -86,21 +90,31 @@ export default function SideMenu({
 		setMute(!mute);
 	};
 
-	const [modalOpen, setModalOpen] = useState(false);
-	const [modal2Open, setModal2Open] = useState(false);
-
 	const handleClickOpen = () => {
 		smallFlatSound.play();
 		setModalOpen(true);
 	};
 
+	//------ LOG IN OUT ------//
+
 	useEffect(() => {
 		authService.onAuthStateChanged((user) => {
 			user ? setIsLoggedIn(true) : setIsLoggedIn(false);
 		});
-		console.log('isLoggedIn', isLoggedIn);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	//------ HANDLE MEMBER CLICK ------//
+	const [propIdx, setPropIdx] = useState(0);
+
+	const handleMemberClick = (idx) => {
+		smallFlatSound.play();
+		setPropIdx(idx);
+		setTimeout(() => {
+			setModal3Open(true);
+		}, [100]);
+	};
 
 	//-----local best score ----//
 	const bestScore = localStorage.getItem('BestScore')
@@ -252,7 +266,10 @@ export default function SideMenu({
 			<List>
 				{members.map((member, idx) => (
 					<ListItem key={idx} disablePadding>
-						<ListItemButton>
+						<ListItemButton
+							onClick={() => {
+								handleMemberClick(idx);
+							}}>
 							<ListItemText
 								primary={member.userName}
 								sx={{ textAlign: 'left' }}
@@ -332,6 +349,13 @@ export default function SideMenu({
 
 				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} Eng={Eng} />
 				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} Eng={Eng} />
+				<UserInformation
+					modal3Open={modal3Open}
+					setModal3Open={setModal3Open}
+					members={members}
+					propIdx={propIdx}
+					Eng={Eng}
+				/>
 			</Box>
 		</Drawer>
 	);

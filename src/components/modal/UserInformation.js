@@ -13,17 +13,7 @@ import React from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
-export default function RefreshConfirm({
-	refreshModalOpen,
-	setRefreshModalOpen,
-	setDices,
-	setIsHold,
-	setIsFilled,
-	setLeft,
-	setIsFine,
-	setIsStart,
-	Eng,
-}) {
+export default function UserInformation({ modal3Open, setModal3Open, members, propIdx, Eng }) {
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -31,16 +21,19 @@ export default function RefreshConfirm({
 	const theme = useTheme();
 
 	const handleClose = () => {
-		setRefreshModalOpen(false);
+		setModal3Open(false);
 	};
 
 	const handleRefreshGame = () => {
 		window.location.reload();
 	};
 
+	const user = members[propIdx];
+	console.log('user', user);
+
 	return (
 		<Dialog
-			open={refreshModalOpen}
+			open={modal3Open}
 			onClose={handleClose}
 			sx={{
 				backgroundColor:
@@ -61,7 +54,7 @@ export default function RefreshConfirm({
 					fontSize: 20,
 					fontWight: 800,
 				}}>
-				{Eng ? 'Bug Fix' : '버그 수정'}
+				{user.userName}
 			</DialogTitle>
 			<DialogContent
 				sx={{
@@ -72,9 +65,12 @@ export default function RefreshConfirm({
 					{Eng
 						? ['Refresh the game?', <br />, 'Current content will be saved']
 						: [
-								'게임을 다시 불러올까요?',
+								'최고 점수 : ' + user.bestScore,
 								<br />,
-								'게임 진행 상황은 저장됩니다.',
+								'게임 횟수 : ' + user.playtimes,
+								<br />,
+								<br />,
+								user.userName + '님에게 대전을 신청 하시겠어요?',
 						  ]}
 				</DialogContentText>
 			</DialogContent>
@@ -86,7 +82,7 @@ export default function RefreshConfirm({
 				}}>
 				<IconButton
 					onClick={() => {
-						setRefreshModalOpen(false);
+						setModal3Open(false);
 						smallFlatSound.play();
 					}}
 					sx={{
