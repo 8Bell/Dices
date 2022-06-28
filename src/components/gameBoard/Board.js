@@ -273,12 +273,13 @@ export default function Board({
 		<Paper
 			elevation={0}
 			sx={{
-				height: '90vh',
+				height: '100vh',
 				width: '100%',
 				maxWidth: 1000,
 				p: isMobile ? -0 : 2,
 				mt: -8,
 				overflowX: 'hidden',
+				position: 'relative',
 			}}>
 			<Stack
 				className={bgShine ? 'bg' : 'none'}
@@ -491,7 +492,7 @@ export default function Board({
 					}}
 					sx={{
 						position: 'absolute',
-						bottom: 20,
+						bottom: 15,
 						left: 15,
 						color: theme.palette.action.disabled,
 					}}>
@@ -511,7 +512,7 @@ export default function Board({
 					}}
 					sx={{
 						position: 'absolute',
-						bottom: 20,
+						bottom: 15,
 						right: 15,
 						color: theme.palette.action.disabled,
 					}}>
