@@ -50,6 +50,7 @@ export default function SideMenu({
 	open,
 	setOpen,
 	drawerWidth,
+	isTablet,
 	ColorModeContext,
 	me,
 	members,
@@ -167,7 +168,12 @@ export default function SideMenu({
 			variant='persistent'
 			anchor='left'
 			open={open}>
-			<DrawerHeader>
+			<DrawerHeader
+				sx={{
+					borderTop: isTablet ? '1px solid' : 'none',
+					//borderBottom: 'none',
+					borderColor: theme.palette.divider,
+				}}>
 				<Typography
 					variant='h6'
 					noWrap

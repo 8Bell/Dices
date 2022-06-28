@@ -70,6 +70,7 @@ export default function SideScore({
 			<DrawerHeader
 				sx={{
 					borderTop: isTablet ? '1px solid' : 'none',
+					//borderBottom: 'none',
 					borderColor: theme.palette.divider,
 				}}>
 				<Typography
@@ -93,7 +94,6 @@ export default function SideScore({
 				</IconButton>
 			</DrawerHeader>
 			<Divider />
-
 			<Score
 				isMobile={isMobile}
 				isFilled={isFilled}
@@ -117,8 +117,6 @@ export default function SideScore({
 				left={left}
 				Eng={Eng}
 			/>
-
-			<Divider />
 		</Drawer>
 	);
 }

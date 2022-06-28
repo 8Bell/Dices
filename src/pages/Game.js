@@ -474,6 +474,7 @@ export default function Game({
 			<SideMenu
 				isLoggedIn={isLoggedIn}
 				setIsLoggedIn={setIsLoggedIn}
+				isTablet={isTablet}
 				open={open}
 				setOpen={setOpen}
 				drawerWidth={drawerWidth}

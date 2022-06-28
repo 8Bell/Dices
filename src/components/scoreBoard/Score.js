@@ -44,15 +44,16 @@ export default function Score({
 			backgroundColor: theme.palette.background.default,
 			color: theme.palette.text,
 			fontSize: 16,
-			borderBottom: '1px solid',
+			//borderBottom: '1px solid',
 			borderBottomColor: theme.palette.divider,
 			//	lineHeight: isMobile ? '3.9vh' : '2vh',
 		},
 		[`&.${tableCellClasses.body}`]: {
-			borderBottom: '1px solid',
+			//	borderBottom: '1px solid',
 			borderBottomColor: theme.palette.divider,
 			fontSize: 16,
 			//	lineHeight: isMobile ? '3.9vh' : '2vh',
+			lineHeight: isMobile || isTablet ? 0 : 1.37,
 		},
 	}));
 
@@ -66,9 +67,11 @@ export default function Score({
 		// hide last border
 		'&:last-child td, &:last-child th': {
 			backdropFilter: 'brightness(0.9)',
-			paddingTop: isMobile ? '10px' : '19px',
-			paddingBottom: isMobile ? '15px' : '25px',
-			borderBottom: 'none',
+			paddingTop: isMobile ? '10px' : '23px',
+			paddingBottom: isMobile ? '15px' : '21px',
+			// borderBottom: isTablet ? '5px solid' : 'none',
+			// borderBottomColor: theme.palette.divider,
+			// marginBottom: 0,
 		},
 	}));
 
@@ -162,8 +165,10 @@ export default function Score({
 	return (
 		<TableContainer
 			component={Paper}
+			elevation={0}
 			sx={{
 				borderRight: '0.5px solid',
+				//borderBottom: 'none',
 				borderRadius: 0,
 				borderColor: theme.palette.divider,
 				maxWidth: isMobile ? 'none' : 340,
@@ -174,7 +179,7 @@ export default function Score({
 				sx={{
 					minWidth: 300,
 					borderRadius: 0,
-					border: 0,
+					border: 'none',
 					height: isMobile
 						? 'calc(100vh - 55px)'
 						: isTablet
