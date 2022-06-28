@@ -67,6 +67,7 @@ export default function Score({
 		'&:last-child td, &:last-child th': {
 			backdropFilter: 'brightness(0.9)',
 			paddingBottom: '20px',
+			borderBottom: 'none',
 		},
 	}));
 
@@ -165,13 +166,16 @@ export default function Score({
 				borderRadius: 0,
 				borderColor: theme.palette.divider,
 				maxWidth: isMobile ? 'none' : 340,
+				height: isMobile || isTablet ? 'calc(100vh - 55px)' : '93vh',
+				maxHeight: isMobile || isTablet ? 'none' : '899px',
 			}}>
 			<Table
 				sx={{
 					minWidth: 300,
 					borderRadius: 0,
 					border: 0,
-					height: isMobile || isTablet ? 'calc(100vh - 55px)' : 'calc(95vh)',
+					height: isMobile || isTablet ? 'calc(100vh - 55px)' : '93vh',
+					maxHeight: isMobile || isTablet ? 'none' : '93px',
 				}}
 				size={isMobile ? 'small' : 'medium'}>
 				<TableHead>

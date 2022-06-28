@@ -445,7 +445,13 @@ export default function Game({
 	console.log('myUid', myUid);
 
 	return (
-		<Box sx={{ display: 'flex', overflowX: 'hidden', overflowY: 'hidden' }}>
+		<Box
+			sx={{
+				display: 'flex',
+				overflowX: 'hidden',
+				overflowY: 'hidden',
+				maxHeight: '100vh',
+			}}>
 			<div
 				class={
 					theme.palette.mode === 'dark'
@@ -506,7 +512,13 @@ export default function Game({
 			<Main open={open}>
 				<DrawerHeader />
 
-				<Grid container>
+				<Grid
+					container
+					sx={{
+						maxHeight: isMobile || isTablet ? 'none' : '930px',
+						borderBottom: isMobile || isTablet ? 'none' : '1px solid',
+						borderColor: theme.palette.divider,
+					}}>
 					{!isTablet && !isMobile && (
 						<Grid xs={3} sx={{ minWidth: 340, ml: -1, mt: -1 }}>
 							<Score

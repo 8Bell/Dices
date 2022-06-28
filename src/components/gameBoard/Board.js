@@ -274,6 +274,8 @@ export default function Board({
 			elevation={0}
 			sx={{
 				height: isMobile ? 'calc(100vh - 10px)' : 'calc(100vh - 50px)',
+				maxHeight: isMobile || isTablet ? 'none' : '930px',
+
 				width: '100%',
 				maxWidth: 1000,
 				p: isMobile ? -0 : 2,

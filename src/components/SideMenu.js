@@ -13,8 +13,8 @@ import {
 	Brightness4,
 	Brightness7,
 	ChevronLeftRounded,
+	CloudDoneRounded,
 	CloudOffRounded,
-	CloudUploadRounded,
 	MusicNoteRounded,
 	MusicOffRounded,
 	Settings,
@@ -185,29 +185,26 @@ export default function SideMenu({
 				</IconButton>
 			</DrawerHeader>
 			<Divider />
-			<ListItem disablePadding>
-				<ListItemButton>
-					<ListItemText
-						primary={Eng ? 'NAME' : '이름'}
-						sx={{ textAlign: 'left' }}
-					/>
-					<ListItemText
-						primary={Eng ? 'Record' : '최고 점수'}
-						sx={{
-							textAlign: 'right',
-							position: 'absolute',
-							right: Eng ? 88 : 83,
-						}}
-					/>
-					<ListItemText
-						primary={Eng ? 'Rank' : '랭크'}
-						sx={{
-							textAlign: 'right',
-							position: 'absolute',
-							right: Eng ? 17 : 20,
-						}}
-					/>
-				</ListItemButton>
+			<ListItem disablePadding sx={{ ml: 2, height: 50 }}>
+				{/* <ListItemButton> */}
+				<ListItemText primary={Eng ? 'NAME' : '이름'} sx={{ textAlign: 'left' }} />
+				<ListItemText
+					primary={Eng ? 'Record' : '최고 점수'}
+					sx={{
+						textAlign: 'right',
+						position: 'absolute',
+						right: Eng ? 103 : 95,
+					}}
+				/>
+				<ListItemText
+					primary={Eng ? 'Rank' : '랭크'}
+					sx={{
+						textAlign: 'right',
+						position: 'absolute',
+						right: Eng ? 35 : 35,
+					}}
+				/>
+				{/* </ListItemButton> */}
 			</ListItem>
 
 			<Divider />
@@ -286,20 +283,6 @@ export default function SideMenu({
 				}}>
 				<Divider />
 
-				<IconButton
-					sx={{ position: 'absolute', right: 15, bottom: 10 }}
-					onClick={
-						isLoggedIn
-							? () => {
-									setModal2Open(true);
-									smallFlatSound.play();
-							  }
-							: handleClickOpen
-					}
-					color='inherit'>
-					{isLoggedIn ? <CloudOffRounded /> : <CloudUploadRounded />}
-				</IconButton>
-
 				<SpeedDial
 					ariaLabel='SpeedDial openIcon example'
 					sx={{
@@ -322,6 +305,24 @@ export default function SideMenu({
 						/>
 					))}
 				</SpeedDial>
+
+				<IconButton
+					sx={{ position: 'absolute', right: 15, bottom: 10 }}
+					onClick={
+						isLoggedIn
+							? () => {
+									setModal2Open(true);
+									smallFlatSound.play();
+							  }
+							: handleClickOpen
+					}
+					color='inherit'>
+					{isLoggedIn ? (
+						<CloudDoneRounded sx={{ fontSize: 27 }} />
+					) : (
+						<CloudOffRounded sx={{ fontSize: 27 }} />
+					)}
+				</IconButton>
 
 				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} Eng={Eng} />
 				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} Eng={Eng} />
