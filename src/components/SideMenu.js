@@ -82,12 +82,16 @@ export default function SideMenu({
 
 	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
 
+	const savedMute = 1;
+
 	const [mute, setMute] = useState(false);
 
 	const handleChangrVolum = () => {
 		smallFlatSound.play();
 		mute ? Howler.volume(0.5) : Howler.volume(0);
 		setMute(!mute);
+
+		localStorage.setItem('mute', JSON.stringify(mute));
 	};
 
 	const handleClickOpen = () => {

@@ -352,11 +352,17 @@ export default function Board({
 									color: theme.palette.text.primary,
 									opacity: 0.8,
 									rotate: '-15deg',
-									//filter: 'dropShadow(30px 30px 3px #111)',
 								}}
 							/>
 						)}
-						<img src={dl} alt='preload' style={{ display: 'none' }} />
+						<img
+							src={theme.palette.mode === 'dark' ? dl : ll}
+							alt='preload'
+							style={{
+								height: '0.1px',
+								lineHeight: 0,
+							}}
+						/>
 						<img
 							src={
 								theme.palette.mode === 'dark'
@@ -378,13 +384,33 @@ export default function Board({
 								transform: 'translate(-18.3%,-16%)',
 
 								// filter: isHold[idx] ? 'invert(100%)' : 'none',
-								filter: isHold[idx]
-									? 'dropShadow(10px 4px 5px blue)'
-									: 'none',
 							}}
 						/>
 					</Item>
 				))}
+				{/* <Item
+					value={'l'}
+					sx={{
+						position: 'relative',
+						bgcolor: 'rgba(0, 0, 0, 0)',
+						backgroundImage: 'none',
+						minHeight: '30%',
+					}}>
+					<img src={dl} alt='preload' style={{ display: 'none' }} />
+					<img
+						src={theme.palette.mode === 'dark' ? dl : ll}
+						alt='preload'
+						style={{
+							width: '145%',
+							marginBottom: isMobile
+								? '-58%'
+								: isTablet
+								? '-51%'
+								: '-50%',
+							transform: 'translate(-18.3%,-16%)',
+						}}
+					/>
+				</Item> */}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Button
