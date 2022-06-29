@@ -290,10 +290,10 @@ export default function Board({
 					//border: '1px solid',
 					position: 'relative',
 					borderColor: theme.palette.divider,
-					p: isMobile ? 1.3 : 2,
-					borderRadius: 5,
+					p: isMobile ? 1 : 2,
+					borderRadius: isMobile ? 4 : 7,
 					//bgcolor: theme.palette.text.secondary,
-					minheight: '20%',
+					//height: isMobile ? '11%' : isTablet ? '19%' : '25%',
 					mt: isMobile ? '50%' : '20%',
 					boxShadow:
 						theme.palette.mode === 'dark'
@@ -355,12 +355,15 @@ export default function Board({
 								}}
 							/>
 						)}
-						<img
-							src={theme.palette.mode === 'dark' ? dl : ll}
-							alt='preload'
+						<div
+							// src={theme.palette.mode === 'dark' ? dl : ll}
+							// alt='preload'
 							style={{
-								height: '0.1px',
-								lineHeight: 0,
+								display: 'block',
+								paddingBottom: '100%',
+								width: '100%',
+								//backgroundColor: 'yellow',
+								zIndex: 9999,
 							}}
 						/>
 						<img
@@ -375,13 +378,22 @@ export default function Board({
 							}
 							alt={dice}
 							style={{
+								position: 'absolute',
 								width: '145%',
+								height: 'auto',
+								top: 0,
+								left: 0,
 								marginBottom: isMobile
 									? '-58%'
 									: isTablet
 									? '-51%'
 									: '-50%',
-								transform: 'translate(-18.3%,-16%)',
+								transform: isMobile
+									? 'translate(-18.3%,-15%)'
+									: isTablet
+									? 'translate(-18.3%,-15%)'
+									: 'translate(-20%,-15%)',
+								lineHeight: 0,
 
 								// filter: isHold[idx] ? 'invert(100%)' : 'none',
 							}}
@@ -407,7 +419,8 @@ export default function Board({
 								: isTablet
 								? '-51%'
 								: '-50%',
-							transform: 'translate(-18.3%,-16%)',
+							marginLeft: -100,
+							transform: 'translate(-28.3%,-16%)',
 						}}
 					/>
 				</Item> */}

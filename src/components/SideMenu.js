@@ -82,17 +82,21 @@ export default function SideMenu({
 
 	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
 
-	const savedMute = 1;
+	const savedMute = localStorage.getItem('mute')
+		? JSON.parse(localStorage.getItem('mute'))
+		: false;
 
-	const [mute, setMute] = useState(false);
+	const [mute, setMute] = useState(savedMute);
 
-	const handleChangrVolum = () => {
+	const handleChangeVolum = () => {
 		smallFlatSound.play();
 		mute ? Howler.volume(0.5) : Howler.volume(0);
 		setMute(!mute);
-
-		localStorage.setItem('mute', JSON.stringify(mute));
 	};
+
+	useEffect(() => {
+		localStorage.setItem('mute', JSON.stringify(mute));
+	}, [mute]);
 
 	const handleClickOpen = () => {
 		smallFlatSound.play();
@@ -150,7 +154,7 @@ export default function SideMenu({
 			icon: (
 				<IconButton
 					//	sx={{ position: 'absolute', left: 65, bottom: 10 }}
-					onClick={handleChangrVolum}
+					onClick={handleChangeVolum}
 					color='inherit'>
 					{mute ? <MusicOffRounded /> : <MusicNoteRounded />}
 				</IconButton>
