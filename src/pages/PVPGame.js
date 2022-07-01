@@ -21,6 +21,7 @@ export default function PVPGame({
 	isLoggedIn,
 	setIsLoggedIn,
 	drawerWidth,
+	pvpScoreDrawerWidth,
 	isMobile,
 	isTablet,
 	ColorModeContext,
@@ -490,6 +491,7 @@ export default function PVPGame({
 				sideScoreOpen={sideScoreOpen}
 				setSideScoreOpen={setSideScoreOpen}
 				drawerWidth={drawerWidth}
+				pvpScoreDrawerWidth={pvpScoreDrawerWidth}
 				isMobile={isMobile}
 				isTablet={isTablet}
 				isFilled={isFilled}
@@ -524,7 +526,7 @@ export default function PVPGame({
 						borderColor: theme.palette.divider,
 					}}>
 					{!isTablet && !isMobile && (
-						<Grid xs={3} sx={{ minWidth: 340, ml: -1, mt: -1 }}>
+						<Grid xs={4} sx={{ minWidth: 450, ml: -1, mt: -1 }}>
 							<PVPScore
 								isMobile={isMobile}
 								isFilled={isFilled}

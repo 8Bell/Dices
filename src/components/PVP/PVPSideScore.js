@@ -5,15 +5,17 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { ChevronRightRounded } from '@mui/icons-material';
-import Score from './Score';
+
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 import { Drawer } from '@mui/material';
+import PVPScore from './PVPScore';
 
 export default function PVPSideScore({
 	sideScoreOpen,
 	setSideScoreOpen,
 	drawerWidth,
+	pvpScoreDrawerWidth,
 	isMobile,
 	isTablet,
 	isFilled,
@@ -58,10 +60,10 @@ export default function PVPSideScore({
 	return (
 		<Drawer
 			sx={{
-				width: drawerWidth,
+				width: pvpScoreDrawerWidth,
 				flexShrink: 0,
 				'& .MuiDrawer-paper': {
-					width: drawerWidth,
+					width: pvpScoreDrawerWidth,
 					boxSizing: 'border-box',
 				},
 			}}
@@ -97,10 +99,11 @@ export default function PVPSideScore({
 			</DrawerHeader>
 
 			<Divider />
-			<Score
+			<PVPScore
 				isMobile={isMobile}
 				isFilled={isFilled}
 				handleFill={handleFill}
+				pvpScoreDrawerWidth={pvpScoreDrawerWidth}
 				dices={dices}
 				ace={ace}
 				duce={duce}

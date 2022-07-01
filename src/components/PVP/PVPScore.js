@@ -10,14 +10,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { grey } from '@mui/material/colors';
-import { IconButton } from '@mui/material';
-import { HelpRounded } from '@mui/icons-material';
 
 export default function PVPScore({
 	isMobile,
 	isTablet,
 	isFilled,
 	handleFill,
+	pvpScoreDrawerWidth,
 	dices,
 	ace,
 	duce,
@@ -171,13 +170,13 @@ export default function PVPScore({
 				//borderBottom: 'none',
 				borderRadius: 0,
 				borderColor: theme.palette.divider,
-				maxWidth: isMobile ? 'none' : 340,
+				maxWidth: isMobile ? 'none' : 450,
 				height: isMobile ? 'calc(100vh - 55px)' : isTablet ? '100%' : '93vh',
 				maxHeight: isMobile ? 'none' : isTablet ? '90vh' : '893px',
 			}}>
 			<Table
 				sx={{
-					minWidth: 300,
+					minWidth: isMobile ? 'none' : 450,
 					borderRadius: 0,
 					border: 'none',
 					height: isMobile
@@ -195,18 +194,12 @@ export default function PVPScore({
 							{Eng ? 'Categories' : '카테고리'}{' '}
 						</StyledTableCell>
 						<StyledTableCell align='center' sx={{ position: 'relative' }}>
-							{Eng ? 'Score' : '점수'}
-							<IconButton
-								href='https://namu.wiki/w/%EC%9A%94%ED%8A%B8(%EA%B2%8C%EC%9E%84)'
-								sx={{
-									position: 'absolute',
-									right: isMobile ? 32 : 25,
-									bottom: isMobile ? 1 : 6,
-								}}>
-								<HelpRounded />
-							</IconButton>
+							{Eng ? 'ME' : '내 점수'}
 						</StyledTableCell>
-						{/* <StyledTableCell align='center'>User</StyledTableCell> */}
+
+						<StyledTableCell align='center' sx={{ position: 'relative' }}>
+							{Eng ? 'YOU' : '상대 점수'}
+						</StyledTableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -222,6 +215,9 @@ export default function PVPScore({
 									}}>
 									{row.Categories}
 								</StyledTableCell>
+
+								{/* MY SCORE */}
+
 								<StyledTableCell
 									className={
 										scoreArr[idx] >= (idx + 1) * 4 &&
@@ -263,13 +259,47 @@ export default function PVPScore({
 												? grey[600]
 												: grey[400]
 											: theme.palette.background,
-										width: '50%',
+										width: '30%',
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								{/* <StyledTableCell align='center'>
-									{row.User}
-								</StyledTableCell> */}
+
+								{/* THE OPPONENT'S SCORE */}
+
+								<StyledTableCell
+									className={
+										scoreArr[idx] >= (idx + 1) * 4 &&
+										!isFilled[idx]
+											? 'bg'
+											: 'none'
+									}
+									onClick={() =>
+										!isFilled[idx] &&
+										!dices.includes('l') &&
+										left !== 3 &&
+										onClick(idx)
+									}
+									align='center'
+									sx={{
+										fontWeight: isFilled[idx] ? 800 : 200,
+
+										color: isFilled[idx]
+											? theme.palette.text.secondary
+											: scoreArr[idx] >= (idx + 1) * 4
+											? grey[50]
+											: theme.palette.action.active,
+
+										backgroundColor: isFilled[idx]
+											? theme.palette.background
+											: scoreArr[idx] >= (idx + 1) * 4
+											? theme.palette.mode === 'dark'
+												? grey[600]
+												: grey[400]
+											: theme.palette.background,
+										width: '30%',
+									}}>
+									{row.Me}
+								</StyledTableCell>
 							</StyledTableRow>
 						) : idx === 8 ? (
 							<StyledTableRow key={row.Categories}>
@@ -282,6 +312,9 @@ export default function PVPScore({
 									}}>
 									{row.Categories}
 								</StyledTableCell>
+
+								{/* MY SCORE */}
+
 								<StyledTableCell
 									className={
 										scoreArr[idx] >= 27 && !isFilled[idx]
@@ -323,9 +356,39 @@ export default function PVPScore({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								{/* <StyledTableCell align='center'>
-									{row.User}
-								</StyledTableCell> */}
+
+								{/* THE OPPONENT'S SCORE */}
+
+								<StyledTableCell
+									className={
+										scoreArr[idx] >= 27 && !isFilled[idx]
+											? 'bg'
+											: 'none'
+									}
+									onClick={() =>
+										!isFilled[idx] &&
+										left !== 3 &&
+										onClick(idx)
+									}
+									align='center'
+									sx={{
+										fontWeight: isFilled[idx] ? 800 : 200,
+										color: isFilled[idx]
+											? theme.palette.text.secondary
+											: scoreArr[idx] >= 27
+											? grey[50]
+											: theme.palette.action.active,
+
+										backgroundColor: isFilled[idx]
+											? theme.palette.background
+											: scoreArr[idx] >= 27
+											? theme.palette.mode === 'dark'
+												? grey[600]
+												: grey[400]
+											: theme.palette.background,
+									}}>
+									{row.Me}
+								</StyledTableCell>
 							</StyledTableRow>
 						) : 9 <= idx && idx < 14 ? (
 							<StyledTableRow key={row.Categories}>
@@ -338,6 +401,9 @@ export default function PVPScore({
 									}}>
 									{row.Categories}
 								</StyledTableCell>
+
+								{/* MY SCORE */}
+
 								<StyledTableCell
 									onClick={() =>
 										!isFilled[idx] &&
@@ -378,15 +444,62 @@ export default function PVPScore({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								{/* <StyledTableCell align='center'>
-									{row.User}
-								</StyledTableCell> */}
+
+								{/* THE OPPONENT'S SCORE */}
+
+								<StyledTableCell
+									onClick={() =>
+										!isFilled[idx] &&
+										left !== 3 &&
+										onClick(idx)
+									}
+									align='center'
+									className={
+										scoreArr[idx] > 0 && !isFilled[idx]
+											? 'bg'
+											: 'none'
+									}
+									sx={{
+										color: isFilled[idx]
+											? theme.palette.text.secondary
+											: scoreArr[idx] > 0
+											? grey[50]
+											: theme.palette.action.active,
+										fontWeight: isFilled[idx] ? 800 : 200,
+										backgroundColor: isFilled[idx]
+											? theme.palette.background
+											: scoreArr[idx] > 0
+											? theme.palette.mode === 'dark'
+												? grey[600]
+												: grey[300]
+											: theme.palette.background,
+									}}>
+									{row.Me}
+								</StyledTableCell>
 							</StyledTableRow>
 						) : idx === 14 ? (
 							<StyledTableRow key={row.Categories}>
 								<StyledTableCell component='th' scope='row'>
 									{row.Categories}
 								</StyledTableCell>
+
+								{/* MY SCORE */}
+
+								<StyledTableCell
+									align='center'
+									sx={{
+										fontWeight:
+											scoreArr[idx] > 200 ? 700 : 500,
+										color:
+											scoreArr[idx] > 150
+												? grey[700]
+												: 'default',
+									}}>
+									{row.Me}
+								</StyledTableCell>
+
+								{/* THE OPPONENT'S SCORE */}
+
 								<StyledTableCell
 									align='center'
 									sx={{
@@ -403,15 +516,15 @@ export default function PVPScore({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								{/* <StyledTableCell align='center'>
-									{row.User}
-								</StyledTableCell> */}
 							</StyledTableRow>
 						) : (
 							<StyledTableRow key={row.Categories}>
 								<StyledTableCell component='th' scope='row'>
 									{row.Categories}
 								</StyledTableCell>
+
+								{/* MY SCORE */}
+
 								<StyledTableCell
 									align='center'
 									sx={{
@@ -431,9 +544,28 @@ export default function PVPScore({
 									}}>
 									{row.Me}
 								</StyledTableCell>
-								{/* <StyledTableCell align='center'>
-									{row.User}
-								</StyledTableCell> */}
+
+								{/* THE OPPONENT'S SCORE */}
+
+								<StyledTableCell
+									align='center'
+									sx={{
+										backdropFilter:
+											theme.palette.mode === 'dark'
+												? scoreArr[7] > 0
+													? 'brightness(1.5)'
+													: 'brightness(1.3)'
+												: scoreArr[7] > 0
+												? 'brightness(0.93)'
+												: 'brightness(0.97)',
+										fontWeight: 500,
+										color:
+											scoreArr[7] > 0
+												? grey[700]
+												: 'default',
+									}}>
+									{row.Me}
+								</StyledTableCell>
 							</StyledTableRow>
 						)
 					)}

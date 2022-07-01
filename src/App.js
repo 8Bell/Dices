@@ -11,6 +11,7 @@ import useSound from './hooks/useSound';
 import BGM from './static/sounds/bgm.mp3';
 import PWAPrompt from 'react-ios-pwa-prompt';
 import { Howler } from 'howler';
+import PVPGame from './pages/PVPGame';
 
 const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -23,7 +24,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	);
 	// const [mode, setMode] = useState('light');
 
-	useSound(BGM, 0.5, 20000000000000);
+	useSound(BGM, 0.4, 20000000000000);
 
 	useEffect(() => {
 		localStorage.getItem('mute') &&
@@ -146,10 +147,14 @@ const App = () => {
 	const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
 	const [drawerWidth, setDrawerWidth] = useState(340);
+
+	const [pvpScoreDrawerWidth, setPvpScoreDrawerWidth] = useState(450);
+
 	const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 	useEffect(() => {
 		isMobile ? setDrawerWidth('100%') : setDrawerWidth(340);
+		isMobile ? setPvpScoreDrawerWidth('100%') : setPvpScoreDrawerWidth(450);
 	}, [isMobile]);
 
 	// const handleSignIn = () => {
@@ -191,19 +196,20 @@ const App = () => {
 						/>
 					}
 				/>
-				{/* <Route
-					path='/pvpmode'
+				<Route
+					path='/pvp'
 					element={
-						<Pvp
+						<PVPGame
 							isLoggedIn={isLoggedIn}
 							setIsLoggedIn={setIsLoggedIn}
 							ColorModeContext={ColorModeContext}
 							drawerWidth={drawerWidth}
+							pvpScoreDrawerWidth={pvpScoreDrawerWidth}
 							isMobile={isMobile}
 							isTablet={isTablet}
 						/>
 					}
-				/> */}
+				/>
 				{/* <Route
 					path='/home'
 					element={
