@@ -394,7 +394,7 @@ export default function Board({
 									? 'translate(-18.3%,-15%)'
 									: isTablet
 									? 'translate(-18.3%,-15%)'
-									: 'translate(-17.8%,-15%)',
+									: 'translate(-18.3%,-15%)',
 								lineHeight: 0,
 								zIndex: 999,
 

@@ -57,8 +57,8 @@ export default function SideMenu({
 	members,
 	Eng,
 	setEng,
-	mute,
-	setMute,
+	// mute,
+	// setMute,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -84,7 +84,13 @@ export default function SideMenu({
 
 	const smallFlatSound = effectSound(SmallFlatSound, 0.5);
 
-	const handleChangeVolum = (e) => {
+	const savedMute = localStorage.getItem('mute')
+		? JSON.parse(localStorage.getItem('mute'))
+		: false;
+
+	const [mute, setMute] = useState(savedMute);
+
+	const handleChangeVolum = () => {
 		smallFlatSound.play();
 		mute ? Howler.volume(0.5) : Howler.volume(0);
 		setMute(!mute);
