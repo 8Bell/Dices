@@ -25,13 +25,13 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 
 	useSound(BGM, 0.5, 20000000000000);
 
-	useEffect(() => {
-		localStorage.getItem('mute')
-			? JSON.parse(localStorage.getItem('mute')) === false
-				? Howler.volume(0.5)
-				: Howler.volume(0)
-			: Howler.volume(0.5);
-	}, []);
+	// useEffect(() => {
+	// 	localStorage.getItem('mute')
+	// 		? JSON.parse(localStorage.getItem('mute')) === false
+	// 			? Howler.volume(0.5)
+	// 			: Howler.volume(0)
+	// 		: Howler.volume(0.5);
+	// }, []);
 
 	const colorMode = useMemo(
 		() => ({

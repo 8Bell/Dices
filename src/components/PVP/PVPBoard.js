@@ -38,8 +38,6 @@ import RefreshConfirm from '../modal/RefreshConfirm';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 
 export default function PVPBoard({
-	isLoggedIn,
-	me,
 	isMobile,
 	isTablet,
 	dices,
@@ -292,10 +290,10 @@ export default function PVPBoard({
 					//border: '1px solid',
 					position: 'relative',
 					borderColor: theme.palette.divider,
-					p: isMobile ? 1.3 : 2,
-					borderRadius: 5,
+					p: isMobile ? 1 : 2,
+					borderRadius: isMobile ? 4 : 7,
 					//bgcolor: theme.palette.text.secondary,
-					minheight: '20%',
+					//height: isMobile ? '11%' : isTablet ? '19%' : '25%',
 					mt: isMobile ? '50%' : '20%',
 					boxShadow:
 						theme.palette.mode === 'dark'
@@ -325,8 +323,8 @@ export default function PVPBoard({
 				<PreloadImg />
 				{dices.map((dice, idx) => (
 					<Item
-						className={isHold[idx] ? 'holdDice' : 'dice'}
 						onClick={() => left !== 3 && handleHoldDice(idx)}
+						className={isHold[idx] ? 'holdDice' : 'dice'}
 						key={idx}
 						value={dice}
 						sx={{
@@ -354,11 +352,22 @@ export default function PVPBoard({
 									color: theme.palette.text.primary,
 									opacity: 0.8,
 									rotate: '-15deg',
-									//filter: 'dropShadow(30px 30px 3px #111)',
 								}}
 							/>
 						)}
-						<img src={dl} alt='preload' style={{ display: 'none' }} />
+
+						<Box
+							// src={theme.palette.mode === 'dark' ? dl : ll}
+							// alt='preload'
+
+							style={{
+								display: 'block',
+								paddingBottom: '100%',
+								width: '100%',
+								//backgroundColor: 'yellow',
+								zIndex: 1100,
+							}}
+						/>
 						<img
 							src={
 								theme.palette.mode === 'dark'
@@ -371,22 +380,53 @@ export default function PVPBoard({
 							}
 							alt={dice}
 							style={{
+								position: 'absolute',
 								width: '145%',
+								height: 'auto',
+								top: 0,
+								left: 0,
 								marginBottom: isMobile
 									? '-58%'
 									: isTablet
 									? '-51%'
 									: '-50%',
-								transform: 'translate(-18.3%,-16%)',
+								transform: isMobile
+									? 'translate(-18.3%,-15%)'
+									: isTablet
+									? 'translate(-18.3%,-15%)'
+									: 'translate(-18.3%,-15%)',
+								lineHeight: 0,
+								zIndex: 999,
 
 								// filter: isHold[idx] ? 'invert(100%)' : 'none',
-								filter: isHold[idx]
-									? 'dropShadow(10px 4px 5px blue)'
-									: 'none',
 							}}
 						/>
 					</Item>
 				))}
+				{/* <Item
+					value={'l'}
+					sx={{
+						position: 'relative',
+						bgcolor: 'rgba(0, 0, 0, 0)',
+						backgroundImage: 'none',
+						minHeight: '30%',
+					}}>
+					<img src={dl} alt='preload' style={{ display: 'none' }} />
+					<img
+						src={theme.palette.mode === 'dark' ? dl : ll}
+						alt='preload'
+						style={{
+							width: '145%',
+							marginBottom: isMobile
+								? '-58%'
+								: isTablet
+								? '-51%'
+								: '-50%',
+							marginLeft: -100,
+							transform: 'translate(-28.3%,-16%)',
+						}}
+					/>
+				</Item> */}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Button
