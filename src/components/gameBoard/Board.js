@@ -323,6 +323,7 @@ export default function Board({
 				<PreloadImg />
 				{dices.map((dice, idx) => (
 					<Item
+						onClick={() => left !== 3 && handleHoldDice(idx)}
 						className={isHold[idx] ? 'holdDice' : 'dice'}
 						key={idx}
 						value={dice}
@@ -355,6 +356,18 @@ export default function Board({
 							/>
 						)}
 
+						<Box
+							// src={theme.palette.mode === 'dark' ? dl : ll}
+							// alt='preload'
+
+							style={{
+								display: 'block',
+								paddingBottom: '100%',
+								width: '100%',
+								//backgroundColor: 'yellow',
+								zIndex: 1100,
+							}}
+						/>
 						<img
 							src={
 								theme.palette.mode === 'dark'
@@ -381,22 +394,11 @@ export default function Board({
 									? 'translate(-18.3%,-15%)'
 									: isTablet
 									? 'translate(-18.3%,-15%)'
-									: 'translate(-20%,-15%)',
+									: 'translate(-17.8%,-15%)',
 								lineHeight: 0,
+								zIndex: 999,
 
 								// filter: isHold[idx] ? 'invert(100%)' : 'none',
-							}}
-						/>
-						<Box
-							// src={theme.palette.mode === 'dark' ? dl : ll}
-							// alt='preload'
-							onClick={() => left !== 3 && handleHoldDice(idx)}
-							style={{
-								display: 'block',
-								paddingBottom: '100%',
-								width: '100%',
-								backgroundColor: 'yellow',
-								zIndex: 9999,
 							}}
 						/>
 					</Item>

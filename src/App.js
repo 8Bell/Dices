@@ -11,7 +11,7 @@ import useSound from './hooks/useSound';
 import BGM from './static/sounds/bgm.mp3';
 import PWAPrompt from 'react-ios-pwa-prompt';
 
-const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
+const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext, savedMute }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 	const [mode, setMode] = useState(
 		localStorage.getItem('mode')
@@ -22,7 +22,7 @@ const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
 	);
 	// const [mode, setMode] = useState('light');
 
-	useSound(BGM, 0.5, 20000000000000000000000000);
+	useSound(BGM, savedMute, 20000000000000000000000000);
 
 	const colorMode = useMemo(
 		() => ({
@@ -145,6 +145,12 @@ const App = () => {
 		isMobile ? setDrawerWidth('100%') : setDrawerWidth(340);
 	}, [isMobile]);
 
+	const savedMute = localStorage.getItem('mute')
+		? JSON.parse(localStorage.getItem('mute'))
+		: false;
+
+	const [mute, setMute] = useState(savedMute);
+
 	// const handleSignIn = () => {
 	// 	authService.sendPasswordResetEmail
 	//  }
@@ -169,6 +175,8 @@ const App = () => {
 						isLoggedIn={isLoggedIn}
 						setIsLoggedIn={setIsLoggedIn}
 						ColorModeContext={ColorModeContext}
+						mute={mute}
+						setMute={setMute}
 					/>
 				}>
 				<Route
@@ -181,6 +189,9 @@ const App = () => {
 							drawerWidth={drawerWidth}
 							isMobile={isMobile}
 							isTablet={isTablet}
+							mute={mute}
+							setMute={setMute}
+							savedMute={savedMute}
 						/>
 					}
 				/>

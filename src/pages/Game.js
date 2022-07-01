@@ -22,6 +22,8 @@ export default function Game({
 	isMobile,
 	isTablet,
 	ColorModeContext,
+	mute,
+	setMute,
 }) {
 	const theme = useTheme();
 
@@ -483,6 +485,8 @@ export default function Game({
 				members={members}
 				Eng={Eng}
 				setEng={setEng}
+				mute={mute}
+				setMute={setMute}
 			/>
 			<SideScore
 				sideScoreOpen={sideScoreOpen}
