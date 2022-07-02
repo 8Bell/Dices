@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { grey } from '@mui/material/colors';
+
 import { dbService } from '../../fbase';
 
 export default function PVPScore({
@@ -288,22 +289,25 @@ export default function PVPScore({
 
 								<StyledTableCell
 									className={
-										scoreArr[idx] >= (idx + 1) * 4 &&
-										!isFilled[idx]
+										opponent.scoreData[idx] >=
+											(idx + 1) * 4 &&
+										!opponent.isFilled[idx]
 											? 'bg'
 											: 'none'
 									}
 									align='center'
 									sx={{
-										fontWeight: isFilled[idx] ? 800 : 200,
+										fontWeight: opponent.isFilled[idx]
+											? 800
+											: 200,
 
-										color: isFilled[idx]
+										color: opponent.isFilled[idx]
 											? theme.palette.text.secondary
 											: scoreArr[idx] >= (idx + 1) * 4
 											? grey[50]
 											: theme.palette.action.active,
 
-										backgroundColor: isFilled[idx]
+										backgroundColor: opponent.isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] >= (idx + 1) * 4
 											? theme.palette.mode === 'dark'
@@ -375,20 +379,23 @@ export default function PVPScore({
 
 								<StyledTableCell
 									className={
-										scoreArr[idx] >= 27 && !isFilled[idx]
+										opponent.scoreData[idx] >= 27 &&
+										!opponent.isFilled[idx]
 											? 'bg'
 											: 'none'
 									}
 									align='center'
 									sx={{
-										fontWeight: isFilled[idx] ? 800 : 200,
-										color: isFilled[idx]
+										fontWeight: opponent.isFilled[idx]
+											? 800
+											: 200,
+										color: opponent.isFilled[idx]
 											? theme.palette.text.secondary
 											: scoreArr[idx] >= 27
 											? grey[50]
 											: theme.palette.action.active,
 
-										backgroundColor: isFilled[idx]
+										backgroundColor: opponent.isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] >= 27
 											? theme.palette.mode === 'dark'
@@ -459,18 +466,21 @@ export default function PVPScore({
 								<StyledTableCell
 									align='center'
 									className={
-										scoreArr[idx] > 0 && !isFilled[idx]
+										opponent.scoreData[idx] > 0 &&
+										!opponent.isFilled[idx]
 											? 'bg'
 											: 'none'
 									}
 									sx={{
-										color: isFilled[idx]
+										color: opponent.isFilled[idx]
 											? theme.palette.text.secondary
 											: scoreArr[idx] > 0
 											? grey[50]
 											: theme.palette.action.active,
-										fontWeight: isFilled[idx] ? 800 : 200,
-										backgroundColor: isFilled[idx]
+										fontWeight: opponent.isFilled[idx]
+											? 800
+											: 200,
+										backgroundColor: opponent.isFilled[idx]
 											? theme.palette.background
 											: scoreArr[idx] > 0
 											? theme.palette.mode === 'dark'
@@ -512,9 +522,11 @@ export default function PVPScore({
 												? 'brightness(1.3)'
 												: 'brightness(0.97)',
 										fontWeight:
-											scoreArr[idx] > 200 ? 700 : 500,
+											opponent.scoreData[idx] > 200
+												? 700
+												: 500,
 										color:
-											scoreArr[idx] > 150
+											opponent.scoreData[idx] > 150
 												? grey[700]
 												: 'default',
 									}}>
@@ -556,15 +568,15 @@ export default function PVPScore({
 									sx={{
 										backdropFilter:
 											theme.palette.mode === 'dark'
-												? scoreArr[7] > 0
+												? opponent.scoreData[7] > 0
 													? 'brightness(1.5)'
 													: 'brightness(1.3)'
-												: scoreArr[7] > 0
+												: opponent.scoreData[7] > 0
 												? 'brightness(0.93)'
 												: 'brightness(0.97)',
 										fontWeight: 500,
 										color:
-											scoreArr[7] > 0
+											opponent.scoreData[7] > 0
 												? grey[700]
 												: 'default',
 									}}>
