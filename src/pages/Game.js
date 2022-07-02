@@ -140,21 +140,68 @@ export default function Game({
 
 	//----------------------------Rules-----------------------------//
 
-	const [ace, setAce] = useState(0); //isFilled 0
-	const [duce, setDuce] = useState(0); //isFilled 1
-	const [threes, setThrees] = useState(0); //isFilled 2
-	const [fours, setFours] = useState(0); //isFilled 3
-	const [fives, setFives] = useState(0); //isFilled 4
-	const [sixes, setSixes] = useState(0); //isFilled 5
+	const savedScoreArr = [
+		sessionStorage.getItem('ace') ? JSON.parse(sessionStorage.getItem('ace')) : 0,
+		sessionStorage.getItem('duce') ? JSON.parse(sessionStorage.getItem('duce')) : 0,
+		sessionStorage.getItem('threes') ? JSON.parse(sessionStorage.getItem('threes')) : 0,
+		sessionStorage.getItem('fours') ? JSON.parse(sessionStorage.getItem('fours')) : 0,
+		sessionStorage.getItem('fives') ? JSON.parse(sessionStorage.getItem('fives')) : 0,
+		sessionStorage.getItem('sixes') ? JSON.parse(sessionStorage.getItem('sixes')) : 0,
+		sessionStorage.getItem('choice') ? JSON.parse(sessionStorage.getItem('choice')) : 0,
+		sessionStorage.getItem('fourOfKind')
+			? JSON.parse(sessionStorage.getItem('fourOfKind'))
+			: 0,
+		sessionStorage.getItem('fullHouse')
+			? JSON.parse(sessionStorage.getItem('fullHouse'))
+			: 0,
+		sessionStorage.getItem('sStraght') ? JSON.parse(sessionStorage.getItem('sStraght')) : 0,
+		sessionStorage.getItem('lStraght') ? JSON.parse(sessionStorage.getItem('lStraght')) : 0,
+		sessionStorage.getItem('yatch') ? JSON.parse(sessionStorage.getItem('yatch')) : 0,
+	];
+
+	const [ace, setAce] = useState(savedScoreArr[0]); //isFilled 0
+	const [duce, setDuce] = useState(savedScoreArr[1]); //isFilled 1
+	const [threes, setThrees] = useState(savedScoreArr[2]); //isFilled 2
+	const [fours, setFours] = useState(savedScoreArr[3]); //isFilled 3
+	const [fives, setFives] = useState(savedScoreArr[4]); //isFilled 4
+	const [sixes, setSixes] = useState(savedScoreArr[5]); //isFilled 5
 	const [subTotal, setSubTotal] = useState(0);
 	const [bonus, setBonus] = useState(0);
-	const [choice, setChoice] = useState(0); //isFilled 8
-	const [fourOfKind, setFourOfKind] = useState(0); //isFilled 9
-	const [fullHouse, setFullHouse] = useState(0); //isFilled 10
-	const [sStraght, setSStraght] = useState(0); //isFilled 11
-	const [lStraght, setLStraght] = useState(0); //isFilled 12
-	const [yacht, setYacht] = useState(0); //isFilled 13
+	const [choice, setChoice] = useState(savedScoreArr[6]); //isFilled 8
+	const [fourOfKind, setFourOfKind] = useState(savedScoreArr[7]); //isFilled 9
+	const [fullHouse, setFullHouse] = useState(savedScoreArr[8]); //isFilled 10
+	const [sStraght, setSStraght] = useState(savedScoreArr[9]); //isFilled 11
+	const [lStraght, setLStraght] = useState(savedScoreArr[10]); //isFilled 12
+	const [yacht, setYacht] = useState(savedScoreArr[11]); //isFilled 13
 	const [total, setTotal] = useState(0);
+
+	useEffect(() => {
+		sessionStorage.setItem('ace', JSON.stringify(ace));
+		sessionStorage.setItem('duce', JSON.stringify(duce));
+		sessionStorage.setItem('threes', JSON.stringify(threes));
+		sessionStorage.setItem('fours', JSON.stringify(fours));
+		sessionStorage.setItem('fives', JSON.stringify(fives));
+		sessionStorage.setItem('sixes', JSON.stringify(sixes));
+		sessionStorage.setItem('choice', JSON.stringify(choice));
+		sessionStorage.setItem('fourOfKind', JSON.stringify(fourOfKind));
+		sessionStorage.setItem('fullHouse', JSON.stringify(fullHouse));
+		sessionStorage.setItem('sStraght', JSON.stringify(sStraght));
+		sessionStorage.setItem('lStraght', JSON.stringify(lStraght));
+		sessionStorage.setItem('yacht', JSON.stringify(yacht));
+	}, [
+		ace,
+		choice,
+		duce,
+		fives,
+		fourOfKind,
+		fours,
+		fullHouse,
+		lStraght,
+		sStraght,
+		sixes,
+		threes,
+		yacht,
+	]);
 
 	//ACE //isFilled 0
 	useEffect(() => {

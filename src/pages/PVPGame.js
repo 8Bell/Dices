@@ -526,7 +526,7 @@ export default function PVPGame({
 						borderColor: theme.palette.divider,
 					}}>
 					{!isTablet && !isMobile && (
-						<Grid xs={4} sx={{ minWidth: 450, ml: -1, mt: -1 }}>
+						<Grid xs={3} sx={{ minWidth: 450, ml: -15, mt: -1 }}>
 							<PVPScore
 								isMobile={isMobile}
 								isFilled={isFilled}
