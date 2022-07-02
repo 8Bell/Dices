@@ -36,8 +36,10 @@ import BigButton from '../../static/sounds/bigButton.mp3';
 import SmallButton from '../../static/sounds/smallButton.mp3';
 import RefreshConfirm from '../modal/RefreshConfirm';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
+import { dbService } from '../../fbase';
 
 export default function PVPBoard({
+	me,
 	isMobile,
 	isTablet,
 	dices,
@@ -137,19 +139,58 @@ export default function PVPBoard({
 	//----------SHAKE----------//
 
 	const handleChangeDice = async () => {
-		const lodingDice = await dices.map((dice, idx) => (isHold[idx] === false ? 'l' : dice));
-		const newDice = await dices.map((dice, idx) =>
-			isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
-		);
+		if (dices.includes('l') === false) {
+			const lodingDice = await dices.map((dice, idx) =>
+				isHold[idx] === false ? 'l' : dice
+			);
+			const newDice = await dices.map((dice, idx) =>
+				isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
+			);
 
-		shakeSound.play();
-		setDices(lodingDice);
-		setTimeout(() => {
-			setDices(newDice);
-		}, [2000]);
+			shakeSound.play();
+			setDices(lodingDice);
+			setTimeout(() => {
+				setDices(newDice);
+			}, [2000]);
 
-		setLeft(left - 1);
+			setLeft(left - 1);
+		}
 	};
+
+	//--------FIREBASE UPDATE ------//
+	const scoreData = [
+		ace,
+		duce,
+		threes,
+		fours,
+		fives,
+		sixes,
+		subTotal,
+		bonus,
+		choice,
+		fourOfKind,
+		fullHouse,
+		sStraght,
+		lStraght,
+		yacht,
+		total,
+	];
+
+	useEffect(() => {
+		try {
+			dbService.collection('games').doc(me[0].uid).set({
+				dices,
+				left,
+				isFilled,
+				isHold,
+				scoreData,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dices, isFilled, left, isHold, scoreData]);
+
 	//--------IMG PRELOADER--------//
 
 	const D = [d0, d1, d2, d3, d4, d5, d6, dl];

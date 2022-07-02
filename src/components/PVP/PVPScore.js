@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { grey } from '@mui/material/colors';
+import { dbService } from '../../fbase';
 
 export default function PVPScore({
 	isMobile,
@@ -17,6 +18,7 @@ export default function PVPScore({
 	isFilled,
 	handleFill,
 	pvpScoreDrawerWidth,
+
 	dices,
 	ace,
 	duce,
@@ -78,8 +80,22 @@ export default function PVPScore({
 	// 	return { Categories, Me, User };
 	// }
 
-	function createData(Categories, Me) {
-		return { Categories, Me };
+	//--------BRING FIREBASE DATA -------//
+
+	const [opponent, setOpponent] = useState({});
+
+	useEffect(() => {
+		dbService
+			.collection('games')
+			.doc('ZcoNHIBVCvfATk3ruXQBkXb3beU2')
+			.onSnapshot((snapshot) => {
+				const dbOpponent = snapshot.data();
+				setOpponent(dbOpponent);
+			});
+	}, []);
+
+	function createData(Categories, Me, Opponent) {
+		return { Categories, Me, Opponent };
 	}
 
 	const onClick = (idx) => {
@@ -144,21 +160,25 @@ export default function PVPScore({
 	];
 
 	const rows = [
-		createData('Ace', ace, ''),
-		createData('Duces', duce, ''),
-		createData('Threes', threes, ''),
-		createData('Fours', fours, ''),
-		createData('Fives', fives, ''),
-		createData('Sixes', sixes, ''),
-		createData(`${Eng ? 'Sub Total' : '중간 합계'}`, `${subTotal} / 63`, '0 / 63'),
-		createData(`${Eng ? '+ 35 Bonus' : '+ 35 보너스'}`, bonus, '0'),
-		createData('Choice ', choice, ''),
-		createData('4 of a Kind', fourOfKind, ''),
-		createData('Full House', fullHouse, ''),
-		createData('S. Straight', sStraght, ''),
-		createData('L. Straight', lStraght, ''),
-		createData('Yacht', yacht, ''),
-		createData(`${Eng ? 'Total' : '총 점수'}`, total, '0'),
+		createData('Ace', ace, opponent.scoreData[0]),
+		createData('Duces', duce, opponent.scoreData[1]),
+		createData('Threes', threes, opponent.scoreData[2]),
+		createData('Fours', fours, opponent.scoreData[3]),
+		createData('Fives', fives, opponent.scoreData[4]),
+		createData('Sixes', sixes, opponent.scoreData[5]),
+		createData(
+			`${Eng ? 'Sub Total' : '중간 합계'}`,
+			`${subTotal} / 63`,
+			`${opponent.scoreData[6]}/ 63`
+		),
+		createData(`${Eng ? '+ 35 Bonus' : '+ 35 보너스'}`, bonus, opponent.scoreData[7]),
+		createData('Choice ', choice, opponent.scoreData[8]),
+		createData('4 of a Kind', fourOfKind, opponent.scoreData[9]),
+		createData('Full House', fullHouse, opponent.scoreData[10]),
+		createData('S. Straight', sStraght, opponent.scoreData[11]),
+		createData('L. Straight', lStraght, opponent.scoreData[12]),
+		createData('Yacht', yacht, opponent.scoreData[13]),
+		createData(`${Eng ? 'Total' : '총 점수'}`, total, opponent.scoreData[14]),
 	];
 
 	return (
@@ -273,12 +293,6 @@ export default function PVPScore({
 											? 'bg'
 											: 'none'
 									}
-									onClick={() =>
-										!isFilled[idx] &&
-										!dices.includes('l') &&
-										left !== 3 &&
-										onClick(idx)
-									}
 									align='center'
 									sx={{
 										fontWeight: isFilled[idx] ? 800 : 200,
@@ -298,7 +312,7 @@ export default function PVPScore({
 											: theme.palette.background,
 										width: '30%',
 									}}>
-									{row.Me}
+									{row.Opponent}
 								</StyledTableCell>
 							</StyledTableRow>
 						) : idx === 8 ? (
@@ -365,11 +379,6 @@ export default function PVPScore({
 											? 'bg'
 											: 'none'
 									}
-									onClick={() =>
-										!isFilled[idx] &&
-										left !== 3 &&
-										onClick(idx)
-									}
 									align='center'
 									sx={{
 										fontWeight: isFilled[idx] ? 800 : 200,
@@ -387,7 +396,7 @@ export default function PVPScore({
 												: grey[400]
 											: theme.palette.background,
 									}}>
-									{row.Me}
+									{row.Opponent}
 								</StyledTableCell>
 							</StyledTableRow>
 						) : 9 <= idx && idx < 14 ? (
@@ -448,11 +457,6 @@ export default function PVPScore({
 								{/* THE OPPONENT'S SCORE */}
 
 								<StyledTableCell
-									onClick={() =>
-										!isFilled[idx] &&
-										left !== 3 &&
-										onClick(idx)
-									}
 									align='center'
 									className={
 										scoreArr[idx] > 0 && !isFilled[idx]
@@ -474,7 +478,7 @@ export default function PVPScore({
 												: grey[300]
 											: theme.palette.background,
 									}}>
-									{row.Me}
+									{row.Opponent}
 								</StyledTableCell>
 							</StyledTableRow>
 						) : idx === 14 ? (
@@ -514,7 +518,7 @@ export default function PVPScore({
 												? grey[700]
 												: 'default',
 									}}>
-									{row.Me}
+									{row.Opponent}
 								</StyledTableCell>
 							</StyledTableRow>
 						) : (
@@ -564,7 +568,7 @@ export default function PVPScore({
 												? grey[700]
 												: 'default',
 									}}>
-									{row.Me}
+									{row.Opponent}
 								</StyledTableCell>
 							</StyledTableRow>
 						)

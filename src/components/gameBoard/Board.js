@@ -137,18 +137,22 @@ export default function Board({
 	//----------SHAKE----------//
 
 	const handleChangeDice = async () => {
-		const lodingDice = await dices.map((dice, idx) => (isHold[idx] === false ? 'l' : dice));
-		const newDice = await dices.map((dice, idx) =>
-			isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
-		);
+		if (dices.includes('l') === false) {
+			const lodingDice = await dices.map((dice, idx) =>
+				isHold[idx] === false ? 'l' : dice
+			);
+			const newDice = await dices.map((dice, idx) =>
+				isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
+			);
 
-		shakeSound.play();
-		setDices(lodingDice);
-		setTimeout(() => {
-			setDices(newDice);
-		}, [2000]);
+			shakeSound.play();
+			setDices(lodingDice);
+			setTimeout(() => {
+				setDices(newDice);
+			}, [2000]);
 
-		setLeft(left - 1);
+			setLeft(left - 1);
+		}
 	};
 	//--------IMG PRELOADER--------//
 
@@ -473,9 +477,7 @@ export default function Board({
 					{isFine
 						? 'regame'
 						: isStart && left === 3
-						? Eng
-							? 'START'
-							: '시작하기'
+						? 'START'
 						: left === 3
 						? [<DotOn />, <DotOn />, <DotOn />]
 						: left === 2

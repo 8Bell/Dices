@@ -64,7 +64,14 @@ export default function Game({
 
 	//--------------Language---------------//
 
-	const [Eng, setEng] = useState(false);
+	const savedEng = localStorage.getItem('Eng')
+		? JSON.parse(localStorage.getItem('Eng'))
+		: false;
+	const [Eng, setEng] = useState(savedEng);
+
+	useEffect(() => {
+		localStorage.setItem('Eng', JSON.stringify(Eng));
+	}, [Eng]);
 
 	//-----------EFFECT SOUNDS-------------//
 

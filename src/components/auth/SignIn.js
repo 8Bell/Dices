@@ -68,9 +68,17 @@ export default function SignIn({ modalOpen, setModalOpen, Eng }) {
 						createdAt: Date.now(),
 						isOnline: true,
 						profileImg: null,
-						bestScore: 0,
-						totalScore: 0,
-						playtimes: 0,
+
+						indivNumberOfGames: 0,
+						indivBestScore: 0,
+						indivTotalScore: 0,
+
+						pvpNumberOfGames: 0,
+						pvpBestScore: 0,
+						pvpTotalScore: 0,
+
+						win: 0,
+						defeat: 0,
 						Rank: 0,
 					});
 				} else {

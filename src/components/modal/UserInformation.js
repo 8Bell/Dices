@@ -61,7 +61,7 @@ export default function UserInformation({ modal3Open, setModal3Open, members, pr
 					{Eng
 						? ['Refresh the game?', <br />, 'Current content will be saved']
 						: [
-								'최고 점수 : ' + user.bestScore,
+								'최고 점수 : ' + user.indivBestScore,
 								<br />,
 								'게임 횟수 : ' + user.playtimes,
 								<br />,

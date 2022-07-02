@@ -252,7 +252,7 @@ export default function SideMenu({
 						sx={{ textAlign: 'left' }}
 					/>
 					<ListItemText
-						primary={me[0] ? me[0].bestScore : bestScore}
+						primary={me[0] ? me[0].indivBestScore : bestScore}
 						sx={{ textAlign: 'right', position: 'absolute', right: 100 }}
 					/>
 					{isLoggedIn ? (
@@ -286,7 +286,7 @@ export default function SideMenu({
 								sx={{ textAlign: 'left' }}
 							/>
 							<ListItemText
-								primary={member.bestScore}
+								primary={member.indivBestScore}
 								sx={{
 									textAlign: 'right',
 									position: 'absolute',
@@ -330,7 +330,7 @@ export default function SideMenu({
 							openIcon={<Settings sx={{ fontSize: 27 }} />}
 						/>
 					}
-					onOpen={() => smallFlatSound.play()}>
+					onClick={() => smallFlatSound.play()}>
 					{actions.map((action) => (
 						<SpeedDialAction
 							key={action.name}
