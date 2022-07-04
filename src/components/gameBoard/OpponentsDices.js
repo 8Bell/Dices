@@ -3,18 +3,7 @@ import { Paper, styled } from '@mui/material';
 import { Box, useTheme } from '@mui/system';
 import React from 'react';
 
-export default function OpponentsDices({
-	dices,
-	left,
-	handleHoldDice,
-	isHold,
-	isTablet,
-	isMobile,
-	D,
-	dl,
-	L,
-	ll,
-}) {
+export default function OpponentsDices({ isTablet, isMobile, D, dl, L, ll, opponent }) {
 	const Item = styled(Paper)(({ theme }) => ({
 		//	backgroundColor: theme.palette.background,
 		// border: 'solid 1px',
@@ -28,11 +17,16 @@ export default function OpponentsDices({
 
 	const theme = useTheme();
 
+	const dices = opponent.dices;
+	const isHold = opponent.isHold;
+
+	console.log('OPPO dices', dices);
+	console.log('OPPO isHold', isHold);
+
 	return (
 		<>
 			{dices.map((dice, idx) => (
 				<Item
-					onClick={() => left !== 3 && handleHoldDice(idx)}
 					className={isHold[idx] ? 'holdDice' : 'dice'}
 					key={idx}
 					value={dice}

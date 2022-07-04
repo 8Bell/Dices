@@ -7,6 +7,7 @@ import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
 import { Grid, Snackbar, Stack } from '@mui/material';
 
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 
 import MuiAlert from '@mui/material/Alert';
@@ -27,19 +28,34 @@ export default function PVPGame({
 	ColorModeContext,
 }) {
 	const theme = useTheme();
+	const navigate = useNavigate();
 
 	//-------FB DATA --------//
 
-	const [scoreArr, setScoreArr] = useState([]);
-	const [filledArr, setFilledArr] = useState([]);
-	const [dicesArr, setDicesArr] = useState([]);
-	const [holdArr, setHoldArr] = useState([]);
-	const [fbLeft, setFbLeft] = useState(0);
+	const [myData, setMyData] = useState({
+		scoreData: [],
+		isFilled: [],
+		dices: [],
+		isHold: [],
+		left: 0,
+		myTurn: '',
+	});
+	const scoreArr = myData.scoreData;
+	const filledArr = myData.isFilled;
+	const dicesArr = myData.dices;
+	const holdArr = myData.isHold;
+	const fbLeft = myData.left;
+	//const myTurn = myData.myTurn;
 
-	//--------TURN-----------//
+	const [opponentUid, setOpponentUid] = useState(
+		JSON.parse(sessionStorage.getItem('opponentUid'))
+	);
 
-	// eslint-disable-next-line no-unused-vars
-	const [myTurn, setMyTurn] = useState(false);
+	const [myTurn, setMyTurn] = useState(
+		sessionStorage.getItem('myTurn') && sessionStorage.getItem('myTurn') === undefined
+			? JSON.parse(sessionStorage.getItem('myTurn'))
+			: true
+	);
 
 	//---------STYLE---------//
 
@@ -144,7 +160,17 @@ export default function PVPGame({
 		sessionStorage.setItem('isFilled', JSON.stringify(isFilled));
 	}, [isFilled]);
 
+	console.log('opponentUid', opponentUid);
+
 	const handleFill = (idx) => {
+		dbService.collection('games').doc(opponentUid).update({
+			myTurn: true,
+		});
+		myUid &&
+			dbService.collection('games').doc(myUid).update({
+				myTurn: false,
+			});
+
 		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
 		setIsFilled(newFilled);
 		filledSound.play();
@@ -156,6 +182,7 @@ export default function PVPGame({
 
 		setTimeout(() => {
 			setSideScoreOpen(false);
+			//------TURN------//
 		}, 300);
 	};
 
@@ -223,28 +250,35 @@ export default function PVPGame({
 	];
 
 	//----------BRING FB DATA----------//
+	console.log('myUid', myUid);
+	console.log('myData', myData);
 
 	useEffect(() => {
 		myUid
 			? dbService
-					.collection('singleGames')
+					.collection('games')
 					.doc(myUid)
 					.onSnapshot((snapshot) => {
 						const dbData = snapshot.data();
-						setScoreArr(dbData.scoreData);
-						setFilledArr(dbData.isFilled);
-						setDicesArr(dbData.dices);
-						setHoldArr(dbData.isHold);
-						setFbLeft(dbData.left);
+						const dbMyTurn = snapshot.data().myTurn;
+
+						console.log('dbData', dbData);
+
+						setMyData(dbData);
+
+						//console.log('dbMyTurn', dbMyTurn);
+
+						sessionStorage.setItem('myTurn', dbMyTurn);
+						setMyTurn(dbMyTurn);
 					})
 			: console.log('err');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [myUid]);
 
 	//----------SAVING DATA-----------//
 
 	useEffect(() => {
-		try {
+		myUid &&
 			dbService.collection('games').doc(myUid).update({
 				myUid,
 				dices,
@@ -253,9 +287,6 @@ export default function PVPGame({
 				isHold,
 				scoreData,
 			});
-		} catch (err) {
-			console.log(err);
-		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dices, left, isFilled, isHold, scoreData]);
@@ -576,10 +607,8 @@ export default function PVPGame({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [users]);
 
-	const [opponentUid, setOpponentUid] = useState(sessionStorage.getItem('opponentUid'));
-
 	useEffect(() => {
-		try {
+		myUid &&
 			dbService
 				.collection('games')
 				.doc(myUid)
@@ -587,17 +616,43 @@ export default function PVPGame({
 					const dbOpponentUid = snapshot.data().opponentUid;
 					console.log('dbOpponentUid', dbOpponentUid);
 					setOpponentUid(dbOpponentUid);
+					// const dbMyTurn = snapshot.data().myTurn;
+					// setMyTurn(dbMyTurn);
 					console.log('opponentUid', opponentUid);
 				});
-		} catch (err) {
-			console.log('err', err);
-		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [myUid]);
+
+	//-------------OPPONENTS---------------//
+	const [opponent, setOpponent] = useState({
+		dices,
+		isFilled,
+		isHold,
+		scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	});
+
+	useEffect(() => {
+		opponentUid &&
+			dbService
+				.collection('games')
+				.doc(opponentUid)
+				.onSnapshot((snapshot) => {
+					const dbOpponent = snapshot.data();
+					console.log('dbOpponent', dbOpponent);
+					setOpponent(dbOpponent);
+					//dbOpponent.myTurn === false && setMyTurn(true);
+				});
+	}, [opponentUid]);
 
 	//--------DELETE DATA---------//
 
 	const handleDeleteGame = () => {
+		myUid &&
+			dbService.collection('users').doc(myUid).update({
+				pvp: 'end',
+			});
+
 		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
@@ -606,8 +661,24 @@ export default function PVPGame({
 		setIsFine(false);
 		setIsStart(true);
 		setSnackBarOpen(false);
-		myUid && dbService.collection('games').doc(myUid).delete();
+
+		setTimeout(() => {
+			navigate('/');
+		}, [2000]);
 	};
+
+	useEffect(() => {
+		opponentUid &&
+			dbService
+				.collection('users')
+				.doc(opponentUid)
+				.onSnapshot((snapshot) => {
+					if (snapshot.data().pvp === 'end') {
+						navigate('/');
+					}
+				});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<Box
@@ -680,6 +751,7 @@ export default function PVPGame({
 				myUid={myUid}
 				opponentUid={opponentUid}
 				myTurn={myTurn}
+				opponent={opponent}
 			/>
 			<Main open={open}>
 				<DrawerHeader />
@@ -720,6 +792,7 @@ export default function PVPGame({
 								myUid={myUid}
 								opponentUid={opponentUid}
 								myTurn={myTurn}
+								opponent={opponent}
 							/>
 						</Grid>
 					)}
@@ -769,6 +842,8 @@ export default function PVPGame({
 								bonus={bonus}
 								Eng={Eng}
 								myTurn={myTurn}
+								opponent={opponent}
+								myUid={myUid}
 							/>
 						</Stack>
 					</Grid>

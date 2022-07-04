@@ -15,6 +15,9 @@ import { authService, dbService } from '../fbase';
 import effectSound from '../hooks/effectSound';
 import FilledSound from '../static/sounds/filled.mp3';
 
+import BattleConFilm from '../components/modal/BattleConfirm';
+import { useNavigate } from 'react-router-dom';
+
 export default function Game({
 	isLoggedIn,
 	setIsLoggedIn,
@@ -24,6 +27,9 @@ export default function Game({
 	ColorModeContext,
 }) {
 	const theme = useTheme();
+	const navigate = useNavigate();
+
+	const [battleModalOpen, setBattleModalOpen] = useState(false);
 
 	const [scoreArr, setScoreArr] = useState([]);
 	const [filledArr, setFilledArr] = useState([]);
@@ -564,6 +570,72 @@ export default function Game({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [users]);
 
+	//--------BATTLE ACCECPTANCE------//
+
+	console.log('myUid', myUid);
+	const opponentUid = JSON.parse(sessionStorage.getItem('opponentUid'));
+
+	useEffect(() => {
+		myUid &&
+			dbService
+				.collection('users')
+				.doc(myUid)
+				.onSnapshot((snapshot) => {
+					if (snapshot.data().pvp === 'accept') {
+						dbService
+							.collection('games')
+							.doc(myUid)
+							.set({
+								myUid,
+								dices: [0, 0, 0, 0, 0],
+								left: 3,
+								isFilled: [
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+								],
+								isHold: [false, false, false, false, false],
+								scoreData: [
+									0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+								],
+								myTurn: false,
+								opponentUid: JSON.parse(
+									sessionStorage.getItem('opponentUid')
+								),
+							});
+
+						setTimeout(() => {
+							dbService.collection('users').doc(myUid).update({
+								pvp: '',
+							});
+
+							navigate('/pvp');
+						}, [300]);
+					} else if (snapshot.data().pvp === 'end') {
+						myUid && dbService.collection('games').doc(myUid).delete();
+						opponentUid &&
+							dbService.collection('games').doc(opponentUid).delete();
+					}
+
+					snapshot.data().pvp !== ''
+						? setBattleModalOpen(true)
+						: setBattleModalOpen(false);
+				});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [myUid]);
+
 	//--------DELETE DATA---------//
 
 	const handleDeleteGame = () => {
@@ -757,6 +829,12 @@ export default function Game({
 					</Alert>
 				</Snackbar>
 			</Main>
+			<BattleConFilm
+				battleModalOpen={battleModalOpen}
+				setBattleModalOpen={setBattleModalOpen}
+				Eng={Eng}
+				myUid={myUid}
+			/>
 		</Box>
 	);
 }

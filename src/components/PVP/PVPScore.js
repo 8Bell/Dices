@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,8 +10,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { grey } from '@mui/material/colors';
-
-import { dbService } from '../../fbase';
 
 export default function PVPScore({
 	isMobile,
@@ -37,6 +35,7 @@ export default function PVPScore({
 	left,
 	isHold,
 	Eng,
+	opponent,
 	myUid,
 	opponentUid,
 }) {
@@ -83,32 +82,6 @@ export default function PVPScore({
 	// }
 
 	//--------BRING FIREBASE DATA -------//
-
-	const [opponent, setOpponent] = useState({
-		dices,
-		isFilled,
-		isHold,
-		scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	});
-
-	useEffect(() => {
-		try {
-			dbService
-				.collection('games')
-				.doc(opponentUid)
-				.onSnapshot((snapshot) => {
-					const dbOpponent = snapshot.data();
-
-					console.log('dbOpponent', dbOpponent);
-
-					setOpponent(dbOpponent);
-				});
-		} catch (err) {
-			console.log('opponentUid', opponentUid);
-
-			console.log('err', err);
-		}
-	}, []);
 
 	function createData(Categories, Me, Opponent) {
 		return { Categories, Me, Opponent };
@@ -318,13 +291,15 @@ export default function PVPScore({
 
 										color: opponent.isFilled[idx]
 											? theme.palette.text.secondary
-											: scoreArr[idx] >= (idx + 1) * 4
+											: opponent.scoreData[idx] >=
+											  (idx + 1) * 4
 											? grey[50]
 											: theme.palette.action.active,
 
 										backgroundColor: opponent.isFilled[idx]
 											? theme.palette.background
-											: scoreArr[idx] >= (idx + 1) * 4
+											: opponent.scoreData[idx] >=
+											  (idx + 1) * 4
 											? theme.palette.mode === 'dark'
 												? grey[600]
 												: grey[400]
@@ -406,13 +381,13 @@ export default function PVPScore({
 											: 200,
 										color: opponent.isFilled[idx]
 											? theme.palette.text.secondary
-											: scoreArr[idx] >= 27
+											: opponent.scoreData[idx] >= 27
 											? grey[50]
 											: theme.palette.action.active,
 
 										backgroundColor: opponent.isFilled[idx]
 											? theme.palette.background
-											: scoreArr[idx] >= 27
+											: opponent.scoreData[idx] >= 27
 											? theme.palette.mode === 'dark'
 												? grey[600]
 												: grey[400]
@@ -489,7 +464,7 @@ export default function PVPScore({
 									sx={{
 										color: opponent.isFilled[idx]
 											? theme.palette.text.secondary
-											: scoreArr[idx] > 0
+											: opponent.scoreData[idx] > 0
 											? grey[50]
 											: theme.palette.action.active,
 										fontWeight: opponent.isFilled[idx]
@@ -497,7 +472,7 @@ export default function PVPScore({
 											: 200,
 										backgroundColor: opponent.isFilled[idx]
 											? theme.palette.background
-											: scoreArr[idx] > 0
+											: opponent.scoreData[idx] > 0
 											? theme.palette.mode === 'dark'
 												? grey[600]
 												: grey[300]

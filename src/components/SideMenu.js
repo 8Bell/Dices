@@ -60,6 +60,7 @@ export default function SideMenu({
 	myUid,
 	pvp,
 	handleDeleteGame,
+	myTurn,
 	// mute,
 	// setMute,
 }) {
@@ -383,6 +384,7 @@ export default function SideMenu({
 					members={members}
 					propIdx={propIdx}
 					Eng={Eng}
+					myUid={myUid}
 				/>
 			</Box>
 		</Drawer>

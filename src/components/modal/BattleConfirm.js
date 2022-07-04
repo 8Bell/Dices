@@ -11,19 +11,14 @@ import {
 	Snackbar,
 	useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
+import { useNavigate } from 'react-router-dom';
 import { dbService } from '../../fbase';
 
-export default function UserInformation({
-	modal3Open,
-	setModal3Open,
-	members,
-	propIdx,
-	Eng,
-	myUid,
-}) {
+export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng, myUid }) {
+	const navigate = useNavigate();
 	const [snackBarOpen, setSnackBarOpen] = useState(false);
 
 	//-----------EFFECT SOUNDS-------------//
@@ -33,11 +28,41 @@ export default function UserInformation({
 	const theme = useTheme();
 
 	const handleClose = () => {
-		setModal3Open(false);
+		setBattleModalOpen(false);
 	};
 
-	const user = members[propIdx]
-		? members[propIdx]
+	const [challenger, setChallenger] = useState({});
+	const [challengerUid, setChallengerUid] = useState('');
+
+	useEffect(() => {
+		myUid &&
+			dbService
+				.collection('users')
+				.doc(myUid)
+				.onSnapshot((snapshot) => {
+					const dbChallengerUid = snapshot.data().pvp;
+
+					console.log('dbChallengerUid', dbChallengerUid);
+
+					setChallengerUid(dbChallengerUid);
+				});
+		challengerUid !== '' &&
+			dbService
+				.collection('users')
+				.doc(challengerUid)
+				.onSnapshot((snapshot) => {
+					setChallenger(snapshot.data());
+				});
+	}, [challengerUid, myUid]);
+
+	console.log('myUid', myUid);
+
+	console.log('challengerUid', challengerUid);
+
+	console.log('challenger', challenger);
+
+	const user = challenger
+		? challenger
 		: {
 				uid: '',
 				userName: '',
@@ -61,34 +86,68 @@ export default function UserInformation({
 
 	const handleBattleClick = () => {
 		smallFlatSound.play();
-		sessionStorage.setItem('opponentUid', JSON.stringify(user.uid));
-
-		dbService.collection('users').doc(user.uid).update({
-			pvp: myUid,
+		sessionStorage.setItem('opponentUid', JSON.stringify(challengerUid));
+		dbService.collection('users').doc(challengerUid).update({
+			pvp: 'accept',
 		});
 
-		// navigate('/pvp');
-		setSnackBarOpen(true);
+		myUid &&
+			challengerUid &&
+			dbService
+				.collection('games')
+				.doc(myUid)
+				.set({
+					myUid,
+					dices: [0, 0, 0, 0, 0],
+					left: 3,
+					isFilled: [
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+						false,
+					],
+					isHold: [false, false, false, false, false],
+					scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+					myTurn: true,
+					opponentUid: challengerUid,
+				});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+
+		setTimeout(() => {
+			dbService.collection('users').doc(myUid).update({
+				pvp: '',
+			});
+			navigate('/pvp');
+		}, [300]);
+		//setSnackBarOpen(true);
 	};
 	console.log('myUid', myUid);
 
-	const handleSnackBarClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
+	// const handleSnackBarClose = (event, reason) => {
+	// 	if (reason === 'clickaway') {
+	// 		return;
+	// 	}
 
-		dbService.collection('users').doc(user.uid).update({
-			pvp: '',
-		});
-		setSnackBarOpen(false);
-	};
+	// 	setSnackBarOpen(false);
+	// };
 
 	return (
 		<Dialog
-			open={modal3Open}
+			open={battleModalOpen}
 			onClose={handleClose}
 			sx={{
-				position: 'fixed',
 				backgroundColor:
 					theme.palette.mode === 'dark'
 						? 'rgba(17, 17, 17, 0.5)'
@@ -123,7 +182,7 @@ export default function UserInformation({
 								'게임 횟수 : ' + user.indivNumberOfGames,
 								<br />,
 								<br />,
-								user.userName + '님에게 대전을 신청 하시겠어요?',
+								user.userName + '님의 대전을 수락 하시겠어요?',
 						  ]}
 				</DialogContentText>
 			</DialogContent>
@@ -135,9 +194,8 @@ export default function UserInformation({
 				}}>
 				<IconButton
 					onClick={() => {
-						setModal3Open(false);
+						setBattleModalOpen(false);
 						smallFlatSound.play();
-						handleSnackBarClose();
 					}}
 					sx={{
 						color: theme.palette.text.primary,
@@ -159,7 +217,7 @@ export default function UserInformation({
 					<FiberManualRecordOutlined />
 				</IconButton>
 			</DialogActions>
-			<Snackbar
+			{/* <Snackbar
 				open={snackBarOpen}
 				autoHideDuration={100000}
 				onClose={handleSnackBarClose}>
@@ -174,7 +232,7 @@ export default function UserInformation({
 					}}>
 					Waiting
 				</Alert>
-			</Snackbar>
+			</Snackbar> */}
 		</Dialog>
 	);
 }

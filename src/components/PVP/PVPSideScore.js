@@ -41,6 +41,7 @@ export default function PVPSideScore({
 	myUid,
 	opponentUid,
 	myTurn,
+	opponent,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -128,6 +129,7 @@ export default function PVPSideScore({
 				myUid={myUid}
 				opponentUid={opponentUid}
 				myTurn={myTurn}
+				opponent={opponent}
 			/>
 		</Drawer>
 	);

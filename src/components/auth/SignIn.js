@@ -82,6 +82,8 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 						win: 0,
 						defeat: 0,
 						Rank: 0,
+
+						pvp: '',
 					});
 				} else {
 					alert('Please enter your name in 12 characters or less.');

@@ -1,6 +1,5 @@
 import { ClearRounded, FiberManualRecordOutlined } from '@mui/icons-material';
 import {
-	Alert,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -8,24 +7,27 @@ import {
 	DialogTitle,
 	//DialogTitle,
 	IconButton,
-	Snackbar,
 	useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
+import { useNavigate } from 'react-router-dom';
 import { dbService } from '../../fbase';
 
-export default function UserInformation({
-	modal3Open,
-	setModal3Open,
-	members,
-	propIdx,
+export default function SurrenderConfirm({
+	surrenderModalOpen,
+	setSurrenderModalOpen,
+	setDices,
+	setIsHold,
+	setIsFilled,
+	setLeft,
+	setIsFine,
+	setIsStart,
 	Eng,
 	myUid,
 }) {
-	const [snackBarOpen, setSnackBarOpen] = useState(false);
-
+	const navigate = useNavigate();
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -33,62 +35,34 @@ export default function UserInformation({
 	const theme = useTheme();
 
 	const handleClose = () => {
-		setModal3Open(false);
+		setSurrenderModalOpen(false);
 	};
+	const diceArr = [0, 0, 0, 0, 0];
 
-	const user = members[propIdx]
-		? members[propIdx]
-		: {
-				uid: '',
-				userName: '',
-				createdAt: Date.now(),
-				isOnline: true,
-				profileImg: null,
+	const handleNewGame = () => {
+		myUid &&
+			dbService.collection('users').doc(myUid).update({
+				pvp: 'end',
+			});
 
-				indivNumberOfGames: 0,
-				indivBestScore: 0,
-				indivTotalScore: 0,
-
-				pvpNumberOfGames: 0,
-				pvpBestScore: 0,
-				pvpTotalScore: 0,
-
-				win: 0,
-				defeat: 0,
-				Rank: 0,
-		  };
-	console.log('user', user);
-
-	const handleBattleClick = () => {
 		smallFlatSound.play();
-		sessionStorage.setItem('opponentUid', JSON.stringify(user.uid));
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
+		setIsFilled(new Array(15).fill(false));
+		setLeft(3);
+		setIsFine(false);
+		setIsStart(true);
 
-		dbService.collection('users').doc(user.uid).update({
-			pvp: myUid,
-		});
-
-		// navigate('/pvp');
-		setSnackBarOpen(true);
-	};
-	console.log('myUid', myUid);
-
-	const handleSnackBarClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-
-		dbService.collection('users').doc(user.uid).update({
-			pvp: '',
-		});
-		setSnackBarOpen(false);
+		//dbService.collection('games').doc(myUid).delete();
+		navigate('/');
 	};
 
 	return (
 		<Dialog
-			open={modal3Open}
+			open={surrenderModalOpen}
 			onClose={handleClose}
 			sx={{
-				position: 'fixed',
 				backgroundColor:
 					theme.palette.mode === 'dark'
 						? 'rgba(17, 17, 17, 0.5)'
@@ -107,7 +81,7 @@ export default function UserInformation({
 					fontSize: 20,
 					fontWight: 800,
 				}}>
-				{user.userName}
+				{Eng ? 'Surrender?' : '항복할까요?'}
 			</DialogTitle>
 			<DialogContent
 				sx={{
@@ -116,14 +90,15 @@ export default function UserInformation({
 				}}>
 				<DialogContentText sx={{ mb: 1, mt: 0 }}>
 					{Eng
-						? ['Refresh the game?', <br />, 'Current content will be saved']
+						? [
+								// 'Reset the game?',
+								// <br />,
+								'Current content will not be saved.',
+						  ]
 						: [
-								'최고 점수 : ' + user.indivBestScore,
-								<br />,
-								'게임 횟수 : ' + user.indivNumberOfGames,
-								<br />,
-								<br />,
-								user.userName + '님에게 대전을 신청 하시겠어요?',
+								// '게임을 재시작할까요?',
+								// <br />,
+								'게임 진행 상황은 저장되지 않습니다.',
 						  ]}
 				</DialogContentText>
 			</DialogContent>
@@ -135,9 +110,8 @@ export default function UserInformation({
 				}}>
 				<IconButton
 					onClick={() => {
-						setModal3Open(false);
+						setSurrenderModalOpen(false);
 						smallFlatSound.play();
-						handleSnackBarClose();
 					}}
 					sx={{
 						color: theme.palette.text.primary,
@@ -149,7 +123,7 @@ export default function UserInformation({
 				</IconButton>
 
 				<IconButton
-					onClick={handleBattleClick}
+					onClick={handleNewGame}
 					sx={{
 						color: theme.palette.text.primary,
 						mr: 5,
@@ -159,22 +133,6 @@ export default function UserInformation({
 					<FiberManualRecordOutlined />
 				</IconButton>
 			</DialogActions>
-			<Snackbar
-				open={snackBarOpen}
-				autoHideDuration={100000}
-				onClose={handleSnackBarClose}>
-				<Alert
-					onClose={handleSnackBarClose}
-					sx={{
-						borderRadius: 20,
-						width: '85%',
-						position: 'fixed',
-						bottom: '5%',
-						mr: 10,
-					}}>
-					Waiting
-				</Alert>
-			</Snackbar>
 		</Dialog>
 	);
 }

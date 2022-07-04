@@ -20,7 +20,7 @@ import l3 from '../../static/img/l3.png';
 import l4 from '../../static/img/l4.png';
 import l5 from '../../static/img/l5.png';
 import l6 from '../../static/img/l6.png';
-import ResetConfirm from '../modal/ResetConfilm';
+
 import effectSound from '../../hooks/effectSound';
 
 import HoldSound from '../../static/sounds/hold.mp3';
@@ -32,6 +32,7 @@ import RefreshConfirm from '../modal/RefreshConfirm';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import MyDices from '../gameBoard/MyDices';
 import OpponentsDices from '../gameBoard/OpponentsDices';
+import SurrenderConfirm from '../modal/SurrenderConfirm';
 
 export default function PVPBoard({
 	me,
@@ -67,6 +68,8 @@ export default function PVPBoard({
 	yacht,
 	Eng,
 	myTurn,
+	opponent,
+	myUid,
 }) {
 	const theme = useTheme();
 
@@ -107,7 +110,7 @@ export default function PVPBoard({
 
 	//----------New Game----------//
 
-	const [resetModalOpen, setResetModalOpen] = useState(false);
+	const [surrenderModalOpen, setSurrenderModalOpen] = useState(false);
 
 	//----------Refresh Game----------//
 
@@ -329,16 +332,13 @@ export default function PVPBoard({
 					/>
 				) : (
 					<OpponentsDices
-						dices={dices}
-						left={left}
-						handleHoldDice={handleHoldDice}
-						isHold={isHold}
 						isTablet={isTablet}
 						isMobile={isMobile}
 						D={D}
 						dl={dl}
 						L={L}
 						ll={ll}
+						opponent={opponent}
 					/>
 				)}
 			</Stack>
@@ -423,7 +423,7 @@ export default function PVPBoard({
 					color='inherit'
 					onClick={() => {
 						smallButton.play();
-						setResetModalOpen(true);
+						setSurrenderModalOpen(true);
 					}}
 					sx={{
 						'&:active': {
@@ -478,9 +478,9 @@ export default function PVPBoard({
 					<HelpRounded />
 				</IconButton>
 			</Stack>
-			<ResetConfirm
-				resetModalOpen={resetModalOpen}
-				setResetModalOpen={setResetModalOpen}
+			<SurrenderConfirm
+				surrenderModalOpen={surrenderModalOpen}
+				setSurrenderModalOpen={setSurrenderModalOpen}
 				setDices={setDices}
 				setIsHold={setIsHold}
 				setIsFilled={setIsFilled}
@@ -488,6 +488,7 @@ export default function PVPBoard({
 				setIsFine={setIsFine}
 				setIsStart={setIsStart}
 				Eng={Eng}
+				myUid={myUid}
 			/>
 			<RefreshConfirm
 				refreshModalOpen={refreshModalOpen}
