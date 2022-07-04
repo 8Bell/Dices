@@ -12,8 +12,11 @@ import {
 import React from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
+import { useNavigate } from 'react-router-dom';
 
 export default function UserInformation({ modal3Open, setModal3Open, members, propIdx, Eng }) {
+	const navigate = useNavigate();
+
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -92,6 +95,7 @@ export default function UserInformation({ modal3Open, setModal3Open, members, pr
 
 				<IconButton
 					onClick={() => {
+						navigate('/pvp');
 						setModal3Open(false);
 						smallFlatSound.play();
 					}}

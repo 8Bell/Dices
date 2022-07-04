@@ -435,7 +435,7 @@ export default function Game({
 		if (isFine) {
 			if (me[0] && me[0].bestScore < total) {
 				dbService.collection('users').doc(myUid).update({
-					bestScore: total,
+					indivbestScore: total,
 				});
 			}
 		}
