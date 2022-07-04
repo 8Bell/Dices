@@ -123,9 +123,9 @@ export default function PVPGame({
 	const diceArr = [0, 0, 0, 0, 0];
 	const savedDiceArr = myUid
 		? dicesArr
-		: sessionStorage.getItem('dices')
-		? JSON.parse(sessionStorage.getItem('dices'))
-		: diceArr;
+		: // : sessionStorage.getItem('dices')
+		  // ? JSON.parse(sessionStorage.getItem('dices'))
+		  diceArr;
 
 	const [dices, setDices] = useState(savedDiceArr);
 
@@ -133,9 +133,9 @@ export default function PVPGame({
 
 	const savedHoldArr = myUid
 		? holdArr
-		: sessionStorage.getItem('isHold')
-		? JSON.parse(sessionStorage.getItem('isHold'))
-		: new Array(5).fill(false);
+		: // : sessionStorage.getItem('isHold')
+		  // ? JSON.parse(sessionStorage.getItem('isHold'))
+		  new Array(5).fill(false);
 
 	const [isHold, setIsHold] = useState(savedHoldArr);
 
@@ -151,9 +151,9 @@ export default function PVPGame({
 
 	const savedFilledArr = myUid
 		? filledArr
-		: sessionStorage.getItem('isFilled')
-		? JSON.parse(sessionStorage.getItem('isFilled'))
-		: new Array(15).fill(false);
+		: // : sessionStorage.getItem('isFilled')
+		  // ? JSON.parse(sessionStorage.getItem('isFilled'))
+		  new Array(15).fill(false);
 	const [isFilled, setIsFilled] = useState(savedFilledArr);
 
 	useEffect(() => {
@@ -190,9 +190,9 @@ export default function PVPGame({
 
 	const savedLeft = myUid
 		? fbLeft
-		: sessionStorage.getItem('left')
-		? JSON.parse(sessionStorage.getItem('left'))
-		: 3;
+		: // : sessionStorage.getItem('left')
+		  // ? JSON.parse(sessionStorage.getItem('left'))
+		  3;
 
 	const [left, setLeft] = useState(savedLeft);
 
@@ -211,9 +211,9 @@ export default function PVPGame({
 
 	const savedScoreArr = myUid
 		? scoreArr
-		: sessionStorage.getItem('score')
-		? JSON.parse(sessionStorage.getItem('score'))
-		: 0;
+		: // : sessionStorage.getItem('score')
+		  // ? JSON.parse(sessionStorage.getItem('score'))
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 	const [ace, setAce] = useState(savedScoreArr[0]); //isFilled 0
 	const [duce, setDuce] = useState(savedScoreArr[1]); //isFilled 1
@@ -648,12 +648,7 @@ export default function PVPGame({
 	//--------DELETE DATA---------//
 
 	const handleDeleteGame = () => {
-		myUid &&
-			dbService.collection('users').doc(myUid).update({
-				pvp: 'end',
-			});
-
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left', 'score');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
@@ -663,8 +658,12 @@ export default function PVPGame({
 		setSnackBarOpen(false);
 
 		setTimeout(() => {
+			myUid &&
+				dbService.collection('users').doc(myUid).update({
+					pvp: 'end',
+				});
 			navigate('/');
-		}, [2000]);
+		}, [300]);
 	};
 
 	useEffect(() => {
@@ -674,7 +673,22 @@ export default function PVPGame({
 				.doc(opponentUid)
 				.onSnapshot((snapshot) => {
 					if (snapshot.data().pvp === 'end') {
-						navigate('/');
+						sessionStorage.removeItem(
+							'dices',
+							'isHold',
+							'isFilled',
+							'left',
+							'score'
+						);
+						setDices(diceArr);
+						setIsHold(new Array(5).fill(false));
+						setIsFilled(new Array(15).fill(false));
+						setLeft(3);
+						setIsFine(false);
+						setIsStart(true);
+						setTimeout(() => {
+							navigate('/');
+						}, [300]);
 					}
 				});
 		// eslint-disable-next-line react-hooks/exhaustive-deps

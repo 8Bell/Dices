@@ -615,11 +615,20 @@ export default function Game({
 									sessionStorage.getItem('opponentUid')
 								),
 							});
+						sessionStorage.removeItem(
+							'dices',
+							'isHold',
+							'isFilled',
+							'left',
+							'score'
+						);
 
 						setTimeout(() => {
 							dbService.collection('users').doc(myUid).update({
 								pvp: '',
 							});
+
+							setBattleModalOpen(false);
 
 							navigate('/pvp');
 						}, [300]);
@@ -627,14 +636,15 @@ export default function Game({
 						myUid && dbService.collection('games').doc(myUid).delete();
 						opponentUid &&
 							dbService.collection('games').doc(opponentUid).delete();
+					} else {
+						snapshot.data().pvp !== ''
+							? setBattleModalOpen(true)
+							: setBattleModalOpen(false);
 					}
-
-					snapshot.data().pvp !== ''
-						? setBattleModalOpen(true)
-						: setBattleModalOpen(false);
 				});
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [myUid]);
+	}, [myUid, opponentUid]);
 
 	//--------DELETE DATA---------//
 

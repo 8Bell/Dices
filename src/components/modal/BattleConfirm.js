@@ -1,6 +1,5 @@
 import { ClearRounded, FiberManualRecordOutlined } from '@mui/icons-material';
 import {
-	Alert,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -8,7 +7,6 @@ import {
 	DialogTitle,
 	//DialogTitle,
 	IconButton,
-	Snackbar,
 	useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -19,7 +17,6 @@ import { dbService } from '../../fbase';
 
 export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng, myUid }) {
 	const navigate = useNavigate();
-	const [snackBarOpen, setSnackBarOpen] = useState(false);
 
 	//-----------EFFECT SOUNDS-------------//
 
@@ -122,6 +119,8 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 					myTurn: true,
 					opponentUid: challengerUid,
 				});
+
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left', 'score');
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 

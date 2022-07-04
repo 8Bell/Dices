@@ -40,13 +40,8 @@ export default function SurrenderConfirm({
 	const diceArr = [0, 0, 0, 0, 0];
 
 	const handleNewGame = () => {
-		myUid &&
-			dbService.collection('users').doc(myUid).update({
-				pvp: 'end',
-			});
-
 		smallFlatSound.play();
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left', 'score');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
@@ -54,8 +49,13 @@ export default function SurrenderConfirm({
 		setIsFine(false);
 		setIsStart(true);
 
-		//dbService.collection('games').doc(myUid).delete();
-		navigate('/');
+		setTimeout(() => {
+			myUid &&
+				dbService.collection('users').doc(myUid).update({
+					pvp: 'end',
+				});
+			navigate('/');
+		}, [300]);
 	};
 
 	return (
