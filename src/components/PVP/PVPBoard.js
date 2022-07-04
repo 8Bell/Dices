@@ -1,12 +1,6 @@
 /* eslint-disable array-callback-return */
-import {
-	AttachFileRounded,
-	BugReportRounded,
-	CasinoRounded,
-	ClearRounded,
-	HelpRounded,
-} from '@mui/icons-material';
-import { Box, Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
+import { BugReportRounded, CasinoRounded, ClearRounded, HelpRounded } from '@mui/icons-material';
+import { Box, Button, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 
@@ -36,7 +30,8 @@ import BigButton from '../../static/sounds/bigButton.mp3';
 import SmallButton from '../../static/sounds/smallButton.mp3';
 import RefreshConfirm from '../modal/RefreshConfirm';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
-import { dbService } from '../../fbase';
+import MyDices from '../gameBoard/MyDices';
+import OpponentsDices from '../gameBoard/OpponentsDices';
 
 export default function PVPBoard({
 	me,
@@ -71,18 +66,9 @@ export default function PVPBoard({
 	lStraght,
 	yacht,
 	Eng,
+	myTurn,
 }) {
 	const theme = useTheme();
-	const Item = styled(Paper)(({ theme }) => ({
-		//	backgroundColor: theme.palette.background,
-		// border: 'solid 1px',
-		borderColor: theme.palette.divider,
-		borderRadius: '10%',
-		boxShadow: 'none',
-		width: '20%',
-		textAlign: 'center',
-		color: theme.palette.text,
-	}));
 
 	// const bestScore = isLoggedIn
 	// 	? me[0] && me[0].bestScore
@@ -156,40 +142,6 @@ export default function PVPBoard({
 			setLeft(left - 1);
 		}
 	};
-
-	//--------FIREBASE UPDATE ------//
-	const scoreData = [
-		ace,
-		duce,
-		threes,
-		fours,
-		fives,
-		sixes,
-		subTotal,
-		bonus,
-		choice,
-		fourOfKind,
-		fullHouse,
-		sStraght,
-		lStraght,
-		yacht,
-		total,
-	];
-
-	useEffect(() => {
-		try {
-			dbService.collection('games').doc(me[0].uid).set({
-				dices,
-				left,
-				isFilled,
-				isHold,
-				scoreData,
-			});
-		} catch (err) {
-			console.log(err);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dices, isFilled, left, isHold, scoreData]);
 
 	//--------IMG PRELOADER--------//
 
@@ -362,112 +314,33 @@ export default function PVPBoard({
 					{alert}
 				</Typography>
 				<PreloadImg />
-				{dices.map((dice, idx) => (
-					<Item
-						onClick={() => left !== 3 && handleHoldDice(idx)}
-						className={isHold[idx] ? 'holdDice' : 'dice'}
-						key={idx}
-						value={dice}
-						sx={{
-							position: 'relative',
-							bgcolor: 'rgba(0, 0, 0, 0)',
-							backgroundImage: 'none',
-							minHeight: '30%',
-						}}>
-						{isHold[idx] && (
-							<AttachFileRounded
-								sx={{
-									position: 'absolute',
-									zIndex: 1000,
-									top: '-10%',
-									left: '50%',
-									transform:
-										isTablet || isMobile
-											? 'translate(-50%, -50%)'
-											: 'translate(-55%, -50%)',
-									fontSize: isMobile
-										? '230%'
-										: isTablet
-										? '400%'
-										: '450%',
-									color: theme.palette.text.primary,
-									opacity: 0.8,
-									rotate: '-15deg',
-								}}
-							/>
-						)}
-
-						<Box
-							// src={theme.palette.mode === 'dark' ? dl : ll}
-							// alt='preload'
-
-							style={{
-								display: 'block',
-								paddingBottom: '100%',
-								width: '100%',
-								//backgroundColor: 'yellow',
-								zIndex: 1100,
-							}}
-						/>
-						<img
-							src={
-								theme.palette.mode === 'dark'
-									? dice === 'l'
-										? dl
-										: D[dice]
-									: dice === 'l'
-									? ll
-									: L[dice]
-							}
-							alt={dice}
-							style={{
-								position: 'absolute',
-								width: '145%',
-								height: 'auto',
-								top: 0,
-								left: 0,
-								marginBottom: isMobile
-									? '-58%'
-									: isTablet
-									? '-51%'
-									: '-50%',
-								transform: isMobile
-									? 'translate(-18.3%,-15%)'
-									: isTablet
-									? 'translate(-18.3%,-15%)'
-									: 'translate(-18.3%,-15%)',
-								lineHeight: 0,
-								zIndex: 999,
-
-								// filter: isHold[idx] ? 'invert(100%)' : 'none',
-							}}
-						/>
-					</Item>
-				))}
-				{/* <Item
-					value={'l'}
-					sx={{
-						position: 'relative',
-						bgcolor: 'rgba(0, 0, 0, 0)',
-						backgroundImage: 'none',
-						minHeight: '30%',
-					}}>
-					<img src={dl} alt='preload' style={{ display: 'none' }} />
-					<img
-						src={theme.palette.mode === 'dark' ? dl : ll}
-						alt='preload'
-						style={{
-							width: '145%',
-							marginBottom: isMobile
-								? '-58%'
-								: isTablet
-								? '-51%'
-								: '-50%',
-							marginLeft: -100,
-							transform: 'translate(-28.3%,-16%)',
-						}}
+				{myTurn ? (
+					<MyDices
+						dices={dices}
+						left={left}
+						handleHoldDice={handleHoldDice}
+						isHold={isHold}
+						isTablet={isTablet}
+						isMobile={isMobile}
+						D={D}
+						dl={dl}
+						L={L}
+						ll={ll}
 					/>
-				</Item> */}
+				) : (
+					<OpponentsDices
+						dices={dices}
+						left={left}
+						handleHoldDice={handleHoldDice}
+						isHold={isHold}
+						isTablet={isTablet}
+						isMobile={isMobile}
+						D={D}
+						dl={dl}
+						L={L}
+						ll={ll}
+					/>
+				)}
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Button
@@ -476,7 +349,7 @@ export default function PVPBoard({
 					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
 					onClick={
-						left !== 0 && !isFine
+						myTurn && left !== 0 && !isFine
 							? () => {
 									handleChangeDice();
 									bigButton.play();
@@ -490,10 +363,11 @@ export default function PVPBoard({
 					}
 					sx={{
 						'&:active': {
-							boxShadow:
-								theme.palette.mode === 'dark'
-									? ' inset 25px 25px 50px #090909,	inset -25px -25px 50px #252525'
-									: 'inset 25px 25px 50px #bcbcbd, inset -25px -25px 50px #ffffff',
+							boxShadow: !myTurn
+								? 'none'
+								: theme.palette.mode === 'dark'
+								? ' inset 25px 25px 50px #090909,	inset -25px -25px 50px #252525'
+								: 'inset 25px 25px 50px #bcbcbd, inset -25px -25px 50px #ffffff',
 						},
 						height: 150,
 						width: 150,
@@ -506,12 +380,15 @@ export default function PVPBoard({
 							theme.palette.mode === 'dark'
 								? 'linear-gradient(145deg, #202020, #111)'
 								: 'linear-gradient(145deg, #efefef, #d7d7d7)',
-						boxShadow:
-							theme.palette.mode === 'dark'
-								? '25px 25px 50px #090909,	-25px -25px 50px #252525'
-								: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
+						boxShadow: !myTurn
+							? 'none'
+							: theme.palette.mode === 'dark'
+							? '25px 25px 50px #090909,	-25px -25px 50px #252525'
+							: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
 					}}>
-					{isFine
+					{!myTurn
+						? 'WAITING'
+						: isFine
 						? 'regame'
 						: isStart && left === 3
 						? Eng

@@ -22,7 +22,7 @@ import {
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { Howler } from 'howler';
 import SignIn from './auth/SignIn';
-import { authService } from '../fbase';
+import { authService, dbService } from '../fbase';
 
 import dl from '../static/img/dl.gif';
 import d0 from '../static/img/d0.png';
@@ -43,7 +43,7 @@ import l6 from '../static/img/l6.png';
 import SignOut from './auth/Signout';
 import SmallFlatSound from '../static/sounds/smallFlat.mp3';
 import effectSound from '../hooks/effectSound';
-//import UserInformation from './modal/UserInformation';
+import UserInformation from './modal/UserInformation';
 
 export default function SideMenu({
 	isLoggedIn,
@@ -57,6 +57,9 @@ export default function SideMenu({
 	members,
 	Eng,
 	setEng,
+	myUid,
+	pvp,
+	handleDeleteGame,
 	// mute,
 	// setMute,
 }) {
@@ -76,7 +79,7 @@ export default function SideMenu({
 
 	const [modalOpen, setModalOpen] = useState(false); // login
 	const [modal2Open, setModal2Open] = useState(false); //logout
-	//const [modal3Open, setModal3Open] = useState(false); //userinfo
+	const [modal3Open, setModal3Open] = useState(false); //userinfo
 	const theme = useTheme();
 	const colorMode = useContext(ColorModeContext);
 
@@ -116,15 +119,20 @@ export default function SideMenu({
 	}, []);
 
 	//------ HANDLE MEMBER CLICK ------//
-	// const [propIdx, setPropIdx] = useState(0);
+	const [propIdx, setPropIdx] = useState(0);
 
-	// const handleMemberClick = (idx) => {
-	// 	smallFlatSound.play();
-	// 	setPropIdx(idx);
-	// 	setTimeout(() => {
-	// 		setModal3Open(true);
-	// 	}, [100]);
-	// };
+	const handleMemberClick = (idx) => {
+		if (pvp === false) {
+			smallFlatSound.play();
+			dbService.collection('games').doc(myUid).update({
+				opponentUid: members[idx].uid,
+			});
+			setPropIdx(idx);
+			setTimeout(() => {
+				setModal3Open(true);
+			}, [100]);
+		}
+	};
 
 	//-----local best score ----//
 	const bestScore = localStorage.getItem('BestScore')
@@ -277,10 +285,9 @@ export default function SideMenu({
 				{members.map((member, idx) => (
 					<ListItem key={idx} disablePadding>
 						<ListItemButton
-						// onClick={() => {
-						// 	handleMemberClick(idx);
-						// }}
-						>
+							onClick={() => {
+								handleMemberClick(idx);
+							}}>
 							<ListItemText
 								primary={member.userName}
 								sx={{ textAlign: 'left' }}
@@ -358,15 +365,25 @@ export default function SideMenu({
 					)}
 				</IconButton>
 
-				<SignIn modalOpen={modalOpen} setModalOpen={setModalOpen} Eng={Eng} />
-				<SignOut modal2Open={modal2Open} setModal2Open={setModal2Open} Eng={Eng} />
-				{/* <UserInformation
+				<SignIn
+					modalOpen={modalOpen}
+					setModalOpen={setModalOpen}
+					Eng={Eng}
+					handleDeleteGame={() => handleDeleteGame()}
+				/>
+				<SignOut
+					modal2Open={modal2Open}
+					setModal2Open={setModal2Open}
+					Eng={Eng}
+					handleDeleteGame={() => handleDeleteGame()}
+				/>
+				<UserInformation
 					modal3Open={modal3Open}
 					setModal3Open={setModal3Open}
 					members={members}
 					propIdx={propIdx}
 					Eng={Eng}
-				/> */}
+				/>
 			</Box>
 		</Drawer>
 	);

@@ -13,7 +13,7 @@ import { authService } from '../../fbase';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
-export default function SignOut({ modal2Open, setModal2Open, Eng }) {
+export default function SignOut({ modal2Open, setModal2Open, Eng, handleDeleteGame }) {
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -26,6 +26,7 @@ export default function SignOut({ modal2Open, setModal2Open, Eng }) {
 
 	const handleLogOut = () => {
 		smallFlatSound.play();
+		handleDeleteGame();
 		authService.signOut();
 	};
 

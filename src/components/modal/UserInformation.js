@@ -27,7 +27,27 @@ export default function UserInformation({ modal3Open, setModal3Open, members, pr
 		setModal3Open(false);
 	};
 
-	const user = members[propIdx];
+	const user = members[propIdx]
+		? members[propIdx]
+		: {
+				uid: '',
+				userName: '',
+				createdAt: Date.now(),
+				isOnline: true,
+				profileImg: null,
+
+				indivNumberOfGames: 0,
+				indivBestScore: 0,
+				indivTotalScore: 0,
+
+				pvpNumberOfGames: 0,
+				pvpBestScore: 0,
+				pvpTotalScore: 0,
+
+				win: 0,
+				defeat: 0,
+				Rank: 0,
+		  };
 	console.log('user', user);
 
 	return (
@@ -66,7 +86,7 @@ export default function UserInformation({ modal3Open, setModal3Open, members, pr
 						: [
 								'최고 점수 : ' + user.indivBestScore,
 								<br />,
-								'게임 횟수 : ' + user.playtimes,
+								'게임 횟수 : ' + user.indivNumberOfGames,
 								<br />,
 								<br />,
 								user.userName + '님에게 대전을 신청 하시겠어요?',
@@ -98,6 +118,7 @@ export default function UserInformation({ modal3Open, setModal3Open, members, pr
 						navigate('/pvp');
 						setModal3Open(false);
 						smallFlatSound.play();
+						sessionStorage.setItem('opponentUid', user.uid);
 					}}
 					sx={{
 						color: theme.palette.text.primary,

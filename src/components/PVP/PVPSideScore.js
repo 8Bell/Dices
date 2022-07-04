@@ -14,7 +14,6 @@ import PVPScore from './PVPScore';
 export default function PVPSideScore({
 	sideScoreOpen,
 	setSideScoreOpen,
-	drawerWidth,
 	pvpScoreDrawerWidth,
 	isMobile,
 	isTablet,
@@ -37,7 +36,11 @@ export default function PVPSideScore({
 	yacht,
 	total,
 	left,
+	isHold,
 	Eng,
+	myUid,
+	opponentUid,
+	myTurn,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -103,7 +106,6 @@ export default function PVPSideScore({
 				isMobile={isMobile}
 				isFilled={isFilled}
 				handleFill={handleFill}
-				pvpScoreDrawerWidth={pvpScoreDrawerWidth}
 				dices={dices}
 				ace={ace}
 				duce={duce}
@@ -121,7 +123,11 @@ export default function PVPSideScore({
 				yacht={yacht}
 				total={total}
 				left={left}
+				isHold={isHold}
 				Eng={Eng}
+				myUid={myUid}
+				opponentUid={opponentUid}
+				myTurn={myTurn}
 			/>
 		</Drawer>
 	);

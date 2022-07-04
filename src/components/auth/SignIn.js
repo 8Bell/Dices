@@ -16,7 +16,7 @@ import { authService, dbService } from '../../fbase';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 
-export default function SignIn({ modalOpen, setModalOpen, Eng }) {
+export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame }) {
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -50,10 +50,12 @@ export default function SignIn({ modalOpen, setModalOpen, Eng }) {
 
 	const handleSignUp = async (e) => {
 		smallFlatSound.play();
+
 		e.preventDefault();
 		try {
 			if (userName !== '') {
 				if (userName.length <= 12) {
+					handleDeleteGame();
 					const data = await authService.createUserWithEmailAndPassword(
 						email,
 						password
@@ -143,8 +145,10 @@ export default function SignIn({ modalOpen, setModalOpen, Eng }) {
 
 	const handleSignIn = async (e) => {
 		smallFlatSound.play();
+
 		e.preventDefault();
 		try {
+			handleDeleteGame();
 			await authService.signInWithEmailAndPassword(email, password);
 		} catch (error) {
 			console.log(error);

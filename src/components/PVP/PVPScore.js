@@ -18,8 +18,6 @@ export default function PVPScore({
 	isTablet,
 	isFilled,
 	handleFill,
-	pvpScoreDrawerWidth,
-
 	dices,
 	ace,
 	duce,
@@ -37,7 +35,10 @@ export default function PVPScore({
 	yacht,
 	total,
 	left,
+	isHold,
 	Eng,
+	myUid,
+	opponentUid,
 }) {
 	const theme = useTheme();
 
@@ -83,16 +84,30 @@ export default function PVPScore({
 
 	//--------BRING FIREBASE DATA -------//
 
-	const [opponent, setOpponent] = useState({});
+	const [opponent, setOpponent] = useState({
+		dices,
+		isFilled,
+		isHold,
+		scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	});
 
 	useEffect(() => {
-		dbService
-			.collection('games')
-			.doc('ZcoNHIBVCvfATk3ruXQBkXb3beU2')
-			.onSnapshot((snapshot) => {
-				const dbOpponent = snapshot.data();
-				setOpponent(dbOpponent);
-			});
+		try {
+			dbService
+				.collection('games')
+				.doc(opponentUid)
+				.onSnapshot((snapshot) => {
+					const dbOpponent = snapshot.data();
+
+					console.log('dbOpponent', dbOpponent);
+
+					setOpponent(dbOpponent);
+				});
+		} catch (err) {
+			console.log('opponentUid', opponentUid);
+
+			console.log('err', err);
+		}
 	}, []);
 
 	function createData(Categories, Me, Opponent) {

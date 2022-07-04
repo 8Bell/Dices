@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,6 +24,12 @@ export default function Game({
 	ColorModeContext,
 }) {
 	const theme = useTheme();
+
+	const [scoreArr, setScoreArr] = useState([]);
+	const [filledArr, setFilledArr] = useState([]);
+	const [dicesArr, setDicesArr] = useState([]);
+	const [holdArr, setHoldArr] = useState([]);
+	const [fbLeft, setFbLeft] = useState(0);
 
 	const Main = styled('main', {
 		shouldForwardProp: (prop) => prop !== 'open',
@@ -59,10 +65,17 @@ export default function Game({
 		return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 	});
 
-	//-----------------PVP-----------------//
-	//const [isPVPMode, setIsPVPMode] = useState(false);
+	//--------------CURRENT USER ---------------//
 
-	//--------------Language---------------//
+	const [myUid, setMyUid] = useState('');
+
+	useEffect(() => {
+		authService.currentUser !== null && setMyUid(authService.currentUser.uid);
+	}, []);
+
+	useMemo(() => myUid, [myUid]);
+
+	//--------------Language----------------//
 
 	const savedEng = localStorage.getItem('Eng')
 		? JSON.parse(localStorage.getItem('Eng'))
@@ -80,13 +93,19 @@ export default function Game({
 	//----------DICES------------//
 
 	const diceArr = [0, 0, 0, 0, 0];
-	const savedDiceArr = sessionStorage.getItem('dices')
+	const savedDiceArr = myUid
+		? dicesArr
+		: sessionStorage.getItem('dices')
 		? JSON.parse(sessionStorage.getItem('dices'))
 		: diceArr;
 
 	const [dices, setDices] = useState(savedDiceArr);
 
-	const savedHoldArr = sessionStorage.getItem('isHold')
+	// HOLD
+
+	const savedHoldArr = myUid
+		? holdArr
+		: sessionStorage.getItem('isHold')
 		? JSON.parse(sessionStorage.getItem('isHold'))
 		: new Array(5).fill(false);
 
@@ -102,7 +121,9 @@ export default function Game({
 
 	//----------Fill-------------//
 
-	const savedFilledArr = sessionStorage.getItem('isFilled')
+	const savedFilledArr = myUid
+		? filledArr
+		: sessionStorage.getItem('isFilled')
 		? JSON.parse(sessionStorage.getItem('isFilled'))
 		: new Array(15).fill(false);
 
@@ -129,7 +150,9 @@ export default function Game({
 
 	//----------LEFT----------//
 
-	const savedLeft = sessionStorage.getItem('left')
+	const savedLeft = myUid
+		? fbLeft
+		: sessionStorage.getItem('left')
 		? JSON.parse(sessionStorage.getItem('left'))
 		: 3;
 
@@ -147,24 +170,11 @@ export default function Game({
 
 	//----------------------------Rules-----------------------------//
 
-	const savedScoreArr = [
-		sessionStorage.getItem('ace') ? JSON.parse(sessionStorage.getItem('ace')) : 0,
-		sessionStorage.getItem('duce') ? JSON.parse(sessionStorage.getItem('duce')) : 0,
-		sessionStorage.getItem('threes') ? JSON.parse(sessionStorage.getItem('threes')) : 0,
-		sessionStorage.getItem('fours') ? JSON.parse(sessionStorage.getItem('fours')) : 0,
-		sessionStorage.getItem('fives') ? JSON.parse(sessionStorage.getItem('fives')) : 0,
-		sessionStorage.getItem('sixes') ? JSON.parse(sessionStorage.getItem('sixes')) : 0,
-		sessionStorage.getItem('choice') ? JSON.parse(sessionStorage.getItem('choice')) : 0,
-		sessionStorage.getItem('fourOfKind')
-			? JSON.parse(sessionStorage.getItem('fourOfKind'))
-			: 0,
-		sessionStorage.getItem('fullHouse')
-			? JSON.parse(sessionStorage.getItem('fullHouse'))
-			: 0,
-		sessionStorage.getItem('sStraght') ? JSON.parse(sessionStorage.getItem('sStraght')) : 0,
-		sessionStorage.getItem('lStraght') ? JSON.parse(sessionStorage.getItem('lStraght')) : 0,
-		sessionStorage.getItem('yatch') ? JSON.parse(sessionStorage.getItem('yatch')) : 0,
-	];
+	const savedScoreArr = myUid
+		? scoreArr
+		: sessionStorage.getItem('score')
+		? JSON.parse(sessionStorage.getItem('score'))
+		: 0;
 
 	const [ace, setAce] = useState(savedScoreArr[0]); //isFilled 0
 	const [duce, setDuce] = useState(savedScoreArr[1]); //isFilled 1
@@ -174,29 +184,94 @@ export default function Game({
 	const [sixes, setSixes] = useState(savedScoreArr[5]); //isFilled 5
 	const [subTotal, setSubTotal] = useState(0);
 	const [bonus, setBonus] = useState(0);
-	const [choice, setChoice] = useState(savedScoreArr[6]); //isFilled 8
-	const [fourOfKind, setFourOfKind] = useState(savedScoreArr[7]); //isFilled 9
-	const [fullHouse, setFullHouse] = useState(savedScoreArr[8]); //isFilled 10
-	const [sStraght, setSStraght] = useState(savedScoreArr[9]); //isFilled 11
-	const [lStraght, setLStraght] = useState(savedScoreArr[10]); //isFilled 12
-	const [yacht, setYacht] = useState(savedScoreArr[11]); //isFilled 13
+	const [choice, setChoice] = useState(savedScoreArr[8]); //isFilled 8
+	const [fourOfKind, setFourOfKind] = useState(savedScoreArr[9]); //isFilled 9
+	const [fullHouse, setFullHouse] = useState(savedScoreArr[10]); //isFilled 10
+	const [sStraght, setSStraght] = useState(savedScoreArr[11]); //isFilled 11
+	const [lStraght, setLStraght] = useState(savedScoreArr[12]); //isFilled 12
+	const [yacht, setYacht] = useState(savedScoreArr[13]); //isFilled 13
 	const [total, setTotal] = useState(0);
 
+	const scoreData = [
+		ace,
+		duce,
+		threes,
+		fours,
+		fives,
+		sixes,
+		subTotal,
+		bonus,
+		choice,
+		fourOfKind,
+		fullHouse,
+		sStraght,
+		lStraght,
+		yacht,
+		total,
+	];
+
+	//----------BRING FB DATA----------//
+
 	useEffect(() => {
-		sessionStorage.setItem('ace', JSON.stringify(ace));
-		sessionStorage.setItem('duce', JSON.stringify(duce));
-		sessionStorage.setItem('threes', JSON.stringify(threes));
-		sessionStorage.setItem('fours', JSON.stringify(fours));
-		sessionStorage.setItem('fives', JSON.stringify(fives));
-		sessionStorage.setItem('sixes', JSON.stringify(sixes));
-		sessionStorage.setItem('choice', JSON.stringify(choice));
-		sessionStorage.setItem('fourOfKind', JSON.stringify(fourOfKind));
-		sessionStorage.setItem('fullHouse', JSON.stringify(fullHouse));
-		sessionStorage.setItem('sStraght', JSON.stringify(sStraght));
-		sessionStorage.setItem('lStraght', JSON.stringify(lStraght));
-		sessionStorage.setItem('yacht', JSON.stringify(yacht));
+		myUid
+			? dbService
+					.collection('singleGames')
+					.doc(myUid)
+					.onSnapshot((snapshot) => {
+						const dbData = snapshot.data();
+						setScoreArr(dbData.scoreData);
+						setFilledArr(dbData.isFilled);
+						setDicesArr(dbData.dices);
+						setHoldArr(dbData.isHold);
+						setFbLeft(dbData.left);
+					})
+			: console.log('err');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	//----------SAVING DATA-----------//
+
+	useEffect(() => {
+		try {
+			dbService.collection('singleGames').doc(myUid).update({
+				myUid,
+				dices,
+				left,
+				isFilled,
+				isHold,
+				scoreData,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dices, left, isFilled, isHold, scoreData]);
+
+	useEffect(() => {
+		sessionStorage.setItem(
+			'score',
+			JSON.stringify([
+				ace,
+				duce,
+				threes,
+				fours,
+				fives,
+				sixes,
+				subTotal,
+				bonus,
+				choice,
+				fourOfKind,
+				fullHouse,
+				sStraght,
+				lStraght,
+				yacht,
+				total,
+			])
+		);
 	}, [
 		ace,
+		bonus,
 		choice,
 		duce,
 		fives,
@@ -206,7 +281,9 @@ export default function Game({
 		lStraght,
 		sStraght,
 		sixes,
+		subTotal,
 		threes,
+		total,
 		yacht,
 	]);
 
@@ -324,7 +401,6 @@ export default function Game({
 				dices.includes(num) && k++;
 			});
 			i === 4 || (j === 4) | (k === 4) ? setSStraght(15) : setSStraght(0);
-			console.log('j', j);
 		}
 	}, [dices, isFilled]);
 
@@ -398,6 +474,7 @@ export default function Game({
 	]);
 
 	//---------------------FINE--------------------//
+
 	// eslint-disable-next-line no-unused-vars
 	const [isFine, setIsFine] = useState(false);
 
@@ -433,7 +510,7 @@ export default function Game({
 
 	useEffect(() => {
 		if (isFine) {
-			if (me[0] && me[0].bestScore < total) {
+			if (me[0] && me[0].indivbestScore < total) {
 				dbService.collection('users').doc(myUid).update({
 					indivbestScore: total,
 				});
@@ -459,14 +536,6 @@ export default function Game({
 
 	//---------------START ----------------------//
 	const [isStart, setIsStart] = useState(true);
-
-	//--------------CURRENT USER ---------------//
-
-	const [myUid, setMyUid] = useState('');
-
-	useEffect(() => {
-		authService.currentUser !== null && setMyUid(authService.currentUser.uid);
-	}, []);
 
 	//-----------------USERS------------------//
 
@@ -495,9 +564,19 @@ export default function Game({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [users]);
 
-	console.log('me', me);
-	console.log('members', members);
-	console.log('myUid', myUid);
+	//--------DELETE DATA---------//
+
+	const handleDeleteGame = () => {
+		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		setDices(diceArr);
+		setIsHold(new Array(5).fill(false));
+		setIsFilled(new Array(15).fill(false));
+		setLeft(3);
+		setIsFine(false);
+		setIsStart(true);
+		setSnackBarOpen(false);
+		myUid && dbService.collection('singleGames').doc(myUid).delete();
+	};
 
 	return (
 		<Box
@@ -537,6 +616,9 @@ export default function Game({
 				members={members}
 				Eng={Eng}
 				setEng={setEng}
+				myUid={myUid}
+				handleDeleteGame={() => handleDeleteGame()}
+				pvp={false}
 			/>
 			<SideScore
 				sideScoreOpen={sideScoreOpen}
