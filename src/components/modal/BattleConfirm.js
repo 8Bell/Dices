@@ -129,7 +129,7 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 				pvp: '',
 			});
 			navigate('/pvp');
-		}, [300]);
+		}, [1500]);
 		//setSnackBarOpen(true);
 	};
 	console.log('myUid', myUid);

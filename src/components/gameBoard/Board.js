@@ -1,12 +1,6 @@
 /* eslint-disable array-callback-return */
-import {
-	AttachFileRounded,
-	BugReportRounded,
-	CasinoRounded,
-	ClearRounded,
-	HelpRounded,
-} from '@mui/icons-material';
-import { Box, Button, IconButton, Paper, Stack, styled, Typography } from '@mui/material';
+import { BugReportRounded, CasinoRounded, ClearRounded, HelpRounded } from '@mui/icons-material';
+import { Box, Button, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 
@@ -36,6 +30,7 @@ import BigButton from '../../static/sounds/bigButton.mp3';
 import SmallButton from '../../static/sounds/smallButton.mp3';
 import RefreshConfirm from '../modal/RefreshConfirm';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
+import MyDices from './MyDices';
 
 export default function Board({
 	isMobile,
@@ -48,8 +43,8 @@ export default function Board({
 	setIsFilled,
 	left,
 	setLeft,
-	isFine,
-	setIsFine,
+	isFin,
+	setIsFin,
 	total,
 	isStart,
 	setIsStart,
@@ -71,16 +66,6 @@ export default function Board({
 	Eng,
 }) {
 	const theme = useTheme();
-	const Item = styled(Paper)(({ theme }) => ({
-		//	backgroundColor: theme.palette.background,
-		// border: 'solid 1px',
-		borderColor: theme.palette.divider,
-		borderRadius: '10%',
-		boxShadow: 'none',
-		width: '20%',
-		textAlign: 'center',
-		color: theme.palette.text,
-	}));
 
 	// const bestScore = isLoggedIn
 	// 	? me[0] && me[0].bestScore
@@ -108,7 +93,7 @@ export default function Board({
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
-		setIsFine(false);
+		setIsFin(false);
 		setIsStart(true);
 		setSnackBarOpen(false);
 
@@ -215,7 +200,7 @@ export default function Board({
 				scoreArr[13] > 0 && !isFilled[13] && setAlert('Yacht');
 			}
 		});
-		isFine && setAlert('TOTAL ' + total);
+		isFin && setAlert('TOTAL ' + total);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFilled]);
 
@@ -325,126 +310,32 @@ export default function Board({
 					{alert}
 				</Typography>
 				<PreloadImg />
-				{dices.map((dice, idx) => (
-					<Item
-						onClick={() => left !== 3 && handleHoldDice(idx)}
-						className={isHold[idx] ? 'holdDice' : 'dice'}
-						key={idx}
-						value={dice}
-						sx={{
-							position: 'relative',
-							bgcolor: 'rgba(0, 0, 0, 0)',
-							backgroundImage: 'none',
-							minHeight: '30%',
-						}}>
-						{isHold[idx] && (
-							<AttachFileRounded
-								sx={{
-									position: 'absolute',
-									zIndex: 1000,
-									top: '-10%',
-									left: '50%',
-									transform:
-										isTablet || isMobile
-											? 'translate(-50%, -50%)'
-											: 'translate(-55%, -50%)',
-									fontSize: isMobile
-										? '230%'
-										: isTablet
-										? '400%'
-										: '450%',
-									color: theme.palette.text.primary,
-									opacity: 0.8,
-									rotate: '-15deg',
-								}}
-							/>
-						)}
-
-						<Box
-							// src={theme.palette.mode === 'dark' ? dl : ll}
-							// alt='preload'
-
-							style={{
-								display: 'block',
-								paddingBottom: '100%',
-								width: '100%',
-								//backgroundColor: 'yellow',
-								zIndex: 1100,
-							}}
-						/>
-						<img
-							src={
-								theme.palette.mode === 'dark'
-									? dice === 'l'
-										? dl
-										: D[dice]
-									: dice === 'l'
-									? ll
-									: L[dice]
-							}
-							alt={dice}
-							style={{
-								position: 'absolute',
-								width: '145%',
-								height: 'auto',
-								top: 0,
-								left: 0,
-								marginBottom: isMobile
-									? '-58%'
-									: isTablet
-									? '-51%'
-									: '-50%',
-								transform: isMobile
-									? 'translate(-18.3%,-15%)'
-									: isTablet
-									? 'translate(-18.3%,-15%)'
-									: 'translate(-18.3%,-15%)',
-								lineHeight: 0,
-								zIndex: 999,
-
-								// filter: isHold[idx] ? 'invert(100%)' : 'none',
-							}}
-						/>
-					</Item>
-				))}
-				{/* <Item
-					value={'l'}
-					sx={{
-						position: 'relative',
-						bgcolor: 'rgba(0, 0, 0, 0)',
-						backgroundImage: 'none',
-						minHeight: '30%',
-					}}>
-					<img src={dl} alt='preload' style={{ display: 'none' }} />
-					<img
-						src={theme.palette.mode === 'dark' ? dl : ll}
-						alt='preload'
-						style={{
-							width: '145%',
-							marginBottom: isMobile
-								? '-58%'
-								: isTablet
-								? '-51%'
-								: '-50%',
-							marginLeft: -100,
-							transform: 'translate(-28.3%,-16%)',
-						}}
-					/>
-				</Item> */}
+				<MyDices
+					dices={dices}
+					left={left}
+					handleHoldDice={handleHoldDice}
+					isHold={isHold}
+					isTablet={isTablet}
+					isMobile={isMobile}
+					D={D}
+					dl={dl}
+					L={L}
+					ll={ll}
+				/>
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Button
-					//className={left !== 0 && !isFine ? 'bg' : 'none'}
+					//className={left !== 0 && !isFin ? 'bg' : 'none'}
 
-					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
+					variant={isFin ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
 					onClick={
-						left !== 0 && !isFine
+						left !== 0 && !isFin
 							? () => {
 									handleChangeDice();
 									bigButton.play();
 							  }
-							: isFine
+							: isFin
 							? () => {
 									handleReGame();
 									bigButton.play();
@@ -474,7 +365,7 @@ export default function Board({
 								? '25px 25px 50px #090909,	-25px -25px 50px #252525'
 								: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
 					}}>
-					{isFine
+					{isFin
 						? 'regame'
 						: isStart && left === 3
 						? 'START'
@@ -503,7 +394,7 @@ export default function Board({
 					{[12 - round]}
 				</Typography>
 				<IconButton
-					variant={isFine ? 'contained' : 'outlined'}
+					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
 						smallButton.play();
@@ -527,7 +418,7 @@ export default function Board({
 					<ClearRounded />
 				</IconButton>
 				<IconButton
-					variant={isFine ? 'contained' : 'outlined'}
+					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
 						smallFlatSound.play();
@@ -542,7 +433,7 @@ export default function Board({
 					<BugReportRounded />
 				</IconButton>
 				<IconButton
-					variant={isFine ? 'contained' : 'outlined'}
+					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					href={
 						Eng
@@ -569,7 +460,7 @@ export default function Board({
 				setIsHold={setIsHold}
 				setIsFilled={setIsFilled}
 				setLeft={setLeft}
-				setIsFine={setIsFine}
+				setIsFin={setIsFin}
 				setIsStart={setIsStart}
 				Eng={Eng}
 			/>

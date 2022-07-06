@@ -20,7 +20,7 @@ export default function ResetConfirm({
 	setIsHold,
 	setIsFilled,
 	setLeft,
-	setIsFine,
+	setIsFin,
 	setIsStart,
 	Eng,
 }) {
@@ -42,7 +42,7 @@ export default function ResetConfirm({
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
-		setIsFine(false);
+		setIsFin(false);
 		setIsStart(true);
 	};
 

@@ -46,8 +46,8 @@ export default function PVPBoard({
 	setIsFilled,
 	left,
 	setLeft,
-	isFine,
-	setIsFine,
+	isFin,
+	setIsFin,
 	total,
 	isStart,
 	setIsStart,
@@ -99,7 +99,7 @@ export default function PVPBoard({
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
-		setIsFine(false);
+		setIsFin(false);
 		setIsStart(true);
 		setSnackBarOpen(false);
 
@@ -207,7 +207,7 @@ export default function PVPBoard({
 				scoreArr[13] > 0 && !isFilled[13] && setAlert('Yacht');
 			}
 		});
-		isFine && setAlert('TOTAL ' + total);
+		isFin && setAlert('TOTAL ' + total);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFilled]);
 
@@ -344,17 +344,17 @@ export default function PVPBoard({
 			</Stack>
 			<Stack direction='column' justifyContent='center' alignItems='center'>
 				<Button
-					//className={left !== 0 && !isFine ? 'bg' : 'none'}
+					//className={left !== 0 && !isFin ? 'bg' : 'none'}
 
-					variant={isFine ? 'text' : left === 0 ? 'text' : 'outlined'}
+					variant={isFin ? 'text' : left === 0 ? 'text' : 'outlined'}
 					color='inherit'
 					onClick={
-						myTurn && left !== 0 && !isFine
+						myTurn && left !== 0 && !isFin
 							? () => {
 									handleChangeDice();
 									bigButton.play();
 							  }
-							: isFine
+							: isFin
 							? () => {
 									handleReGame();
 									bigButton.play();
@@ -387,8 +387,10 @@ export default function PVPBoard({
 							: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
 					}}>
 					{!myTurn
-						? 'WAITING'
-						: isFine
+						? Eng
+							? '상대의 턴'
+							: 'WAITING'
+						: isFin
 						? 'regame'
 						: isStart && left === 3
 						? Eng
@@ -419,7 +421,7 @@ export default function PVPBoard({
 					{[12 - round]}
 				</Typography>
 				<IconButton
-					variant={isFine ? 'contained' : 'outlined'}
+					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
 						smallButton.play();
@@ -443,7 +445,7 @@ export default function PVPBoard({
 					<ClearRounded />
 				</IconButton>
 				<IconButton
-					variant={isFine ? 'contained' : 'outlined'}
+					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
 						smallFlatSound.play();
@@ -458,7 +460,7 @@ export default function PVPBoard({
 					<BugReportRounded />
 				</IconButton>
 				<IconButton
-					variant={isFine ? 'contained' : 'outlined'}
+					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					href={
 						Eng
@@ -485,7 +487,7 @@ export default function PVPBoard({
 				setIsHold={setIsHold}
 				setIsFilled={setIsFilled}
 				setLeft={setLeft}
-				setIsFine={setIsFine}
+				setIsFin={setIsFin}
 				setIsStart={setIsStart}
 				Eng={Eng}
 				myUid={myUid}

@@ -22,7 +22,7 @@ export default function SurrenderConfirm({
 	setIsHold,
 	setIsFilled,
 	setLeft,
-	setIsFine,
+	setIsFin,
 	setIsStart,
 	Eng,
 	myUid,
@@ -39,14 +39,14 @@ export default function SurrenderConfirm({
 	};
 	const diceArr = [0, 0, 0, 0, 0];
 
-	const handleNewGame = () => {
+	const handleSurrender = () => {
 		smallFlatSound.play();
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left', 'score');
+		localStorage.removeItem('myData');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
-		setIsFine(false);
+		setIsFin(false);
 		setIsStart(true);
 
 		setTimeout(() => {
@@ -55,7 +55,7 @@ export default function SurrenderConfirm({
 					pvp: 'end',
 				});
 			navigate('/');
-		}, [300]);
+		}, [1000]);
 	};
 
 	return (
@@ -123,7 +123,7 @@ export default function SurrenderConfirm({
 				</IconButton>
 
 				<IconButton
-					onClick={handleNewGame}
+					onClick={handleSurrender}
 					sx={{
 						color: theme.palette.text.primary,
 						mr: 5,

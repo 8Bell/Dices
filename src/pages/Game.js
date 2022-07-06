@@ -219,6 +219,7 @@ export default function Game({
 	//----------BRING FB DATA----------//
 
 	useEffect(() => {
+		localStorage.removeItem('myData');
 		myUid
 			? dbService
 					.collection('singleGames')
@@ -238,7 +239,7 @@ export default function Game({
 	//----------SAVING DATA-----------//
 
 	useEffect(() => {
-		try {
+		myUid &&
 			dbService.collection('singleGames').doc(myUid).update({
 				myUid,
 				dices,
@@ -247,9 +248,6 @@ export default function Game({
 				isHold,
 				scoreData,
 			});
-		} catch (err) {
-			console.log(err);
-		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dices, left, isFilled, isHold, scoreData]);
@@ -479,10 +477,10 @@ export default function Game({
 		yacht,
 	]);
 
-	//---------------------FINE--------------------//
+	//---------------------FIN--------------------//
 
 	// eslint-disable-next-line no-unused-vars
-	const [isFine, setIsFine] = useState(false);
+	const [isFin, setIsFin] = useState(false);
 
 	useEffect(() => {
 		let i = 0;
@@ -490,7 +488,7 @@ export default function Game({
 			filled && i++;
 		});
 		if (i === 12) {
-			setIsFine(true);
+			setIsFin(true);
 			setDices([0, 0, 0, 0, 0]);
 			setTimeout(() => {
 				setSnackBarOpen(true);
@@ -499,7 +497,7 @@ export default function Game({
 	}, [isFilled]);
 
 	useEffect(() => {
-		if (isFine) {
+		if (isFin) {
 			if (localStorage.getItem('BestScore')) {
 				if (JSON.parse(localStorage.getItem('BestScore')) < total) {
 					localStorage.setItem('BestScore', JSON.stringify(total));
@@ -512,10 +510,10 @@ export default function Game({
 				setNewBestScore(false);
 			}
 		}
-	}, [isFine, total]);
+	}, [isFin, total]);
 
 	useEffect(() => {
-		if (isFine) {
+		if (isFin) {
 			if (me[0] && me[0].indivbestScore < total) {
 				dbService.collection('users').doc(myUid).update({
 					indivbestScore: total,
@@ -523,7 +521,7 @@ export default function Game({
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isFine, total]);
+	}, [isFin, total]);
 
 	const [open, setOpen] = useState(false);
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
@@ -654,7 +652,7 @@ export default function Game({
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
-		setIsFine(false);
+		setIsFin(false);
 		setIsStart(true);
 		setSnackBarOpen(false);
 		myUid && dbService.collection('singleGames').doc(myUid).delete();
@@ -790,8 +788,8 @@ export default function Game({
 								setIsFilled={setIsFilled}
 								left={left}
 								setLeft={setLeft}
-								isFine={isFine}
-								setIsFine={setIsFine}
+								isFin={isFin}
+								setIsFin={setIsFin}
 								total={total}
 								isStart={isStart}
 								setIsStart={setIsStart}

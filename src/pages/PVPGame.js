@@ -6,10 +6,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/NavBar';
 import SideMenu from '../components/SideMenu';
 import { Grid, Snackbar, Stack } from '@mui/material';
-
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
-
 import MuiAlert from '@mui/material/Alert';
 import { authService, dbService } from '../fbase';
 import effectSound from '../hooks/effectSound';
@@ -32,14 +30,33 @@ export default function PVPGame({
 
 	//-------FB DATA --------//
 
-	const [myData, setMyData] = useState({
-		scoreData: [],
-		isFilled: [],
-		dices: [],
-		isHold: [],
-		left: 0,
-		myTurn: '',
-	});
+	const savedMyData = localStorage.getItem('myData')
+		? JSON.parse(localStorage.getItem('myData'))
+		: {
+				scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+				isFilled: [
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+				],
+				dices: [0, 0, 0, 0, 0],
+				isHold: [false, false, false, false, false],
+				left: 2,
+		  };
+
+	const [myData, setMyData] = useState(savedMyData);
 	const scoreArr = myData.scoreData;
 	const filledArr = myData.isFilled;
 	const dicesArr = myData.dices;
@@ -52,9 +69,7 @@ export default function PVPGame({
 	);
 
 	const [myTurn, setMyTurn] = useState(
-		sessionStorage.getItem('myTurn') && sessionStorage.getItem('myTurn') === undefined
-			? JSON.parse(sessionStorage.getItem('myTurn'))
-			: true
+		sessionStorage.getItem('myTurn') ? JSON.parse(sessionStorage.getItem('myTurn')) : true
 	);
 
 	//---------STYLE---------//
@@ -121,11 +136,13 @@ export default function PVPGame({
 	//----------DICES------------//
 
 	const diceArr = [0, 0, 0, 0, 0];
-	const savedDiceArr = myUid
-		? dicesArr
-		: // : sessionStorage.getItem('dices')
-		  // ? JSON.parse(sessionStorage.getItem('dices'))
-		  diceArr;
+	// const savedDiceArr = myUid
+	// 	? dicesArr
+	// 	: // : sessionStorage.getItem('dices')
+	// 	  // ? JSON.parse(sessionStorage.getItem('dices'))
+	// 	  diceArr;
+
+	const savedDiceArr = dicesArr;
 
 	const [dices, setDices] = useState(savedDiceArr);
 
@@ -139,26 +156,18 @@ export default function PVPGame({
 
 	const [isHold, setIsHold] = useState(savedHoldArr);
 
-	useEffect(() => {
-		sessionStorage.setItem('dices', JSON.stringify(dices));
-	}, [dices]);
-
-	useEffect(() => {
-		sessionStorage.setItem('isHold', JSON.stringify(isHold));
-	}, [isHold]);
-
 	//----------Fill-------------//
 
-	const savedFilledArr = myUid
-		? filledArr
-		: // : sessionStorage.getItem('isFilled')
-		  // ? JSON.parse(sessionStorage.getItem('isFilled'))
-		  new Array(15).fill(false);
-	const [isFilled, setIsFilled] = useState(savedFilledArr);
+	// const savedFilledArr = myUid
+	// 	? filledArr
+	// 	: // : sessionStorage.getItem('isFilled')
+	// 	  // ? JSON.parse(sessionStorage.getItem('isFilled'))
+	// 	  new Array(15).fill(false);
+	// const [isFilled, setIsFilled] = useState(savedFilledArr);
 
-	useEffect(() => {
-		sessionStorage.setItem('isFilled', JSON.stringify(isFilled));
-	}, [isFilled]);
+	const savedFilledArr = filledArr;
+
+	const [isFilled, setIsFilled] = useState(savedFilledArr);
 
 	console.log('opponentUid', opponentUid);
 
@@ -174,7 +183,6 @@ export default function PVPGame({
 		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
 		setIsFilled(newFilled);
 		filledSound.play();
-		sessionStorage.removeItem('dices', 'isHold', 'left');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setLeft(3);
@@ -197,8 +205,6 @@ export default function PVPGame({
 	const [left, setLeft] = useState(savedLeft);
 
 	useEffect(() => {
-		sessionStorage.setItem('left', JSON.stringify(left));
-
 		left === 0 &&
 			(isTablet || isMobile) &&
 			setTimeout(() => {
@@ -209,11 +215,13 @@ export default function PVPGame({
 
 	//----------------------------Rules-----------------------------//
 
-	const savedScoreArr = myUid
-		? scoreArr
-		: // : sessionStorage.getItem('score')
-		  // ? JSON.parse(sessionStorage.getItem('score'))
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	// const savedScoreArr = myUid
+	// 	? scoreArr
+	// 	: // : sessionStorage.getItem('score')
+	// 	  // ? JSON.parse(sessionStorage.getItem('score'))
+	// 	  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+	const savedScoreArr = scoreArr;
 
 	const [ace, setAce] = useState(savedScoreArr[0]); //isFilled 0
 	const [duce, setDuce] = useState(savedScoreArr[1]); //isFilled 1
@@ -254,24 +262,26 @@ export default function PVPGame({
 	console.log('myData', myData);
 
 	useEffect(() => {
-		myUid
-			? dbService
-					.collection('games')
-					.doc(myUid)
-					.onSnapshot((snapshot) => {
-						const dbData = snapshot.data();
-						const dbMyTurn = snapshot.data().myTurn;
+		async function getMyData() {
+			myUid
+				? await dbService
+						.collection('games')
+						.doc(myUid)
+						.onSnapshot((snapshot) => {
+							const dbData = snapshot.data();
+							const dbMyTurn = snapshot.data().myTurn;
 
-						console.log('dbData', dbData);
+							console.log('dbData', dbData);
 
-						setMyData(dbData);
+							setMyData(dbData);
+							localStorage.setItem('myData', JSON.stringify(myData));
 
-						//console.log('dbMyTurn', dbMyTurn);
-
-						sessionStorage.setItem('myTurn', dbMyTurn);
-						setMyTurn(dbMyTurn);
-					})
-			: console.log('err');
+							sessionStorage.setItem('myTurn', dbMyTurn);
+							setMyTurn(snapshot.data().myTurn);
+						})
+				: console.log('err');
+		}
+		getMyData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [myUid]);
 
@@ -290,45 +300,6 @@ export default function PVPGame({
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dices, left, isFilled, isHold, scoreData]);
-
-	useEffect(() => {
-		sessionStorage.setItem(
-			'score',
-			JSON.stringify([
-				ace,
-				duce,
-				threes,
-				fours,
-				fives,
-				sixes,
-				subTotal,
-				bonus,
-				choice,
-				fourOfKind,
-				fullHouse,
-				sStraght,
-				lStraght,
-				yacht,
-				total,
-			])
-		);
-	}, [
-		ace,
-		bonus,
-		choice,
-		duce,
-		fives,
-		fourOfKind,
-		fours,
-		fullHouse,
-		lStraght,
-		sStraght,
-		sixes,
-		subTotal,
-		threes,
-		total,
-		yacht,
-	]);
 
 	//ACE //isFilled 0
 	useEffect(() => {
@@ -517,9 +488,9 @@ export default function PVPGame({
 		yacht,
 	]);
 
-	//---------------------FINE--------------------//
+	//---------------------FIN--------------------//
 	// eslint-disable-next-line no-unused-vars
-	const [isFine, setIsFine] = useState(false);
+	const [isFin, setIsFin] = useState(false);
 
 	useEffect(() => {
 		let i = 0;
@@ -527,7 +498,7 @@ export default function PVPGame({
 			filled && i++;
 		});
 		if (i === 12) {
-			setIsFine(true);
+			setIsFin(true);
 			setDices([0, 0, 0, 0, 0]);
 			setTimeout(() => {
 				setSnackBarOpen(true);
@@ -536,7 +507,7 @@ export default function PVPGame({
 	}, [isFilled]);
 
 	useEffect(() => {
-		if (isFine) {
+		if (isFin) {
 			if (localStorage.getItem('BestScore')) {
 				if (JSON.parse(localStorage.getItem('BestScore')) < total) {
 					localStorage.setItem('BestScore', JSON.stringify(total));
@@ -549,10 +520,10 @@ export default function PVPGame({
 				setNewBestScore(false);
 			}
 		}
-	}, [isFine, total]);
+	}, [isFin, total]);
 
 	useEffect(() => {
-		if (isFine) {
+		if (isFin) {
 			if (me[0] && me[0].indivbestScore < total) {
 				dbService.collection('users').doc(myUid).update({
 					indivbestScore: total,
@@ -560,7 +531,7 @@ export default function PVPGame({
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isFine, total]);
+	}, [isFin, total]);
 
 	const [open, setOpen] = useState(false);
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
@@ -648,12 +619,12 @@ export default function PVPGame({
 	//--------DELETE DATA---------//
 
 	const handleDeleteGame = () => {
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left', 'score');
+		localStorage.removeItem('myData');
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
 		setLeft(3);
-		setIsFine(false);
+		setIsFin(false);
 		setIsStart(true);
 		setSnackBarOpen(false);
 
@@ -673,22 +644,16 @@ export default function PVPGame({
 				.doc(opponentUid)
 				.onSnapshot((snapshot) => {
 					if (snapshot.data().pvp === 'end') {
-						sessionStorage.removeItem(
-							'dices',
-							'isHold',
-							'isFilled',
-							'left',
-							'score'
-						);
+						localStorage.removeItem('myData');
 						setDices(diceArr);
 						setIsHold(new Array(5).fill(false));
 						setIsFilled(new Array(15).fill(false));
 						setLeft(3);
-						setIsFine(false);
+						setIsFin(false);
 						setIsStart(true);
 						setTimeout(() => {
 							navigate('/');
-						}, [300]);
+						}, [200]);
 					}
 				});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -834,8 +799,8 @@ export default function PVPGame({
 								setIsFilled={setIsFilled}
 								left={left}
 								setLeft={setLeft}
-								isFine={isFine}
-								setIsFine={setIsFine}
+								isFin={isFin}
+								setIsFin={setIsFin}
 								total={total}
 								isStart={isStart}
 								setIsStart={setIsStart}
