@@ -33,6 +33,8 @@ import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import MyDices from '../gameBoard/MyDices';
 import OpponentsDices from '../gameBoard/OpponentsDices';
 import SurrenderConfirm from '../modal/SurrenderConfirm';
+import { useNavigate } from 'react-router-dom';
+import { dbService } from '../../fbase';
 
 export default function PVPBoard({
 	isMobile,
@@ -71,9 +73,10 @@ export default function PVPBoard({
 	opponentUid,
 	myUid,
 	me,
-	setNewBestScore,
+	setIsWin,
 }) {
 	const theme = useTheme();
+	const navigate = useNavigate();
 
 	// const bestScore = isLoggedIn
 	// 	? me[0] && me[0].bestScore
@@ -95,7 +98,7 @@ export default function PVPBoard({
 
 	const diceArr = [0, 0, 0, 0, 0];
 
-	const handleReGame = () => {
+	const handleReGame = async () => {
 		localStorage.setItem(
 			'myData',
 			JSON.stringify({
@@ -122,16 +125,20 @@ export default function PVPBoard({
 				left: 3,
 			})
 		);
-		setDices(diceArr);
-		setIsHold(new Array(5).fill(false));
-		setIsFilled(new Array(15).fill(false));
-		setLeft(3);
-		setIsFin(false);
-		setIsStart(true);
-		setSnackBarOpen(false);
+		// setDices(diceArr);
+		// setIsHold(new Array(5).fill(false));
+		// setIsFilled(new Array(15).fill(false));
+		// setLeft(3);
+		// setIsFin(false);
+		// setIsStart(true);
+		// setSnackBarOpen(false);
+
+		await dbService.collection('users').doc(myUid).update({
+			pvp: '',
+		});
 
 		setTimeout(() => {
-			window.location.reload();
+			navigate('/');
 		}, [100]);
 	};
 
@@ -254,6 +261,37 @@ export default function PVPBoard({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFilled]);
 
+	const [opponentAlert, setOpponentAlert] = useState('');
+
+	const opposcoreArr = opponent && opponent.scoreData;
+	const oppoisFilled = opponent && opponent.isFilled;
+
+	useEffect(() => {
+		opposcoreArr.map((score, idx) => {
+			if (0 <= idx && idx <= 5) {
+				score > (idx + 1) * 4 && !oppoisFilled[idx] && setBgShine(true);
+			} else if (idx === 8) {
+				opposcoreArr[idx] >= 27 && !oppoisFilled[idx] && setBgShine(true);
+				opposcoreArr[8] >= 27 &&
+					!oppoisFilled[8] &&
+					setOpponentAlert('High Choice');
+			} else if (9 <= idx && idx < 14) {
+				opposcoreArr[idx] > 0 && !oppoisFilled[idx] && setBgShine(true);
+				opposcoreArr[9] > 0 && !oppoisFilled[9] && setOpponentAlert('4 of a Kind');
+				opposcoreArr[10] > 0 && !oppoisFilled[10] && setOpponentAlert('Full House');
+				opposcoreArr[11] > 0 &&
+					!oppoisFilled[11] &&
+					setOpponentAlert('Small Straght');
+				opposcoreArr[12] > 0 &&
+					!oppoisFilled[12] &&
+					setOpponentAlert('Large Straght');
+				opposcoreArr[13] > 0 && !oppoisFilled[13] && setOpponentAlert('Yacht');
+			}
+		});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [opposcoreArr]);
+
 	//-------BUTTON DOTS ----------//
 
 	const DotOn = () => {
@@ -344,23 +382,41 @@ export default function PVPBoard({
 						opacity: 0.5,
 						position: 'absolute',
 						top: 0,
-						mt: -5.5,
+						mt: -6.2,
 						pt: 0.5,
 						pb: 0.5,
 						pl: 2,
 						pr: 2,
 						borderRadius: 10,
+						backgroundColor:
+							!myTurn && opponentAlert !== ''
+								? theme.palette.text.secondary
+								: 'none',
+						color:
+							!myTurn && opponentAlert !== ''
+								? theme.palette.background.default
+								: 'none',
 						boxShadow:
-							alert !== ''
+							alert !== '' || opponentAlert !== ''
 								? theme.palette.mode === 'dark'
 									? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
 									: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;'
 								: 'none',
 					}}>
-					{alert}
+					{!myTurn && !isFin ? opponentAlert : alert}
 				</Typography>
 				<PreloadImg />
-				{myTurn ? (
+				{!myTurn && !isFin ? (
+					<OpponentsDices
+						isTablet={isTablet}
+						isMobile={isMobile}
+						D={D}
+						dl={dl}
+						L={L}
+						ll={ll}
+						opponent={opponent}
+					/>
+				) : (
 					<MyDices
 						dices={dices}
 						left={left}
@@ -372,16 +428,6 @@ export default function PVPBoard({
 						dl={dl}
 						L={L}
 						ll={ll}
-					/>
-				) : (
-					<OpponentsDices
-						isTablet={isTablet}
-						isMobile={isMobile}
-						D={D}
-						dl={dl}
-						L={L}
-						ll={ll}
-						opponent={opponent}
 					/>
 				)}
 			</Stack>
@@ -411,11 +457,12 @@ export default function PVPBoard({
 					}
 					sx={{
 						'&:active': {
-							boxShadow: !myTurn
-								? 'none'
-								: theme.palette.mode === 'dark'
-								? ' inset 25px 25px 50px #090909,	inset -25px -25px 50px #252525'
-								: 'inset 25px 25px 50px #bcbcbd, inset -25px -25px 50px #ffffff',
+							boxShadow:
+								!myTurn && !isFin
+									? 'none'
+									: theme.palette.mode === 'dark'
+									? ' inset 25px 25px 50px #090909,	inset -25px -25px 50px #252525'
+									: 'inset 25px 25px 50px #bcbcbd, inset -25px -25px 50px #ffffff',
 						},
 						height: 150,
 						width: 150,
@@ -428,16 +475,17 @@ export default function PVPBoard({
 							theme.palette.mode === 'dark'
 								? 'linear-gradient(145deg, #202020, #111)'
 								: 'linear-gradient(145deg, #efefef, #d7d7d7)',
-						boxShadow: !myTurn
-							? 'none'
-							: theme.palette.mode === 'dark'
-							? '25px 25px 50px #090909,	-25px -25px 50px #252525'
-							: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
+						boxShadow:
+							!myTurn && !isFin
+								? 'none'
+								: theme.palette.mode === 'dark'
+								? '25px 25px 50px #090909,	-25px -25px 50px #252525'
+								: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
 					}}>
-					{!myTurn
+					{!myTurn && !isFin
 						? 'WAITING'
 						: isFin
-						? 'regame'
+						? 'Quit'
 						: isStart && left === 3
 						? Eng
 							? 'START'
@@ -466,30 +514,32 @@ export default function PVPBoard({
 					/>
 					{[12 - round]}
 				</Typography>
-				<IconButton
-					variant={isFin ? 'contained' : 'outlined'}
-					color='inherit'
-					onClick={() => {
-						smallButton.play();
-						setSurrenderModalOpen(true);
-					}}
-					sx={{
-						'&:active': {
+				{!isFin && (
+					<IconButton
+						variant={isFin ? 'contained' : 'outlined'}
+						color='inherit'
+						onClick={() => {
+							smallButton.play();
+							setSurrenderModalOpen(true);
+						}}
+						sx={{
+							'&:active': {
+								boxShadow:
+									theme.palette.mode === 'dark'
+										? 'inset 17px 17px 23px #0b0b0b, inset -17px -17px 23px #272727'
+										: 'inset 9px 9px 18px #c8c8c9, inset -9px -9px 18px #fefeff;',
+							},
+
+							position: 'absolute',
+							bottom: 20,
 							boxShadow:
 								theme.palette.mode === 'dark'
-									? 'inset 17px 17px 23px #0b0b0b, inset -17px -17px 23px #272727'
-									: 'inset 9px 9px 18px #c8c8c9, inset -9px -9px 18px #fefeff;',
-						},
-
-						position: 'absolute',
-						bottom: 20,
-						boxShadow:
-							theme.palette.mode === 'dark'
-								? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
-								: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;',
-					}}>
-					<FlagRounded sx={{ color: '#fff' }} />
-				</IconButton>
+									? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
+									: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;',
+						}}>
+						<FlagRounded sx={{ color: '#fff' }} />
+					</IconButton>
+				)}
 				<IconButton
 					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
@@ -529,6 +579,7 @@ export default function PVPBoard({
 			<SurrenderConfirm
 				surrenderModalOpen={surrenderModalOpen}
 				setSurrenderModalOpen={setSurrenderModalOpen}
+				setSnackBarOpen={setSnackBarOpen}
 				setDices={setDices}
 				setIsHold={setIsHold}
 				setIsFilled={setIsFilled}
@@ -540,7 +591,7 @@ export default function PVPBoard({
 				opponentUid={opponentUid}
 				me={me}
 				total={total}
-				setNewBestScore={setNewBestScore}
+				setIsWin={setIsWin}
 			/>
 			<RefreshConfirm
 				refreshModalOpen={refreshModalOpen}

@@ -170,12 +170,25 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 					color: theme.palette.text.primary,
 					backdropFilter: 'opacity(0.3)',
 					pt: 3,
-					pb: 2,
-					mb: 0,
+
+					mb: -3,
 					fontSize: 20,
 					fontWight: 800,
 				}}>
-				{user.userName}
+				{Eng ? 'New challenger!' : '대결 신청'}
+			</DialogTitle>
+			<DialogTitle
+				sx={{
+					backgroundColor: theme.palette.background.paper,
+					color: theme.palette.text.primary,
+					backdropFilter: 'opacity(0.3)',
+
+					pb: 4,
+
+					fontSize: 20,
+					fontWight: 800,
+				}}>
+				{Eng ? user.userName + " 's Information" : user.userName + '님의 정보'}
 			</DialogTitle>
 			<DialogContent
 				sx={{
@@ -184,20 +197,29 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 				}}>
 				<DialogContentText sx={{ mb: 1, mt: 0 }}>
 					<Paper
-						elevation={5}
-						sx={{ mr: -1, ml: -1, mb: 2, p: 2, borderRadius: 5 }}>
+						elevation={0}
+						sx={{
+							mr: -1,
+							ml: -1,
+							mb: 2,
+							p: 2,
+							borderRadius: 5,
+							border: '1px solid',
+							borderColor: theme.palette.divider,
+						}}>
 						<Typography
 							sx={{
 								fontSize: 18,
 								mb: 2,
 							}}>
-							솔로게임
+							{Eng ? 'Single Game' : '싱글 게임'}
 						</Typography>
-						{'최고 점수 : ' + user.indivBestScore}
+						{(Eng ? 'Best Score : ' : '최고 점수 : ') + user.indivBestScore}
 						<br />
-						{'게임 횟수 : ' + user.indivNumberOfGames}
+						{(Eng ? 'Number of games : ' : '게임 횟수 : ') +
+							user.indivNumberOfGames}
 						<br />
-						{'평균 점수 : ' +
+						{(Eng ? 'Everage Score : ' : '평균 점수 : ') +
 							(user.indivNumberOfGames === 0
 								? 0
 								: Math.round(
@@ -206,37 +228,50 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 								  ))}
 					</Paper>
 					<Paper
-						elevation={5}
-						sx={{ mr: -1, ml: -1, mb: 2, p: 2, borderRadius: 5 }}>
+						elevation={0}
+						sx={{
+							mr: -1,
+							ml: -1,
+							mb: 4,
+							p: 2,
+							borderRadius: 5,
+							border: '1px solid',
+							borderColor: theme.palette.divider,
+						}}>
 						<Typography
 							sx={{
 								fontSize: 18,
 								mb: 2,
 							}}>
-							랭크게임
+							{Eng ? 'Rank Game' : '랭크 게임'}
 						</Typography>
-						{'최고 점수 : ' + user.pvpBestScore}
+						{(Eng ? 'Best Score : ' : '최고 점수 : ') + user.pvpBestScore}
 						<br />
-						{'대전 횟수 : ' + user.pvpNumberOfGames}
+						{(Eng ? 'Number of games : ' : '대전 횟수 : ') +
+							user.pvpNumberOfGames}
+
 						<br />
-						{'승리 : ' + user.win}
+						{(Eng ? 'Wins : ' : '승리 : ') + user.win}
 						<br />
-						{'패배 : ' + user.defeat}
+						{(Eng ? 'Defeats : ' : '패배 : ') + user.defeat}
 						<br />
-						{'승률 : ' +
+						{(Eng ? 'Winning rate : ' : '승률 : ') +
 							(user.pvpNumberOfGames === 0
 								? 0
 								: Math.round(user.win / user.pvpNumberOfGames) *
 								  100) +
 							' %'}
 					</Paper>
-					{user.userName + '님의 대전 요청을 수락하시겠어요?'}
+					{Eng
+						? 'Would you like to accept ' + user.userName + "'s challenge ?"
+						: user.userName + '님의 대전 신청을 수락하시겠어요?'}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions
 				sx={{
 					backgroundColor: theme.palette.background.paper,
 					color: theme.palette.text.primary,
+					pt: 3,
 					pb: 5,
 				}}>
 				<IconButton

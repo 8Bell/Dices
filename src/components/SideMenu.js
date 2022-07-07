@@ -63,6 +63,7 @@ export default function SideMenu({
 	myTurn,
 	rejected,
 	setRejected,
+	isMobile,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -125,9 +126,10 @@ export default function SideMenu({
 	const handleMemberClick = (idx) => {
 		if (pvp === false) {
 			smallFlatSound.play();
-			dbService.collection('games').doc(myUid).update({
-				opponentUid: members[idx].uid,
-			});
+			idx !== 'me' &&
+				dbService.collection('games').doc(myUid).update({
+					opponentUid: members[idx].uid,
+				});
 			setPropIdx(idx);
 			setTimeout(() => {
 				setModal3Open(true);
@@ -249,15 +251,22 @@ export default function SideMenu({
 			<Divider />
 
 			<ListItem disablePadding>
-				<ListItemButton>
+				<ListItemButton
+					onClick={() => {
+						isLoggedIn && handleMemberClick('me');
+					}}>
 					<ListItemText
 						primary={
-							me ? me.userName : Eng ? 'guest player(me)' : '손님(나)'
+							isLoggedIn
+								? me.userName
+								: Eng
+								? 'guest player(me)'
+								: '손님(나)'
 						}
 						sx={{ textAlign: 'left' }}
 					/>
 					<ListItemText
-						primary={me ? me.indivBestScore : bestScore}
+						primary={isLoggedIn ? me.indivBestScore : bestScore}
 						sx={{ textAlign: 'right', position: 'absolute', right: 100 }}
 					/>
 					{isLoggedIn ? (
@@ -381,8 +390,10 @@ export default function SideMenu({
 					propIdx={propIdx}
 					Eng={Eng}
 					myUid={myUid}
+					me={me}
 					rejected={rejected}
 					setRejected={setRejected}
+					isMobile={isMobile}
 				/>
 			</Box>
 		</Drawer>

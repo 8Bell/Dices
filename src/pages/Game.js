@@ -729,6 +729,7 @@ export default function Game({
 			<SideMenu
 				isLoggedIn={isLoggedIn}
 				setIsLoggedIn={setIsLoggedIn}
+				isMobile={isMobile}
 				isTablet={isTablet}
 				open={open}
 				setOpen={setOpen}

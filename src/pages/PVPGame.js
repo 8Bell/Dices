@@ -461,38 +461,63 @@ export default function PVPGame({
 		yacht,
 	]);
 
+	//-------------OPPONENTS---------------//
+	const [opponent, setOpponent] = useState({
+		dices,
+		isFilled,
+		isHold,
+		scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	});
+
+	useEffect(() => {
+		opponentUid &&
+			dbService
+				.collection('games')
+				.doc(opponentUid)
+				.onSnapshot((snapshot) => {
+					const dbOpponent = snapshot.data();
+					console.log('dbOpponent', dbOpponent);
+					setOpponent(dbOpponent);
+					//dbOpponent.myTurn === false && setMyTurn(true);
+				});
+	}, [opponentUid]);
+
 	//---------------------END GAME--------------------//
 
 	const [isFin, setIsFin] = useState(false);
+	const [snackBarOpen, setSnackBarOpen] = useState(false);
 
 	useEffect(() => {
 		let i = 0;
 		isFilled.map((filled) => {
 			filled && i++;
 		});
-		if (i === 12) {
+		let j = 0;
+		opponent.isFilled.map((filled) => {
+			filled && j++;
+		});
+
+		if (i === 12 && j === 12) {
 			setIsFin(true);
 			setDices([0, 0, 0, 0, 0]);
-			setTimeout(() => {
-				setSnackBarOpen(true);
-			}, [100]);
 		}
-	}, [isFilled]);
+	}, [isFilled, opponent.isFilled]);
 
 	const [isWin, setIsWin] = useState(false);
 
-	useEffect(() => {
-		async function endGame() {
-			if (isFin) {
-				if (me && me.pvpBestScore < total) {
-					await dbService.collection('users').doc(myUid).update({
-						pvpBestScore: total,
-					});
-					setNewBestScore(true);
-				}
-				opponent && total > opponent.scoreData[14] && setIsWin(true);
-
-				myUid && isWin
+	async function totalScoreUpdate() {
+		if (isFin) {
+			if (me && me.pvpBestScore < total) {
+				await dbService.collection('users').doc(myUid).update({
+					pvpBestScore: total,
+				});
+			}
+		}
+	}
+	async function resultUpdate() {
+		if (isFin) {
+			if (me && myUid) {
+				isWin
 					? await dbService
 							.collection('users')
 							.doc(myUid)
@@ -509,17 +534,52 @@ export default function PVPGame({
 							});
 			}
 		}
+	}
+	function setWin(fun) {
+		if (isFin) {
+			opponent && total > opponent.scoreData[14] && setIsWin(true);
+			fun();
+		}
+	}
 
-		endGame();
-
+	useEffect(() => {
+		totalScoreUpdate();
+		setWin(resultUpdate);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isFin, total]);
+	}, [isFin]);
+
+	//-----OPPONENT'S SURRENDER--------//
+
+	useEffect(() => {
+		opponentUid &&
+			dbService
+				.collection('users')
+				.doc(opponentUid)
+				.onSnapshot(async (snapshot) => {
+					if (snapshot.data().pvp === 'surrender') {
+						setIsWin(true);
+						setIsFin(true);
+						await resultUpdate();
+						setSnackBarOpen(true);
+					}
+				});
+		myUid &&
+			dbService
+				.collection('users')
+				.doc(myUid)
+				.onSnapshot((snapshot) => {
+					if (snapshot.data().pvp === 'surrender') {
+						setIsWin(false);
+						setIsFin(true);
+						resultUpdate();
+						setSnackBarOpen(true);
+					}
+				});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const [open, setOpen] = useState(false);
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
-
-	const [snackBarOpen, setSnackBarOpen] = useState(false);
-	const [newBestScore, setNewBestScore] = useState(false);
 
 	const handleSnackBarClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -527,7 +587,6 @@ export default function PVPGame({
 		}
 
 		setSnackBarOpen(false);
-		setNewBestScore(false);
 	};
 
 	//---------------START ----------------------//
@@ -568,80 +627,10 @@ export default function PVPGame({
 					const dbOpponentUid = snapshot.data().opponentUid;
 					console.log('dbOpponentUid', dbOpponentUid);
 					setOpponentUid(dbOpponentUid);
-					// const dbMyTurn = snapshot.data().myTurn;
-					// setMyTurn(dbMyTurn);
 					console.log('opponentUid', opponentUid);
 				});
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [myUid]);
-
-	//-------------OPPONENTS---------------//
-	const [opponent, setOpponent] = useState({
-		dices,
-		isFilled,
-		isHold,
-		scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	});
-
-	useEffect(() => {
-		opponentUid &&
-			dbService
-				.collection('games')
-				.doc(opponentUid)
-				.onSnapshot((snapshot) => {
-					const dbOpponent = snapshot.data();
-					console.log('dbOpponent', dbOpponent);
-					setOpponent(dbOpponent);
-					//dbOpponent.myTurn === false && setMyTurn(true);
-				});
-	}, [opponentUid]);
-
-	//--------DELETE DATA---------//
-
-	const handleDeleteGame = () => {
-		localStorage.setItem(
-			'myData',
-			JSON.stringify({
-				scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-				isFilled: [
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-				],
-				dices: [0, 0, 0, 0, 0],
-				isHold: [false, false, false, false, false],
-				left: 3,
-			})
-		);
-		setDices(diceArr);
-		setIsHold(new Array(5).fill(false));
-		setIsFilled(new Array(15).fill(false));
-		setLeft(3);
-		setIsFin(false);
-		setIsStart(true);
-		setSnackBarOpen(false);
-
-		setTimeout(() => {
-			myUid &&
-				dbService.collection('users').doc(myUid).update({
-					pvp: 'end',
-				});
-			navigate('/');
-		}, [300]);
-	};
 
 	useEffect(() => {
 		opponentUid &&
@@ -678,12 +667,7 @@ export default function PVPGame({
 								left: 3,
 							})
 						);
-						setDices(diceArr);
-						setIsHold(new Array(5).fill(false));
-						setIsFilled(new Array(15).fill(false));
-						setLeft(3);
-						setIsFin(false);
-						setIsStart(true);
+
 						setTimeout(() => {
 							navigate('/');
 						}, [200]);
@@ -730,7 +714,6 @@ export default function PVPGame({
 				members={members}
 				Eng={Eng}
 				setEng={setEng}
-				handleDeleteGame={() => handleDeleteGame()}
 				pvp={true}
 			/>
 			<PVPSideScore
@@ -856,32 +839,37 @@ export default function PVPGame({
 								opponent={opponent}
 								myUid={myUid}
 								me={me}
-								setNewBestScore={setNewBestScore}
+								setIsWin={setIsWin}
 							/>
 						</Stack>
 					</Grid>
 				</Grid>
 				<Snackbar
 					open={snackBarOpen}
-					autoHideDuration={6000}
+					autoHideDuration={100000}
 					onClose={handleSnackBarClose}>
 					<Alert
 						onClose={handleSnackBarClose}
+						severity={isWin ? 'success' : 'info'}
 						sx={{
-							width: isTablet ? '95vw' : '97vw',
+							width: 'calc( 100vw - 5%)',
 							position: 'fixed',
 							bottom: '5%',
 							mr: 10,
-							backgroundColor: newBestScore
+							backgroundColor: isWin
 								? theme.palette.text.primary
 								: theme.palette.action.active,
-							color: newBestScore
+							color: isWin
 								? theme.palette.background.default
 								: 'default',
 						}}>
-						{newBestScore
-							? 'Excellent! New Best Score ' + total
-							: 'Great! Your Score is ' + total}
+						{Eng
+							? isWin
+								? 'Excellent! You win !'
+								: 'Unfortunately, You lost.'
+							: isWin
+							? '대단해요 승리하셨습니다! '
+							: '아쉽게도 패배하셨습니다. '}
 					</Alert>
 				</Snackbar>
 			</Main>

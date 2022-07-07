@@ -9,10 +9,9 @@ import {
 	IconButton,
 	useTheme,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
-import { useNavigate } from 'react-router-dom';
 import { dbService } from '../../fbase';
 
 export default function SurrenderConfirm({
@@ -29,9 +28,9 @@ export default function SurrenderConfirm({
 	opponentUid,
 	me,
 	total,
-	setNewBestScore,
+	setIsWin,
+	setSnackBarOpen,
 }) {
-	const navigate = useNavigate();
 	//-----------EFFECT SOUNDS-------------//
 
 	const smallFlatSound = effectSound(SmallFlatSound, 1);
@@ -41,96 +40,30 @@ export default function SurrenderConfirm({
 	const handleClose = () => {
 		setSurrenderModalOpen(false);
 	};
-	const diceArr = [0, 0, 0, 0, 0];
 
 	//-------SURRENDER DATA -------------//
 
 	//opponentUserData
-	const [opponentData, setOpponentData] = useState({});
+	// const [opponentData, setOpponentData] = useState({});
 
-	useEffect(() => {
-		dbService
-			.collection('users')
-			.doc(opponentUid)
-			.onSnapshot((snapshot) => {
-				setOpponentData(snapshot.data());
-			});
-	}, [opponentUid]);
-
-	async function endGame() {
-		if (me && me.pvpBestScore < total) {
-			await dbService.collection('users').doc(myUid).update({
-				pvpBestScore: total,
-			});
-			setNewBestScore(true);
-		}
-
-		opponentUid &&
-			(await dbService
-				.collection('users')
-				.doc(opponentUid)
-				.update({
-					pvpNumberOfGames: opponentData.pvpNumberOfGames + 1,
-					win: opponentData.win + 1,
-				}));
-		myUid &&
-			(await dbService
-				.collection('users')
-				.doc(myUid)
-				.update({
-					pvpNumberOfGames: me.pvpNumberOfGames + 1,
-					defeat: me.defeat + 1,
-				}));
-	}
+	// useEffect(() => {
+	// 	dbService
+	// 		.collection('users')
+	// 		.doc(opponentUid)
+	// 		.onSnapshot((snapshot) => {
+	// 			setOpponentData(snapshot.data());
+	// 		});
+	// }, [opponentUid]);
 
 	const handleSurrender = async () => {
 		smallFlatSound.play();
-
-		await endGame();
-
-		localStorage.setItem(
-			'myData',
-			JSON.stringify({
-				scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-				isFilled: [
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-					false,
-				],
-				dices: [0, 0, 0, 0, 0],
-				isHold: [false, false, false, false, false],
-				left: 3,
-			})
-		);
-		setDices(diceArr);
-		setIsHold(new Array(5).fill(false));
-		setIsFilled(new Array(15).fill(false));
-		setLeft(3);
-		setIsFin(false);
-		setIsStart(true);
-
-		setTimeout(() => {
-			myUid &&
-				dbService.collection('users').doc(myUid).update({
-					pvp: 'end',
-				});
-			navigate('/');
-		}, [1000]);
+		await dbService.collection('users').doc(myUid).update({
+			pvp: 'surrender',
+		});
+		setIsWin(false);
+		setIsFin(true);
+		setSnackBarOpen(true);
 	};
-
-	console.log('opponent', opponentData);
 
 	return (
 		<Dialog
