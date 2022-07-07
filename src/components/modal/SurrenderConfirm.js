@@ -41,7 +41,32 @@ export default function SurrenderConfirm({
 
 	const handleSurrender = () => {
 		smallFlatSound.play();
-		localStorage.removeItem('myData');
+		localStorage.setItem(
+			'myData',
+			JSON.stringify({
+				scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+				isFilled: [
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+				],
+				dices: [0, 0, 0, 0, 0],
+				isHold: [false, false, false, false, false],
+				left: 3,
+			})
+		);
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));

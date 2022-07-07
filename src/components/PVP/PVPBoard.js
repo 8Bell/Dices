@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { BugReportRounded, CasinoRounded, ClearRounded, HelpRounded } from '@mui/icons-material';
+import { BugReportRounded, CasinoRounded, FlagRounded, HelpRounded } from '@mui/icons-material';
 import { Box, Button, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useEffect, useState } from 'react';
@@ -94,7 +94,32 @@ export default function PVPBoard({
 	const diceArr = [0, 0, 0, 0, 0];
 
 	const handleReGame = () => {
-		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
+		localStorage.setItem(
+			'myData',
+			JSON.stringify({
+				scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+				isFilled: [
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+				],
+				dices: [0, 0, 0, 0, 0],
+				isHold: [false, false, false, false, false],
+				left: 3,
+			})
+		);
 		setDices(diceArr);
 		setIsHold(new Array(5).fill(false));
 		setIsFilled(new Array(15).fill(false));
@@ -137,12 +162,28 @@ export default function PVPBoard({
 			);
 
 			shakeSound.play();
+
 			setDices(lodingDice);
+
 			setTimeout(() => {
 				setDices(newDice);
-			}, [2000]);
+			}, 2000);
 
 			setLeft(left - 1);
+		}
+	};
+
+	//Exception management
+	const handleRechangeDice = async () => {
+		if (dices.includes('l')) {
+			const newDice = await dices.map((dice, idx) =>
+				isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
+			);
+
+			shakeSound.play();
+			setTimeout(() => {
+				setDices(newDice);
+			}, 1000);
 		}
 	};
 
@@ -350,10 +391,15 @@ export default function PVPBoard({
 					color='inherit'
 					onClick={
 						myTurn && left !== 0 && !isFin
-							? () => {
-									handleChangeDice();
-									bigButton.play();
-							  }
+							? dices.includes('l')
+								? () => {
+										handleRechangeDice();
+										bigButton.play();
+								  }
+								: () => {
+										handleChangeDice();
+										bigButton.play();
+								  }
 							: isFin
 							? () => {
 									handleReGame();
@@ -387,9 +433,7 @@ export default function PVPBoard({
 							: '25px 25px 50px #bcbcbd,-25px -25px 50px #ffffff',
 					}}>
 					{!myTurn
-						? Eng
-							? '상대의 턴'
-							: 'WAITING'
+						? 'WAITING'
 						: isFin
 						? 'regame'
 						: isStart && left === 3
@@ -442,7 +486,7 @@ export default function PVPBoard({
 								? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
 								: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;',
 					}}>
-					<ClearRounded />
+					<FlagRounded sx={{ color: '#fff' }} />
 				</IconButton>
 				<IconButton
 					variant={isFin ? 'contained' : 'outlined'}

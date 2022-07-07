@@ -219,7 +219,6 @@ export default function Game({
 	//----------BRING FB DATA----------//
 
 	useEffect(() => {
-		localStorage.removeItem('myData');
 		myUid
 			? dbService
 					.collection('singleGames')
@@ -631,6 +630,34 @@ export default function Game({
 							navigate('/pvp');
 						}, [300]);
 					} else if (snapshot.data().pvp === 'end') {
+						localStorage.setItem(
+							'myData',
+							JSON.stringify({
+								scoreData: [
+									0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+								],
+								isFilled: [
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+									false,
+								],
+								dices: [0, 0, 0, 0, 0],
+								isHold: [false, false, false, false, false],
+								left: 3,
+							})
+						);
 						myUid && dbService.collection('games').doc(myUid).delete();
 						opponentUid &&
 							dbService.collection('games').doc(opponentUid).delete();
