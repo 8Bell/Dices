@@ -87,7 +87,7 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 		smallFlatSound.play();
 		sessionStorage.setItem('opponentUid', JSON.stringify(challengerUid));
 		dbService.collection('users').doc(challengerUid).update({
-			status: 'pvpAccept',
+			pvp: 'accept',
 		});
 
 		myUid &&
@@ -128,11 +128,19 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 
 		setTimeout(() => {
 			dbService.collection('users').doc(myUid).update({
-				status: 'default',
+				pvp: '',
 			});
 			navigate('/pvp');
 		}, [1500]);
 		//setSnackBarOpen(true);
+	};
+
+	const handleRejectedClick = () => {
+		smallFlatSound.play();
+		dbService.collection('users').doc(challengerUid).update({
+			pvp: 'rejected',
+		});
+		setBattleModalOpen(false);
 	};
 	console.log('myUid', myUid);
 
@@ -232,10 +240,7 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 					pb: 5,
 				}}>
 				<IconButton
-					onClick={() => {
-						setBattleModalOpen(false);
-						smallFlatSound.play();
-					}}
+					onClick={handleRejectedClick}
 					sx={{
 						color: theme.palette.text.primary,
 						ml: 5,

@@ -24,6 +24,8 @@ export default function UserInformation({
 	propIdx,
 	Eng,
 	myUid,
+	rejected,
+	setRejected,
 }) {
 	const [snackBarOpen, setSnackBarOpen] = useState(false);
 
@@ -68,10 +70,15 @@ export default function UserInformation({
 			pvp: myUid,
 		});
 
-		// navigate('/pvp');
+		setTimeout(() => {
+			setRejected(true);
+		}, 28000);
+		setTimeout(() => {
+			handleSnackBarClose();
+		}, 30000);
+
 		setSnackBarOpen(true);
 	};
-	console.log('myUid', myUid);
 
 	const handleSnackBarClose = (reason) => {
 		if (reason === 'clickaway') {
@@ -81,7 +88,11 @@ export default function UserInformation({
 		dbService.collection('users').doc(user.uid).update({
 			pvp: '',
 		});
+		dbService.collection('users').doc(myUid).update({
+			pvp: '',
+		});
 		setSnackBarOpen(false);
+		setRejected(false);
 	};
 
 	return (
@@ -201,19 +212,26 @@ export default function UserInformation({
 			</DialogActions>
 			<Snackbar
 				open={snackBarOpen}
-				autoHideDuration={100000}
+				autoHideDuration={30000}
 				onClose={handleSnackBarClose}>
 				<Alert
 					onClose={handleSnackBarClose}
+					severity={rejected ? 'error' : 'info'}
 					sx={{
 						borderRadius: 20,
-						width: 'calc(100% - 40px)',
+						width: 'calc(100% - 45px)',
 						position: 'fixed',
-						bottom: '5%',
+						bottom: '3%',
 						// mr: '10px',
 						// ml: '10px',
 					}}>
-					Waiting
+					{Eng
+						? rejected
+							? 'Rejected'
+							: 'Waiting'
+						: rejected
+						? '대결이 거절되었습니다'
+						: '수락 대기중..'}
 				</Alert>
 			</Snackbar>
 		</Dialog>

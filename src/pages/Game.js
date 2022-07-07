@@ -582,6 +582,8 @@ export default function Game({
 
 	const opponentUid = JSON.parse(sessionStorage.getItem('opponentUid'));
 
+	const [rejected, setRejected] = useState(false);
+
 	useEffect(() => {
 		myUid &&
 			dbService
@@ -640,6 +642,8 @@ export default function Game({
 
 							navigate('/pvp');
 						}, [300]);
+					} else if (snapshot.data().pvp === 'rejected') {
+						setRejected(true);
 					} else if (snapshot.data().pvp === 'end') {
 						localStorage.setItem(
 							'myData',
@@ -737,6 +741,8 @@ export default function Game({
 				myUid={myUid}
 				handleDeleteGame={() => handleDeleteGame()}
 				pvp={false}
+				rejected={rejected}
+				setRejected={setRejected}
 			/>
 			<SideScore
 				sideScoreOpen={sideScoreOpen}

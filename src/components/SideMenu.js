@@ -61,8 +61,8 @@ export default function SideMenu({
 	pvp,
 	handleDeleteGame,
 	myTurn,
-	// mute,
-	// setMute,
+	rejected,
+	setRejected,
 }) {
 	const DrawerHeader = styled('div')(({ theme }) => ({
 		display: 'flex',
@@ -381,6 +381,8 @@ export default function SideMenu({
 					propIdx={propIdx}
 					Eng={Eng}
 					myUid={myUid}
+					rejected={rejected}
+					setRejected={setRejected}
 				/>
 			</Box>
 		</Drawer>
