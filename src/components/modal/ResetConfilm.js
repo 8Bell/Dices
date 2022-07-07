@@ -12,6 +12,7 @@ import {
 import React from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
+import { dbService } from '../../fbase';
 
 export default function ResetConfirm({
 	resetModalOpen,
@@ -23,6 +24,9 @@ export default function ResetConfirm({
 	setIsFin,
 	setIsStart,
 	Eng,
+	me,
+	myUid,
+	total,
 }) {
 	//-----------EFFECT SOUNDS-------------//
 
@@ -35,7 +39,7 @@ export default function ResetConfirm({
 	};
 	const diceArr = [0, 0, 0, 0, 0];
 
-	const handleNewGame = () => {
+	const handleNewGame = async () => {
 		smallFlatSound.play();
 		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left');
 		setDices(diceArr);
@@ -44,6 +48,14 @@ export default function ResetConfirm({
 		setLeft(3);
 		setIsFin(false);
 		setIsStart(true);
+
+		await dbService
+			.collection('users')
+			.doc(myUid)
+			.update({
+				indivTotalScore: me.indivTotalScore + total,
+				indivNumberOfGames: me.indivNumberOfGames + 1,
+			});
 	};
 
 	return (
@@ -77,17 +89,23 @@ export default function ResetConfirm({
 					color: theme.palette.text.secondary,
 				}}>
 				<DialogContentText sx={{ mb: 1, mt: 0 }}>
-					{Eng
-						? [
-								'Reset the game?',
-								<br />,
-								'Current content will not be saved.',
-						  ]
-						: [
-								'게임을 재시작할까요?',
-								<br />,
-								'게임 진행 상황은 저장되지 않습니다.',
-						  ]}
+					{Eng ? (
+						<>
+							Reset the game?
+							<br />
+							{myUid
+								? 'The data is reflected in the results.'
+								: 'Current content will not be saved.'}
+						</>
+					) : (
+						<>
+							게임을 재시작할까요?
+							<br />
+							{myUid
+								? '데이터는 결과에 반영됩니다.'
+								: '게임 진행 상황은 저장되지 않습니다.'}
+						</>
+					)}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions

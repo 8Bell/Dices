@@ -118,6 +118,16 @@ export default function PVPGame({
 
 	useMemo(() => myUid, [myUid]);
 
+	useEffect(() => {
+		myUid &&
+			dbService
+				.collection('users')
+				.doc(myUid)
+				.onSnapshot((snapshot) => {
+					setMe(snapshot.data());
+				});
+	}, [myUid]);
+
 	//--------------Language---------------//
 
 	const savedEng = localStorage.getItem('Eng')
@@ -451,8 +461,8 @@ export default function PVPGame({
 		yacht,
 	]);
 
-	//---------------------FIN--------------------//
-	// eslint-disable-next-line no-unused-vars
+	//---------------------END GAME--------------------//
+
 	const [isFin, setIsFin] = useState(false);
 
 	useEffect(() => {
@@ -469,30 +479,39 @@ export default function PVPGame({
 		}
 	}, [isFilled]);
 
-	useEffect(() => {
-		if (isFin) {
-			if (localStorage.getItem('BestScore')) {
-				if (JSON.parse(localStorage.getItem('BestScore')) < total) {
-					localStorage.setItem('BestScore', JSON.stringify(total));
-					setNewBestScore(true);
-				} else {
-					setNewBestScore(false);
-				}
-			} else {
-				localStorage.setItem('BestScore', JSON.stringify(total));
-				setNewBestScore(false);
-			}
-		}
-	}, [isFin, total]);
+	const [isWin, setIsWin] = useState(false);
 
 	useEffect(() => {
-		if (isFin) {
-			if (me[0] && me[0].indivbestScore < total) {
-				dbService.collection('users').doc(myUid).update({
-					indivbestScore: total,
-				});
+		async function endGame() {
+			if (isFin) {
+				if (me && me.pvpBestScore < total) {
+					await dbService.collection('users').doc(myUid).update({
+						pvpBestScore: total,
+					});
+					setNewBestScore(true);
+				}
+				opponent && total > opponent.scoreData[14] && setIsWin(true);
+
+				myUid && isWin
+					? await dbService
+							.collection('users')
+							.doc(myUid)
+							.update({
+								pvpNumberOfGames: me.pvpNumberOfGames + 1,
+								win: me.win + 1,
+							})
+					: await dbService
+							.collection('users')
+							.doc(myUid)
+							.update({
+								pvpNumberOfGames: me.pvpNumberOfGames + 1,
+								defeat: me.defeat + 1,
+							});
 			}
 		}
+
+		endGame();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFin, total]);
 
@@ -536,7 +555,6 @@ export default function PVPGame({
 	const [me, setMe] = useState([]);
 
 	useEffect(() => {
-		setMe(users.filter((user) => user.id === myUid));
 		setMembers(users.filter((user) => user.id !== myUid));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [users]);
@@ -802,8 +820,6 @@ export default function PVPGame({
 							justifyContent='center'
 							alignItems='center'>
 							<PVPBoard
-								isLoggedIn={isLoggedIn}
-								me={me}
 								isMobile={isMobile}
 								isTablet={isTablet}
 								dices={dices}
@@ -836,8 +852,11 @@ export default function PVPGame({
 								bonus={bonus}
 								Eng={Eng}
 								myTurn={myTurn}
+								opponentUid={opponentUid}
 								opponent={opponent}
 								myUid={myUid}
+								me={me}
+								setNewBestScore={setNewBestScore}
 							/>
 						</Stack>
 					</Grid>

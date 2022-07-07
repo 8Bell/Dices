@@ -7,6 +7,8 @@ import {
 	DialogTitle,
 	//DialogTitle,
 	IconButton,
+	Paper,
+	Typography,
 	useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -85,7 +87,7 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 		smallFlatSound.play();
 		sessionStorage.setItem('opponentUid', JSON.stringify(challengerUid));
 		dbService.collection('users').doc(challengerUid).update({
-			pvp: 'accept',
+			status: 'pvpAccept',
 		});
 
 		myUid &&
@@ -126,7 +128,7 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 
 		setTimeout(() => {
 			dbService.collection('users').doc(myUid).update({
-				pvp: '',
+				status: 'default',
 			});
 			navigate('/pvp');
 		}, [1500]);
@@ -173,16 +175,54 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 					color: theme.palette.text.secondary,
 				}}>
 				<DialogContentText sx={{ mb: 1, mt: 0 }}>
-					{Eng
-						? ['Refresh the game?', <br />, 'Current content will be saved']
-						: [
-								'최고 점수 : ' + user.indivBestScore,
-								<br />,
-								'게임 횟수 : ' + user.indivNumberOfGames,
-								<br />,
-								<br />,
-								user.userName + '님의 대전을 수락 하시겠어요?',
-						  ]}
+					<Paper
+						elevation={5}
+						sx={{ mr: -1, ml: -1, mb: 2, p: 2, borderRadius: 5 }}>
+						<Typography
+							sx={{
+								fontSize: 18,
+								mb: 2,
+							}}>
+							솔로게임
+						</Typography>
+						{'최고 점수 : ' + user.indivBestScore}
+						<br />
+						{'게임 횟수 : ' + user.indivNumberOfGames}
+						<br />
+						{'평균 점수 : ' +
+							(user.indivNumberOfGames === 0
+								? 0
+								: Math.round(
+										user.indivTotalScore /
+											user.indivNumberOfGames
+								  ))}
+					</Paper>
+					<Paper
+						elevation={5}
+						sx={{ mr: -1, ml: -1, mb: 2, p: 2, borderRadius: 5 }}>
+						<Typography
+							sx={{
+								fontSize: 18,
+								mb: 2,
+							}}>
+							랭크게임
+						</Typography>
+						{'최고 점수 : ' + user.pvpBestScore}
+						<br />
+						{'대전 횟수 : ' + user.pvpNumberOfGames}
+						<br />
+						{'승리 : ' + user.win}
+						<br />
+						{'패배 : ' + user.defeat}
+						<br />
+						{'승률 : ' +
+							(user.pvpNumberOfGames === 0
+								? 0
+								: Math.round(user.win / user.pvpNumberOfGames) *
+								  100) +
+							' %'}
+					</Paper>
+					{user.userName + '님의 대전 요청을 수락하시겠어요?'}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions

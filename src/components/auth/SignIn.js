@@ -69,21 +69,17 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 						userName,
 						createdAt: Date.now(),
 						isOnline: true,
-						profileImg: null,
 
 						indivNumberOfGames: 0,
 						indivBestScore: 0,
 						indivTotalScore: 0,
 
 						pvpNumberOfGames: 0,
-						pvpBestScore: 0,
-						pvpTotalScore: 0,
-
 						win: 0,
 						defeat: 0,
 						Rank: 0,
 
-						pvp: '',
+						status: 'default',
 					});
 				} else {
 					alert('Please enter your name in 12 characters or less.');

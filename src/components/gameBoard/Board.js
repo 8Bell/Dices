@@ -64,6 +64,10 @@ export default function Board({
 	lStraght,
 	yacht,
 	Eng,
+	me,
+	myUid,
+	opponentUid,
+	opponent,
 }) {
 	const theme = useTheme();
 
@@ -139,6 +143,20 @@ export default function Board({
 			setLeft(left - 1);
 		}
 	};
+
+	const handleRechangeDice = async () => {
+		if (dices.includes('l')) {
+			const newDice = await dices.map((dice, idx) =>
+				isHold[idx] === false ? Math.floor(Math.random() * 6) + 1 : dice
+			);
+
+			shakeSound.play();
+			setTimeout(() => {
+				setDices(newDice);
+			}, 1000);
+		}
+	};
+
 	//--------IMG PRELOADER--------//
 
 	const D = [d0, d1, d2, d3, d4, d5, d6, dl];
@@ -331,10 +349,15 @@ export default function Board({
 					color='inherit'
 					onClick={
 						left !== 0 && !isFin
-							? () => {
-									handleChangeDice();
-									bigButton.play();
-							  }
+							? dices.includes('l')
+								? () => {
+										handleRechangeDice();
+										bigButton.play();
+								  }
+								: () => {
+										handleChangeDice();
+										bigButton.play();
+								  }
 							: isFin
 							? () => {
 									handleReGame();
@@ -394,31 +417,33 @@ export default function Board({
 					{[12 - round]}
 				</Typography>
 				<IconButton
-					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
-						smallButton.play();
-						setResetModalOpen(true);
+						if (!isFin) {
+							smallButton.play();
+							setResetModalOpen(true);
+						}
 					}}
 					sx={{
 						'&:active': {
-							boxShadow:
-								theme.palette.mode === 'dark'
-									? 'inset 17px 17px 23px #0b0b0b, inset -17px -17px 23px #272727'
-									: 'inset 9px 9px 18px #c8c8c9, inset -9px -9px 18px #fefeff;',
+							boxShadow: isFin
+								? 'none'
+								: theme.palette.mode === 'dark'
+								? 'inset 17px 17px 23px #0b0b0b, inset -17px -17px 23px #272727'
+								: 'inset 9px 9px 18px #c8c8c9, inset -9px -9px 18px #fefeff;',
 						},
 
 						position: 'absolute',
 						bottom: 20,
-						boxShadow:
-							theme.palette.mode === 'dark'
-								? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
-								: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;',
+						boxShadow: isFin
+							? 'none'
+							: theme.palette.mode === 'dark'
+							? '17px 17px 23px #0b0b0b,-17px -17px 23px #272727'
+							: '9px 9px 18px #c8c8c9,-9px -9px 18px #fefeff;',
 					}}>
-					<ClearRounded />
+					{!isFin && <ClearRounded />}
 				</IconButton>
 				<IconButton
-					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					onClick={() => {
 						smallFlatSound.play();
@@ -433,7 +458,6 @@ export default function Board({
 					<BugReportRounded />
 				</IconButton>
 				<IconButton
-					variant={isFin ? 'contained' : 'outlined'}
 					color='inherit'
 					href={
 						Eng
@@ -463,6 +487,11 @@ export default function Board({
 				setIsFin={setIsFin}
 				setIsStart={setIsStart}
 				Eng={Eng}
+				me={me}
+				myUid={myUid}
+				total={total}
+				opponentUid={opponentUid}
+				opponent={opponent}
 			/>
 			<RefreshConfirm
 				refreshModalOpen={refreshModalOpen}

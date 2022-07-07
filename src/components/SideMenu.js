@@ -252,26 +252,22 @@ export default function SideMenu({
 				<ListItemButton>
 					<ListItemText
 						primary={
-							me[0]
-								? me[0].userName
-								: Eng
-								? 'guest player(me)'
-								: '손님(나)'
+							me ? me.userName : Eng ? 'guest player(me)' : '손님(나)'
 						}
 						sx={{ textAlign: 'left' }}
 					/>
 					<ListItemText
-						primary={me[0] ? me[0].indivBestScore : bestScore}
+						primary={me ? me.indivBestScore : bestScore}
 						sx={{ textAlign: 'right', position: 'absolute', right: 100 }}
 					/>
 					{isLoggedIn ? (
 						<img
 							src={
 								theme.palette.mode === 'dark'
-									? D[`${me[0] ? me[0].Rank + 1 : 1}`]
-									: L[`${me[0] ? me[0].Rank + 1 : 1}`]
+									? D[`${me ? me.Rank + 1 : 1}`]
+									: L[`${me ? me.Rank + 1 : 1}`]
 							}
-							alt={me[0] ? me[0].Rank + 1 : 1}
+							alt={me ? me.Rank + 1 : 1}
 							style={{ width: 35 }}
 						/>
 					) : (
@@ -307,7 +303,7 @@ export default function SideMenu({
 										? D[member.Rank + 1]
 										: L[member.Rank + 1]
 								}
-								alt={me[0] ? me[0].Rank + 1 : 1}
+								alt={me ? me.Rank + 1 : 1}
 								style={{ width: 35 }}
 							/>
 						</ListItemButton>

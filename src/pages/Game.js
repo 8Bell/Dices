@@ -476,9 +476,8 @@ export default function Game({
 		yacht,
 	]);
 
-	//---------------------FIN--------------------//
+	//---------------------END GAME--------------------//
 
-	// eslint-disable-next-line no-unused-vars
 	const [isFin, setIsFin] = useState(false);
 
 	useEffect(() => {
@@ -496,7 +495,7 @@ export default function Game({
 	}, [isFilled]);
 
 	useEffect(() => {
-		if (isFin) {
+		if (isFin && !myUid) {
 			if (localStorage.getItem('BestScore')) {
 				if (JSON.parse(localStorage.getItem('BestScore')) < total) {
 					localStorage.setItem('BestScore', JSON.stringify(total));
@@ -509,18 +508,31 @@ export default function Game({
 				setNewBestScore(false);
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFin, total]);
 
 	useEffect(() => {
-		if (isFin) {
-			if (me[0] && me[0].indivbestScore < total) {
-				dbService.collection('users').doc(myUid).update({
-					indivbestScore: total,
-				});
+		async function endGame() {
+			if (isFin) {
+				if (me && me.indivBestScore < total) {
+					await dbService.collection('users').doc(myUid).update({
+						indivBestScore: total,
+					});
+					setNewBestScore(true);
+				}
+				await dbService
+					.collection('users')
+					.doc(myUid)
+					.update({
+						indivTotalScore: me.indivTotalScore + total,
+						indivNumberOfGames: me.indivNumberOfGames + 1,
+					});
 			}
 		}
+		endGame();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isFin, total]);
+	}, [isFin]);
 
 	const [open, setOpen] = useState(false);
 	const [sideScoreOpen, setSideScoreOpen] = useState(false);
@@ -562,14 +574,12 @@ export default function Game({
 	const [me, setMe] = useState([]);
 
 	useEffect(() => {
-		setMe(users.filter((user) => user.id === myUid));
 		setMembers(users.filter((user) => user.id !== myUid));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [users]);
 
 	//--------BATTLE ACCECPTANCE------//
 
-	console.log('myUid', myUid);
 	const opponentUid = JSON.parse(sessionStorage.getItem('opponentUid'));
 
 	useEffect(() => {
@@ -578,6 +588,7 @@ export default function Game({
 				.collection('users')
 				.doc(myUid)
 				.onSnapshot((snapshot) => {
+					setMe(snapshot.data());
 					if (snapshot.data().pvp === 'accept') {
 						dbService
 							.collection('games')
@@ -803,8 +814,6 @@ export default function Game({
 							justifyContent='center'
 							alignItems='center'>
 							<Board
-								isLoggedIn={isLoggedIn}
-								me={me}
 								isMobile={isMobile}
 								isTablet={isTablet}
 								dices={dices}
@@ -836,13 +845,15 @@ export default function Game({
 								subTotal={subTotal}
 								bonus={bonus}
 								Eng={Eng}
+								me={me}
+								myUid={myUid}
 							/>
 						</Stack>
 					</Grid>
 				</Grid>
 				<Snackbar
 					open={snackBarOpen}
-					autoHideDuration={6000}
+					autoHideDuration={4000}
 					onClose={handleSnackBarClose}>
 					<Alert
 						onClose={handleSnackBarClose}
@@ -858,9 +869,13 @@ export default function Game({
 								? theme.palette.background.default
 								: 'default',
 						}}>
-						{newBestScore
-							? 'Excellent! New Best Score ' + total
-							: 'Great! Your Score is ' + total}
+						{Eng
+							? newBestScore
+								? 'Excellent! New Best Score ' + total
+								: 'Great! Your Score is ' + total
+							: newBestScore
+							? '최고 기록 경신! ' + total + ' 점'
+							: '훌륭해요! ' + total + ' 점'}
 					</Alert>
 				</Snackbar>
 			</Main>

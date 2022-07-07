@@ -35,7 +35,6 @@ import OpponentsDices from '../gameBoard/OpponentsDices';
 import SurrenderConfirm from '../modal/SurrenderConfirm';
 
 export default function PVPBoard({
-	me,
 	isMobile,
 	isTablet,
 	dices,
@@ -69,7 +68,10 @@ export default function PVPBoard({
 	Eng,
 	myTurn,
 	opponent,
+	opponentUid,
 	myUid,
+	me,
+	setNewBestScore,
 }) {
 	const theme = useTheme();
 
@@ -535,6 +537,10 @@ export default function PVPBoard({
 				setIsStart={setIsStart}
 				Eng={Eng}
 				myUid={myUid}
+				opponentUid={opponentUid}
+				me={me}
+				total={total}
+				setNewBestScore={setNewBestScore}
 			/>
 			<RefreshConfirm
 				refreshModalOpen={refreshModalOpen}

@@ -9,7 +9,7 @@ import {
 	IconButton,
 	useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +26,10 @@ export default function SurrenderConfirm({
 	setIsStart,
 	Eng,
 	myUid,
+	opponentUid,
+	me,
+	total,
+	setNewBestScore,
 }) {
 	const navigate = useNavigate();
 	//-----------EFFECT SOUNDS-------------//
@@ -39,8 +43,51 @@ export default function SurrenderConfirm({
 	};
 	const diceArr = [0, 0, 0, 0, 0];
 
-	const handleSurrender = () => {
+	//-------SURRENDER DATA -------------//
+
+	//opponentUserData
+	const [opponentData, setOpponentData] = useState({});
+
+	useEffect(() => {
+		dbService
+			.collection('users')
+			.doc(opponentUid)
+			.onSnapshot((snapshot) => {
+				setOpponentData(snapshot.data());
+			});
+	}, [opponentUid]);
+
+	async function endGame() {
+		if (me && me.pvpBestScore < total) {
+			await dbService.collection('users').doc(myUid).update({
+				pvpBestScore: total,
+			});
+			setNewBestScore(true);
+		}
+
+		opponentUid &&
+			(await dbService
+				.collection('users')
+				.doc(opponentUid)
+				.update({
+					pvpNumberOfGames: opponentData.pvpNumberOfGames + 1,
+					win: opponentData.win + 1,
+				}));
+		myUid &&
+			(await dbService
+				.collection('users')
+				.doc(myUid)
+				.update({
+					pvpNumberOfGames: me.pvpNumberOfGames + 1,
+					defeat: me.defeat + 1,
+				}));
+	}
+
+	const handleSurrender = async () => {
 		smallFlatSound.play();
+
+		await endGame();
+
 		localStorage.setItem(
 			'myData',
 			JSON.stringify({
@@ -83,6 +130,8 @@ export default function SurrenderConfirm({
 		}, [1000]);
 	};
 
+	console.log('opponent', opponentData);
+
 	return (
 		<Dialog
 			open={surrenderModalOpen}
@@ -118,12 +167,12 @@ export default function SurrenderConfirm({
 						? [
 								// 'Reset the game?',
 								// <br />,
-								'Current content will not be saved.',
+								'The data is reflected in the results.',
 						  ]
 						: [
 								// '게임을 재시작할까요?',
 								// <br />,
-								'게임 진행 상황은 저장되지 않습니다.',
+								'데이터는 결과에 반영됩니다.',
 						  ]}
 				</DialogContentText>
 			</DialogContent>
