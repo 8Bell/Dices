@@ -28,6 +28,8 @@ export default function UserInformation({
 	rejected,
 	setRejected,
 	isMobile,
+	pvp,
+	isLoggedIn,
 }) {
 	const [snackBarOpen, setSnackBarOpen] = useState(false);
 
@@ -70,33 +72,39 @@ export default function UserInformation({
 
 	const handleBattleClick = () => {
 		smallFlatSound.play();
-		sessionStorage.setItem('opponentUid', JSON.stringify(user.uid));
 
-		dbService.collection('users').doc(user.uid).update({
-			pvp: myUid,
-		});
+		if (isLoggedIn) {
+			sessionStorage.setItem('opponentUid', JSON.stringify(user.uid));
 
-		setTimeout(() => {
-			setRejected(true);
-		}, 28000);
-		setTimeout(() => {
-			handleSnackBarClose();
-		}, 30000);
+			dbService.collection('users').doc(user.uid).update({
+				pvp: myUid,
+			});
 
-		setSnackBarOpen(true);
+			setTimeout(() => {
+				setRejected(true);
+			}, 28000);
+			setTimeout(() => {
+				handleSnackBarClose();
+			}, 30000);
+
+			setSnackBarOpen(true);
+		} else {
+			setSnackBarOpen(true);
+		}
 	};
 
 	const handleSnackBarClose = (reason) => {
 		if (reason === 'clickaway') {
 			return;
 		}
-
-		dbService.collection('users').doc(user.uid).update({
-			pvp: '',
-		});
-		dbService.collection('users').doc(myUid).update({
-			pvp: '',
-		});
+		isLoggedIn &&
+			dbService.collection('users').doc(user.uid).update({
+				pvp: '',
+			});
+		isLoggedIn &&
+			dbService.collection('users').doc(myUid).update({
+				pvp: '',
+			});
 		setSnackBarOpen(false);
 		setRejected(false);
 	};
@@ -214,7 +222,7 @@ export default function UserInformation({
 						  user.userName + '님에게 대전을 신청하시겠어요?'}
 				</DialogContentText>
 			</DialogContent>
-			{propIdx !== 'me' && (
+			{propIdx !== 'me' && !pvp && (
 				<DialogActions
 					sx={{
 						backgroundColor: theme.palette.background.paper,
@@ -266,9 +274,13 @@ export default function UserInformation({
 						width: 'calc(100% - 45px)',
 					}}>
 					{Eng
-						? rejected
+						? !isLoggedIn
+							? 'Please log in first'
+							: rejected
 							? 'Rejected'
 							: 'Waiting...'
+						: !isLoggedIn
+						? '대전기능을 이용하시려면 로그인을 해주세요.'
 						: rejected
 						? '거절되었습니다'
 						: '수락 대기중...'}

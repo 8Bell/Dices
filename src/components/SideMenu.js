@@ -13,8 +13,6 @@ import {
 	Brightness4,
 	Brightness7,
 	ChevronLeftRounded,
-	CloudDoneRounded,
-	CloudUploadOutlined,
 	MusicNoteRounded,
 	MusicOffRounded,
 	Settings,
@@ -22,7 +20,7 @@ import {
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { Howler } from 'howler';
 import SignIn from './auth/SignIn';
-import { authService, dbService, rtService } from '../fbase';
+import { authService, rtService } from '../fbase';
 
 import dl from '../static/img/dl.gif';
 import d0 from '../static/img/d0.png';
@@ -124,17 +122,18 @@ export default function SideMenu({
 	const [propIdx, setPropIdx] = useState(0);
 
 	const handleMemberClick = (idx) => {
-		if (pvp === false) {
-			smallFlatSound.play();
-			idx !== 'me' &&
-				rtService.ref('games/' + myUid).update({
+		smallFlatSound.play();
+
+		!isLoggedIn
+			? console.log('guest')
+			: idx !== 'me' &&
+			  rtService.ref('games/' + myUid).update({
 					opponentUid: members[idx].uid,
-				});
-			setPropIdx(idx);
-			setTimeout(() => {
-				setModal3Open(true);
-			}, [100]);
-		}
+			  });
+		setPropIdx(idx);
+		setTimeout(() => {
+			setModal3Open(true);
+		}, [100]);
 	};
 
 	//-----local best score ----//
@@ -354,7 +353,7 @@ export default function SideMenu({
 				</SpeedDial>
 
 				<IconButton
-					sx={{ position: 'absolute', right: 20, bottom: 7 }}
+					sx={{ position: 'absolute', right: 15, bottom: 10 }}
 					onClick={
 						isLoggedIn
 							? () => {
@@ -365,9 +364,19 @@ export default function SideMenu({
 					}
 					color='inherit'>
 					{isLoggedIn ? (
-						<CloudDoneRounded sx={{ fontSize: 28 }} />
+						<>
+							<Typography sx={{ fontSize: 15, fontWeight: 600 }}>
+								{Eng ? 'Log Out' : '로그아웃'}
+							</Typography>
+							{/* <CloudDoneRounded sx={{ fontSize: 28 }} /> */}
+						</>
 					) : (
-						<CloudUploadOutlined sx={{ fontSize: 28 }} />
+						<>
+							<Typography sx={{ fontSize: 15, fontWeight: 600 }}>
+								{Eng ? 'Log In' : '로그인'}
+							</Typography>
+							{/* <CloudUploadOutlined sx={{ fontSize: 28 }} /> */}
+						</>
 					)}
 				</IconButton>
 
@@ -394,6 +403,8 @@ export default function SideMenu({
 					rejected={rejected}
 					setRejected={setRejected}
 					isMobile={isMobile}
+					pvp={pvp}
+					isLoggedIn={isLoggedIn}
 				/>
 			</Box>
 		</Drawer>

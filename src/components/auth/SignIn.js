@@ -257,7 +257,7 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 
 				<TextField
 					onChange={onChange}
-					margin='nomal'
+					margin='dense'
 					id='name'
 					label={Eng ? 'Name' : '이름'}
 					helperText={

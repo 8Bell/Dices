@@ -463,7 +463,7 @@ export default function Board({
 					href={
 						Eng
 							? 'https://en.wikipedia.org/wiki/Yacht_(dice_game)'
-							: 'https://namu.wiki/w/%EC%9A%94%ED%8A%B8(%EA%B2%8C%EC%9E%84)'
+							: 'https://www.youtube.com/watch?v=yXno1hggmbw&t=169s'
 					}
 					target='_blank'
 					onClick={() => {

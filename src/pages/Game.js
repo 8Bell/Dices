@@ -727,7 +727,7 @@ export default function Game({
 				maxHeight: isMobile || isTablet ? 'none' : '100vh',
 			}}>
 			<div
-				class={
+				className={
 					theme.palette.mode === 'dark'
 						? 'page-preloader-dark'
 						: 'page-preloader-light'
