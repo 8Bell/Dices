@@ -136,11 +136,12 @@ export default function Board({
 
 			shakeSound.play();
 			setDices(lodingDice);
+
 			setTimeout(() => {
 				setDices(newDice);
 			}, [2000]);
 
-			setLeft(left - 1);
+			//setLeft(left - 1);
 		}
 	};
 

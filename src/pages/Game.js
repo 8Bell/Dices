@@ -11,7 +11,7 @@ import SideScore from '../components/scoreBoard/SideScore';
 import { useTheme } from '@emotion/react';
 import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
-import { authService, dbService } from '../fbase';
+import { authService, dbService, rtService } from '../fbase';
 import effectSound from '../hooks/effectSound';
 import FilledSound from '../static/sounds/filled.mp3';
 
@@ -77,7 +77,8 @@ export default function Game({
 
 	useEffect(() => {
 		authService.currentUser !== null && setMyUid(authService.currentUser.uid);
-	}, []);
+		sessionStorage.setItem('myUid', myUid);
+	}, [myUid]);
 
 	useMemo(() => myUid, [myUid]);
 
@@ -592,39 +593,56 @@ export default function Game({
 				.onSnapshot((snapshot) => {
 					setMe(snapshot.data());
 					if (snapshot.data().pvp === 'accept') {
-						dbService
-							.collection('games')
-							.doc(myUid)
-							.set({
-								myUid,
-								dices: [0, 0, 0, 0, 0],
-								left: 3,
-								isFilled: [
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-									false,
-								],
-								isHold: [false, false, false, false, false],
-								scoreData: [
-									0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-								],
-								myTurn: false,
-								opponentUid: JSON.parse(
-									sessionStorage.getItem('opponentUid')
-								),
-							});
+						rtService.ref('games/' + myUid).set({
+							myUid: myUid,
+							dices: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+							left: 3,
+							isFilled: {
+								0: false,
+								1: false,
+								2: false,
+								3: false,
+								4: false,
+								5: false,
+								6: false,
+								7: false,
+								8: false,
+								9: false,
+								10: false,
+								11: false,
+								12: false,
+								13: false,
+								14: false,
+							},
+							isHold: {
+								0: false,
+								1: false,
+								2: false,
+								3: false,
+								4: false,
+							},
+							scoreData: {
+								0: 0,
+								1: 0,
+								2: 0,
+								3: 0,
+								4: 0,
+								5: 0,
+								6: 0,
+								7: 0,
+								8: 0,
+								9: 0,
+								10: 0,
+								11: 0,
+								12: 0,
+								13: 0,
+								14: 0,
+							},
+							myTurn: false,
+							opponentUid: JSON.parse(
+								sessionStorage.getItem('opponentUid')
+							),
+						});
 						sessionStorage.removeItem(
 							'dices',
 							'isHold',
@@ -673,9 +691,8 @@ export default function Game({
 								left: 3,
 							})
 						);
-						myUid && dbService.collection('games').doc(myUid).delete();
-						opponentUid &&
-							dbService.collection('games').doc(opponentUid).delete();
+						myUid && rtService.ref('games/' + myUid).delete();
+						opponentUid && rtService.ref('games/' + opponentUid).delete();
 					} else {
 						snapshot.data().pvp !== ''
 							? setBattleModalOpen(true)

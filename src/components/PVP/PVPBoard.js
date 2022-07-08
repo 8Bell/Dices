@@ -96,8 +96,6 @@ export default function PVPBoard({
 
 	//--------------Regame--------------//
 
-	const diceArr = [0, 0, 0, 0, 0];
-
 	const handleReGame = async () => {
 		localStorage.setItem(
 			'myData',

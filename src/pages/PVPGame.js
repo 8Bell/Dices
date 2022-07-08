@@ -9,7 +9,7 @@ import { Grid, Snackbar, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import MuiAlert from '@mui/material/Alert';
-import { authService, dbService } from '../fbase';
+import { authService, dbService, rtService } from '../fbase';
 import effectSound from '../hooks/effectSound';
 import FilledSound from '../static/sounds/filled.mp3';
 import PVPSideScore from '../components/PVP/PVPSideScore';
@@ -62,6 +62,9 @@ export default function PVPGame({
 	const dicesArr = myData.dices;
 	const holdArr = myData.isHold;
 	const fbLeft = myData.left;
+
+	console.log('myData', myData.left);
+
 	//const myTurn = myData.myTurn;
 
 	const [opponentUid, setOpponentUid] = useState(
@@ -69,7 +72,10 @@ export default function PVPGame({
 	);
 
 	const [myTurn, setMyTurn] = useState(
-		sessionStorage.getItem('myTurn') ? JSON.parse(sessionStorage.getItem('myTurn')) : true
+		// sessionStorage.getItem('myTurn') && sessionStorage.getItem('myTurn') !== undefined
+		// 	? JSON.parse(sessionStorage.getItem('myTurn'))
+		// 	:
+		true
 	);
 
 	//---------STYLE---------//
@@ -110,11 +116,11 @@ export default function PVPGame({
 
 	//--------------CURRENT USER ---------------//
 
-	const [myUid, setMyUid] = useState('');
+	const [myUid, setMyUid] = useState(sessionStorage.getItem('myUid'));
 
 	useEffect(() => {
 		authService.currentUser !== null && setMyUid(authService.currentUser.uid);
-	}, []);
+	}, [myUid]);
 
 	useMemo(() => myUid, [myUid]);
 
@@ -144,29 +150,52 @@ export default function PVPGame({
 	const filledSound = effectSound(FilledSound, 1);
 
 	//----------DICES------------//
-
 	const diceArr = [0, 0, 0, 0, 0];
+	const setDicesArr = dicesArr !== undefined ? dicesArr : diceArr;
 
-	const [dices, setDices] = useState(dicesArr);
+	const [dices, setDices] = useState(setDicesArr);
 
 	// HOLD
 
-	const [isHold, setIsHold] = useState(holdArr);
+	const setHoldArr = holdArr !== undefined ? holdArr : [false, false, false, false, false];
+
+	const [isHold, setIsHold] = useState(setHoldArr);
 
 	//----------Fill-------------//
 
-	const [isFilled, setIsFilled] = useState(filledArr);
+	const savedIsFilled =
+		filledArr !== undefined
+			? filledArr
+			: [
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+			  ];
+
+	const [isFilled, setIsFilled] = useState(savedIsFilled);
 
 	console.log('opponentUid', opponentUid);
 
 	const handleFill = (idx) => {
-		dbService.collection('games').doc(opponentUid).update({
+		rtService.ref('games/' + opponentUid).update({
 			myTurn: true,
 		});
-		myUid &&
-			dbService.collection('games').doc(myUid).update({
-				myTurn: false,
-			});
+		rtService.ref('games/' + myUid).update({
+			myTurn: false,
+		});
 
 		const newFilled = isFilled.map((filled, index) => (idx === index ? true : filled));
 		setIsFilled(newFilled);
@@ -183,7 +212,9 @@ export default function PVPGame({
 
 	//----------LEFT----------//
 
-	const [left, setLeft] = useState(fbLeft);
+	const savedleft = fbLeft !== undefined ? fbLeft : 3;
+
+	const [left, setLeft] = useState(savedleft);
 
 	useEffect(() => {
 		left === 0 &&
@@ -196,7 +227,8 @@ export default function PVPGame({
 
 	//----------------------------Rules-----------------------------//
 
-	const savedScoreArr = scoreArr;
+	const savedScoreArr =
+		scoreArr !== undefined ? scoreArr : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 	const [ace, setAce] = useState(savedScoreArr[0]); //isFilled 0
 	const [duce, setDuce] = useState(savedScoreArr[1]); //isFilled 1
@@ -214,35 +246,39 @@ export default function PVPGame({
 	const [yacht, setYacht] = useState(savedScoreArr[13]); //isFilled 13
 	const [total, setTotal] = useState(0);
 
-	const scoreData = [
-		ace,
-		duce,
-		threes,
-		fours,
-		fives,
-		sixes,
-		subTotal,
-		bonus,
-		choice,
-		fourOfKind,
-		fullHouse,
-		sStraght,
-		lStraght,
-		yacht,
-		total,
-	];
+	const scoreData = {
+		0: ace,
+		1: duce,
+		2: threes,
+		3: fours,
+		4: fives,
+		5: sixes,
+		6: subTotal,
+		7: bonus,
+		8: choice,
+		9: fourOfKind,
+		10: fullHouse,
+		11: sStraght,
+		12: lStraght,
+		13: yacht,
+		14: total,
+	};
 
 	//----------UPLOAD TO FB DATA-----------//
 
 	useEffect(() => {
+		const scoreDataObj = { ...scoreData };
+		const dicesObj = { ...dices };
+		const isFilledObj = { ...isFilled };
+		const isHoldObj = { ...isHold };
 		myUid &&
-			dbService.collection('games').doc(myUid).update({
-				myUid,
-				dices,
-				left,
-				isFilled,
-				isHold,
-				scoreData,
+			rtService.ref('games/' + myUid).update({
+				myUid: myUid,
+				dices: dicesObj,
+				left: left,
+				isFilled: isFilledObj,
+				isHold: isHoldObj,
+				scoreData: scoreDataObj,
 			});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -251,28 +287,40 @@ export default function PVPGame({
 	//----------BRING FROM FB DATA----------//
 
 	useEffect(() => {
-		function getMyData() {
-			myUid
-				? dbService
-						.collection('games')
-						.doc(myUid)
-						.onSnapshot((snapshot) => {
-							const dbData = snapshot.data();
-							const dbMyTurn = snapshot.data().myTurn;
+		if (myUid) {
+			rtService.ref('games/' + myUid).on('value', (snapshot) => {
+				const dbMyData = snapshot.val();
+				console.log('dbMyData', dbMyData);
 
-							console.log('dbData', dbData);
+				const scoreArr = Object.values(dbMyData.scoreData);
+				const filledArr = Object.values(dbMyData.isFilled);
+				const dicesArr = Object.values(dbMyData.dices);
+				const holdArr = Object.values(dbMyData.isHold);
 
-							setMyData(dbData);
-							localStorage.setItem('myData', JSON.stringify(dbData));
+				setMyData({
+					myUid: dbMyData.myUid,
+					dices: dicesArr,
+					isHold: holdArr,
+					scoreData: scoreArr,
+					left: dbMyData.left,
+					isFilled: filledArr,
+					myTurn: dbMyData.myTurn,
+					opponentUid: dbMyData.opponentUid,
+				});
 
-							sessionStorage.setItem('myTurn', dbMyTurn);
-							setMyTurn(snapshot.data().myTurn);
-						})
-				: console.log('err');
+				localStorage.setItem('myData', JSON.stringify(dbMyData));
+				const dbMyTurn = snapshot.val().myTurn;
+				setMyTurn(dbMyTurn);
+				sessionStorage.setItem('myTurn', dbMyTurn);
+			});
+		} else {
+			console.log('myUid', myUid);
+
+			console.log('nothankyou');
 		}
-		getMyData();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [myUid, isHold, dices, isFilled, left]);
+	}, [myUid]);
 
 	//ACE //isFilled 0
 	useEffect(() => {
@@ -471,15 +519,26 @@ export default function PVPGame({
 
 	useEffect(() => {
 		opponentUid &&
-			dbService
-				.collection('games')
-				.doc(opponentUid)
-				.onSnapshot((snapshot) => {
-					const dbOpponent = snapshot.data();
-					console.log('dbOpponent', dbOpponent);
-					setOpponent(dbOpponent);
-					//dbOpponent.myTurn === false && setMyTurn(true);
+			rtService.ref('games/' + opponentUid).on('value', (snapshot) => {
+				const dbOpponent = snapshot.val();
+				console.log('dbOpponent', dbOpponent);
+
+				const scoreArr = Object.values(dbOpponent.scoreData);
+				const filledArr = Object.values(dbOpponent.isFilled);
+				const dicesArr = Object.values(dbOpponent.dices);
+				const holdArr = Object.values(dbOpponent.isHold);
+
+				setOpponent({
+					myUid: dbOpponent.myUid,
+					dices: dicesArr,
+					isHold: holdArr,
+					scoreData: scoreArr,
+					left: dbOpponent.left,
+					isFilled: filledArr,
+					myTurn: dbOpponent.myTurn,
+					opponentUid: dbOpponent.opponentUid,
 				});
+			});
 	}, [opponentUid]);
 
 	//---------------------END GAME--------------------//
@@ -500,6 +559,7 @@ export default function PVPGame({
 		if (i === 12 && j === 12) {
 			setIsFin(true);
 			setDices([0, 0, 0, 0, 0]);
+			setSnackBarOpen(true);
 		}
 	}, [isFilled, opponent.isFilled]);
 
@@ -620,15 +680,12 @@ export default function PVPGame({
 
 	useEffect(() => {
 		myUid &&
-			dbService
-				.collection('games')
-				.doc(myUid)
-				.onSnapshot((snapshot) => {
-					const dbOpponentUid = snapshot.data().opponentUid;
-					console.log('dbOpponentUid', dbOpponentUid);
-					setOpponentUid(dbOpponentUid);
-					console.log('opponentUid', opponentUid);
-				});
+			rtService.ref('games/' + myUid).on('value', (snapshot) => {
+				const dbOpponentUid = snapshot.val().opponentUid;
+				console.log('dbOpponentUid', dbOpponentUid);
+				setOpponentUid(dbOpponentUid);
+				console.log('opponentUid', opponentUid);
+			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [myUid]);
 

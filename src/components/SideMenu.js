@@ -22,7 +22,7 @@ import {
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { Howler } from 'howler';
 import SignIn from './auth/SignIn';
-import { authService, dbService } from '../fbase';
+import { authService, dbService, rtService } from '../fbase';
 
 import dl from '../static/img/dl.gif';
 import d0 from '../static/img/d0.png';
@@ -127,7 +127,7 @@ export default function SideMenu({
 		if (pvp === false) {
 			smallFlatSound.play();
 			idx !== 'me' &&
-				dbService.collection('games').doc(myUid).update({
+				rtService.ref('games/' + myUid).update({
 					opponentUid: members[idx].uid,
 				});
 			setPropIdx(idx);

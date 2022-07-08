@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
 import { useNavigate } from 'react-router-dom';
-import { dbService } from '../../fbase';
+import { dbService, rtService } from '../../fbase';
 
 export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng, myUid }) {
 	const navigate = useNavigate();
@@ -92,35 +92,54 @@ export default function BattleConFilm({ battleModalOpen, setBattleModalOpen, Eng
 
 		myUid &&
 			challengerUid &&
-			dbService
-				.collection('games')
-				.doc(myUid)
-				.set({
-					myUid,
-					dices: [0, 0, 0, 0, 0],
-					left: 3,
-					isFilled: [
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-						false,
-					],
-					isHold: [false, false, false, false, false],
-					scoreData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-					myTurn: true,
-					opponentUid: challengerUid,
-				});
+			rtService.ref('games/' + myUid).set({
+				myUid: myUid,
+				dices: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
+				left: 3,
+				isFilled: {
+					0: false,
+					1: false,
+					2: false,
+					3: false,
+					4: false,
+					5: false,
+					6: false,
+					7: false,
+					8: false,
+					9: false,
+					10: false,
+					11: false,
+					12: false,
+					13: false,
+					14: false,
+				},
+				isHold: {
+					0: false,
+					1: false,
+					2: false,
+					3: false,
+					4: false,
+				},
+				scoreData: {
+					0: 0,
+					1: 0,
+					2: 0,
+					3: 0,
+					4: 0,
+					5: 0,
+					6: 0,
+					7: 0,
+					8: 0,
+					9: 0,
+					10: 0,
+					11: 0,
+					12: 0,
+					13: 0,
+					14: 0,
+				},
+				myTurn: true,
+				opponentUid: challengerUid,
+			});
 
 		sessionStorage.removeItem('dices', 'isHold', 'isFilled', 'left', 'score');
 
