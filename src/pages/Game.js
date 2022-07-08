@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
 import React, { useEffect, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
@@ -199,58 +200,58 @@ export default function Game({
 	const [yacht, setYacht] = useState(savedScoreArr[13]); //isFilled 13
 	const [total, setTotal] = useState(0);
 
-	const scoreData = [
-		ace,
-		duce,
-		threes,
-		fours,
-		fives,
-		sixes,
-		subTotal,
-		bonus,
-		choice,
-		fourOfKind,
-		fullHouse,
-		sStraght,
-		lStraght,
-		yacht,
-		total,
-	];
+	// const scoreData = [
+	// 	ace,
+	// 	duce,
+	// 	threes,
+	// 	fours,
+	// 	fives,
+	// 	sixes,
+	// 	subTotal,
+	// 	bonus,
+	// 	choice,
+	// 	fourOfKind,
+	// 	fullHouse,
+	// 	sStraght,
+	// 	lStraght,
+	// 	yacht,
+	// 	total,
+	// ];
 
 	//----------BRING FB DATA----------//
 
-	useEffect(() => {
-		myUid
-			? dbService
-					.collection('singleGames')
-					.doc(myUid)
-					.onSnapshot((snapshot) => {
-						const dbData = snapshot.data();
-						setScoreArr(dbData.scoreData);
-						setFilledArr(dbData.isFilled);
-						setDicesArr(dbData.dices);
-						setHoldArr(dbData.isHold);
-						setFbLeft(dbData.left);
-					})
-			: console.log('err');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	// useEffect(() => {
+	// 	myUid
+	// 		? dbService
+	// 				.collection('singleGames')
+	// 				.doc(myUid)
+	// 				.onSnapshot((snapshot) => {
+	// 					const dbData = snapshot.data();
+	// 					setScoreArr(dbData.scoreData);
+	// 					setFilledArr(dbData.isFilled);
+	// 					setDicesArr(dbData.dices);
+	// 					setHoldArr(dbData.isHold);
+	// 					setFbLeft(dbData.left);
+	// 				})
+	// 		: console.log('err');
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, []);
 
 	//----------SAVING DATA-----------//
 
-	useEffect(() => {
-		myUid &&
-			dbService.collection('singleGames').doc(myUid).update({
-				myUid,
-				dices,
-				left,
-				isFilled,
-				isHold,
-				scoreData,
-			});
+	// useEffect(() => {
+	// 	myUid &&
+	// 		rtService.collection('singleGames').doc(myUid).update({
+	// 			myUid,
+	// 			dices,
+	// 			left,
+	// 			isFilled,
+	// 			isHold,
+	// 			scoreData,
+	// 		});
 
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dices, left, isFilled, isHold, scoreData]);
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [dices, left, isFilled, isHold, scoreData]);
 
 	useEffect(() => {
 		sessionStorage.setItem(
@@ -714,7 +715,7 @@ export default function Game({
 		setIsFin(false);
 		setIsStart(true);
 		setSnackBarOpen(false);
-		myUid && dbService.collection('singleGames').doc(myUid).delete();
+		// myUid && dbService.collection('singleGames').doc(myUid).delete();
 	};
 
 	return (

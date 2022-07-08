@@ -141,7 +141,7 @@ export default function Board({
 				setDices(newDice);
 			}, [2000]);
 
-			//setLeft(left - 1);
+			setLeft(left - 1);
 		}
 	};
 
