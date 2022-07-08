@@ -75,6 +75,7 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 						indivTotalScore: 0,
 
 						pvpNumberOfGames: 0,
+						pvpBestScore: 0,
 						win: 0,
 						defeat: 0,
 						Rank: 0,
