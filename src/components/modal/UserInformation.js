@@ -282,7 +282,7 @@ export default function UserInformation({
 						: !isLoggedIn
 						? '대전기능을 이용하시려면 로그인을 해주세요.'
 						: rejected
-						? '거절되었습니다'
+						? '거절되었습니다.'
 						: '수락 대기중...'}
 				</Alert>
 			</Snackbar>
