@@ -40,7 +40,7 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 		} = e;
 		if (id === 'name') {
 			setUserName(value);
-			setEmail(value + '@dice.cloud');
+			setEmail(value + '@dices.cloud');
 		} else if (id === 'password') {
 			setPassword(value);
 		}
