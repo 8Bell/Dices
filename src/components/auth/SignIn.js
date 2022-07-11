@@ -11,7 +11,7 @@ import {
 	useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { authService, dbService } from '../../fbase';
+import { authService, dbService, rtService, rtTimestamp } from '../../fbase';
 
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
 import effectSound from '../../hooks/effectSound';
@@ -82,6 +82,7 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 
 						pvp: '',
 					});
+					checkOnline();
 				} else {
 					alert('Please enter your name in 12 characters or less.');
 				}
@@ -149,6 +150,7 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 		try {
 			handleDeleteGame();
 			await authService.signInWithEmailAndPassword(email, password);
+			checkOnline();
 		} catch (error) {
 			console.log(error);
 			switch (error.code) {
@@ -199,6 +201,21 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 					);
 			}
 		}
+	};
+
+	const checkOnline = () => {
+		const myUid = authService.currentUser.uid;
+		const connectionRef = rtService.ref('UsersConnection/' + myUid + '/connection');
+		const lastOnlineRef = rtService.ref('UsersConnection/' + myUid + '/lastOnline');
+		const connectedRef = rtService.ref('.info/connected');
+		connectedRef.on('value', (snapshot) => {
+			if (snapshot.val() === true) {
+				connectionRef.push().set(true);
+				connectedRef.onDisconnect().push().remove();
+				//connectedRef.onDisconnect().push().set(false);
+				lastOnlineRef.onDisconnect().set(rtTimestamp);
+			}
+		});
 	};
 
 	return (

@@ -209,8 +209,9 @@ export default function UserInformation({
 						{(Eng ? 'Winning rate : ' : '승률 : ') +
 							(user.pvpNumberOfGames === 0
 								? 0
-								: Math.round(user.win / user.pvpNumberOfGames) *
-								  100) +
+								: Math.round(
+										(user.win / user.pvpNumberOfGames) * 100
+								  )) +
 							' %'}
 					</Paper>
 					{Eng

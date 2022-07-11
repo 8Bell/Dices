@@ -2,7 +2,7 @@ import { createTheme, CssBaseline, ThemeProvider, useMediaQuery, useTheme } from
 import { grey } from '@mui/material/colors';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
-import { authService } from './fbase';
+import { authService, rtService, rtTimestamp } from './fbase';
 import Game from './pages/Game';
 // import Home from './pages/Home';
 import './App.css';
@@ -13,7 +13,7 @@ import PWAPrompt from 'react-ios-pwa-prompt';
 import { Howler } from 'howler';
 import PVPGame from './pages/PVPGame';
 
-const Layout = ({ isLoggedIn, setIsLoggedIn, ColorModeContext }) => {
+const Layout = ({ ColorModeContext }) => {
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 	const [mode, setMode] = useState(
 		localStorage.getItem('mode')
@@ -152,37 +152,42 @@ const App = () => {
 
 	const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
+	const checkOnline = () => {
+		const myUid = authService.currentUser.uid;
+		const connectionRef = rtService.ref('UsersConnection/' + myUid + '/connection');
+		const lastOnlineRef = rtService.ref('UsersConnection/' + myUid + '/lastOnline');
+		const connectedRef = rtService.ref('.info/connected');
+		connectedRef.on('value', (snapshot) => {
+			if (snapshot.val() === true) {
+				connectionRef.push().set(true);
+				connectedRef.onDisconnect().push().remove();
+				//connectedRef.onDisconnect().push().set(false);
+				lastOnlineRef.onDisconnect().set(rtTimestamp);
+			}
+		});
+	};
+
 	useEffect(() => {
 		isMobile ? setDrawerWidth('100%') : setDrawerWidth(340);
 		isMobile ? setPvpScoreDrawerWidth('100%') : setPvpScoreDrawerWidth(450);
 	}, [isMobile]);
-
-	// const handleSignIn = () => {
-	// 	authService.sendPasswordResetEmail
-	//  }
 
 	useEffect(() => {
 		authService.onAuthStateChanged((user) => {
 			console.log(user);
 			if (user) {
 				setIsLoggedIn(true);
+				checkOnline();
 			} else {
 				setIsLoggedIn(false);
+				checkOnline();
 			}
 		});
 	}, []);
 
 	return (
 		<Routes>
-			<Route
-				path='/'
-				element={
-					<Layout
-						isLoggedIn={isLoggedIn}
-						setIsLoggedIn={setIsLoggedIn}
-						ColorModeContext={ColorModeContext}
-					/>
-				}>
+			<Route path='/' element={<Layout ColorModeContext={ColorModeContext} />}>
 				<Route
 					index
 					element={

@@ -256,11 +256,7 @@ export default function SideMenu({
 					}}>
 					<ListItemText
 						primary={
-							isLoggedIn
-								? me.userName
-								: Eng
-								? 'guest player(me)'
-								: '손님(나)'
+							isLoggedIn ? me.userName : Eng ? 'guest(me)' : '손님(나)'
 						}
 						sx={{ textAlign: 'left' }}
 					/>

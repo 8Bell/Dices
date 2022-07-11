@@ -13,7 +13,7 @@ import { useTheme } from '@emotion/react';
 import Board from '../components/gameBoard/Board';
 import MuiAlert from '@mui/material/Alert';
 import { authService, dbService, rtService } from '../fbase';
-import effectSound from '../hooks/effectSound';
+import effectSound from '../util/effectSound';
 import FilledSound from '../static/sounds/filled.mp3';
 
 import BattleConFilm from '../components/modal/BattleConfirm';

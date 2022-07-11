@@ -9,25 +9,40 @@ import {
 	useTheme,
 } from '@mui/material';
 import React from 'react';
-import { authService } from '../../fbase';
+import { authService, rtService, rtTimestamp } from '../../fbase';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
-import effectSound from '../../hooks/effectSound';
+import { getEffectSound } from '../../util/effectSound';
 
 export default function SignOut({ modal2Open, setModal2Open, Eng, handleDeleteGame }) {
 	//-----------EFFECT SOUNDS-------------//
 
-	const smallFlatSound = effectSound(SmallFlatSound, 1);
-
 	const theme = useTheme();
+	const smallFlatSound = getEffectSound(SmallFlatSound, 1);
 
 	const handleClose = () => {
 		setModal2Open(false);
+	};
+
+	const checkOnline = () => {
+		const myUid = authService.currentUser.uid;
+		const connectionRef = rtService.ref('UsersConnection/' + myUid + '/connection');
+		const lastOnlineRef = rtService.ref('UsersConnection/' + myUid + '/lastOnline');
+		const connectedRef = rtService.ref('.info/connected');
+		connectedRef.on('value', (snapshot) => {
+			if (snapshot.val() === true) {
+				connectionRef.push().set(true);
+				connectedRef.onDisconnect().push().remove();
+				//connectedRef.onDisconnect().push().set(false);
+				lastOnlineRef.onDisconnect().set(rtTimestamp);
+			}
+		});
 	};
 
 	const handleLogOut = () => {
 		smallFlatSound.play();
 		handleDeleteGame();
 		authService.signOut();
+		checkOnline();
 	};
 
 	return (

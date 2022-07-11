@@ -22,6 +22,8 @@ export const firebaseInstance = firebase;
 export const authService = firebase.auth();
 export const dbService = firebase.firestore();
 export const rtService = firebase.database();
+export const rtTimestamp = firebase.database.ServerValue.TIMESTAMP;
+
 export const storageService = firebase.storage();
 export const authLocal = firebase.auth.Auth.Persistence.LOCAL;
 export const authSession = firebase.auth.Auth.Persistence.SESSION;
