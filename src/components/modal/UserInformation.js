@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
-import effectSound from '../../hooks/effectSound';
+import effectSound from '../../util/effectSound';
 import { dbService } from '../../fbase';
 
 export default function UserInformation({

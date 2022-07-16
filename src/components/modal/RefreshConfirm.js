@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
-import effectSound from '../../hooks/effectSound';
+import effectSound from '../../util/effectSound';
 
 export default function RefreshConfirm({ refreshModalOpen, setRefreshModalOpen, Eng }) {
 	//-----------EFFECT SOUNDS-------------//

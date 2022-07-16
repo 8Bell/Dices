@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import MuiAlert from '@mui/material/Alert';
 import { authService, dbService, rtService } from '../fbase';
-import effectSound from '../hooks/effectSound';
+import effectSound from '../util/effectSound';
 import FilledSound from '../static/sounds/filled.mp3';
 import PVPSideScore from '../components/PVP/PVPSideScore';
 import PVPBoard from '../components/PVP/PVPBoard';

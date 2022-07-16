@@ -40,7 +40,7 @@ import l5 from '../static/img/l5.png';
 import l6 from '../static/img/l6.png';
 import SignOut from './auth/Signout';
 import SmallFlatSound from '../static/sounds/smallFlat.mp3';
-import effectSound from '../hooks/effectSound';
+import effectSound from '../util/effectSound';
 import UserInformation from './modal/UserInformation';
 
 export default function SideMenu({

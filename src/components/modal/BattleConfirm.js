@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import SmallFlatSound from '../../static/sounds/smallFlat.mp3';
-import effectSound from '../../hooks/effectSound';
+import effectSound from '../../util/effectSound';
 import { useNavigate } from 'react-router-dom';
 import { dbService, rtService } from '../../fbase';
 

@@ -21,7 +21,7 @@ import l4 from '../../static/img/l4.png';
 import l5 from '../../static/img/l5.png';
 import l6 from '../../static/img/l6.png';
 import ResetConfirm from '../modal/ResetConfilm';
-import effectSound from '../../hooks/effectSound';
+import effectSound from '../../util/effectSound';
 
 import HoldSound from '../../static/sounds/hold.mp3';
 import PutSound from '../../static/sounds/put.mp3';
