@@ -300,7 +300,7 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 					helperText={
 						!signIn
 							? Eng
-								? ' At least 6 letters '
+								? ' At least 6 letters. '
 								: '6자 이상 입력해주세요.'
 							: ''
 					}
