@@ -332,10 +332,10 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 					}}>
 					{signIn
 						? Eng
-							? 'New member ?'
+							? 'New member?'
 							: '아이디가 없으신가요?'
 						: Eng
-						? 'i already have'
+						? 'i already have.'
 						: '회원이신가요?'}
 				</Button>
 
