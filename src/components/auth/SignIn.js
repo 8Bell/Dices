@@ -280,7 +280,7 @@ export default function SignIn({ modalOpen, setModalOpen, Eng, handleDeleteGame 
 					helperText={
 						!signIn
 							? Eng
-								? 'Under 12 letters'
+								? 'Under 12 letters.'
 								: '12자 이내로 입력해주세요.'
 							: ''
 					}

@@ -478,7 +478,7 @@ export default function Game({
 		yacht,
 	]);
 
-	//---------------------END GAME--------------------//
+	//---------------------END GAME-------------------//
 
 	const [isFin, setIsFin] = useState(false);
 
